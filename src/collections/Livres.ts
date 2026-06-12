@@ -190,6 +190,14 @@ export const Livres: CollectionConfig = {
       },
     },
     {
+      name: 'langues',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        description: 'Ex. « Hébreu / Français », « Uniquement en Hébreu »',
+      },
+    },
+    {
       name: 'conditionnement',
       type: 'text',
       admin: {

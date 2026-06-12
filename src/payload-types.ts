@@ -858,6 +858,10 @@ export interface Livre {
   couverture?: ('rigide' | 'souple') | null;
   pages?: number | null;
   /**
+   * Ex. « Hébreu / Français », « Uniquement en Hébreu »
+   */
+  langues?: string | null;
+  /**
    * Ex. « 17 vol. », « coffret 4 livres »
    */
   conditionnement?: string | null;
@@ -1431,6 +1435,7 @@ export interface LivresSelect<T extends boolean = true> {
   poids?: T;
   couverture?: T;
   pages?: T;
+  langues?: T;
   conditionnement?: T;
   extraitPdf?: T;
   communiquePresse?: T;

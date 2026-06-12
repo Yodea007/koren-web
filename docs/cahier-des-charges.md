@@ -31,12 +31,11 @@ Objectifs du nouveau site :
 - Pages : à propos de Koren, contact, CGV, mentions légales
 - Actualités / événements ⚠️ (existe sur le site actuel — à garder ?)
 
-### Catégorisation — à repenser (le rangement actuel est jugé « bof »)
-Piste : remplacer l'arbre unique Shopify par des **facettes croisables** :
-- *Type d'ouvrage* : Bible, prière, Talmud, commentaire, roman, jeunesse, beau livre…
-- *Occasion / fête* : Chabbat, Pessah, Kippour, mariage, bar-mitsva…
-- *Public* : enfant, adolescent, adulte, débutant / étudiant
-⚠️ À valider ensemble avec le catalogue sous les yeux.
+### Catégorisation — ✅ tranchée (juin 2026)
+Les 6 rayons du catalogue papier 5786 :
+Essais et commentaires · Bibles — Tanakh & Houmash · Talmud & commentaires ·
+Livres de prières — Siddour & Mahzor · Jeunesse · Littérature
+(L'axe « Occasion / fête » reste une idée pour plus tard, étiquetage manuel.)
 
 ### E-commerce B2C
 - Panier, livraison France + international à tarifs fixés ⚠️ (grille à fournir)
