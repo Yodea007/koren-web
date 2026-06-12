@@ -1,8 +1,29 @@
 import type { CollectionConfig } from 'payload'
 
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  InlineToolbarFeature,
+  OrderedListFeature,
+  UnorderedListFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
+
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from 'payload'
+
+// Éditeur avec barres d'outils visibles (le defaultLexical n'en affiche aucune)
+export const editeurAvecOutils = lexicalEditor({
+  features: ({ rootFeatures }) => [
+    ...rootFeatures,
+    HeadingFeature({ enabledHeadingSizes: ['h2', 'h3'] }),
+    UnorderedListFeature(),
+    OrderedListFeature(),
+    FixedToolbarFeature(),
+    InlineToolbarFeature(),
+  ],
+})
 
 export const Livres: CollectionConfig = {
   slug: 'livres',
@@ -29,6 +50,7 @@ export const Livres: CollectionConfig = {
     {
       name: 'description',
       type: 'richText',
+      editor: editeurAvecOutils,
     },
     {
       name: 'prix',

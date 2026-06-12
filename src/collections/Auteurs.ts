@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from 'payload'
+import { editeurAvecOutils } from './Livres'
 
 export const Auteurs: CollectionConfig = {
   slug: 'auteurs',
@@ -28,6 +29,7 @@ export const Auteurs: CollectionConfig = {
     {
       name: 'biographie',
       type: 'richText',
+      editor: editeurAvecOutils,
     },
     {
       name: 'photo',
