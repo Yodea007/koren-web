@@ -70,6 +70,7 @@ export interface Config {
     pages: Page;
     posts: Post;
     livres: Livre;
+    lots: Lot;
     auteurs: Auteur;
     media: Media;
     categories: Category;
@@ -86,6 +87,9 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {
+    livres: {
+      lots: 'lots';
+    };
     'payload-folders': {
       documentsAndFolders: 'payload-folders' | 'media';
     };
@@ -94,6 +98,7 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     livres: LivresSelect<false> | LivresSelect<true>;
+    lots: LotsSelect<false> | LotsSelect<true>;
     auteurs: AuteursSelect<false> | AuteursSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
@@ -859,6 +864,11 @@ export interface Livre {
   extraitPdf?: (number | null) | Media;
   communiquePresse?: (number | null) | Media;
   youtube?: string | null;
+  lots?: {
+    docs?: (number | Lot)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   /**
    * Identifiant d’origine sur Shopify (importé).
    */
@@ -894,6 +904,47 @@ export interface Auteur {
     [k: string]: unknown;
   } | null;
   photo?: (number | null) | Media;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Offres groupées de plusieurs livres. Chaque livre concerné affichera le lot sur sa fiche.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lots".
+ */
+export interface Lot {
+  id: number;
+  titre: string;
+  livres: (number | Livre)[];
+  modePrix: 'remise' | 'fixe';
+  remisePourcent?: number | null;
+  prix?: number | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Facultatif — sinon le site montrera les couvertures des livres du lot.
+   */
+  image?: (number | null) | Media;
+  disponible?: boolean | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -1103,6 +1154,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'livres';
         value: number | Livre;
+      } | null)
+    | ({
+        relationTo: 'lots';
+        value: number | Lot;
       } | null)
     | ({
         relationTo: 'auteurs';
@@ -1380,7 +1435,26 @@ export interface LivresSelect<T extends boolean = true> {
   extraitPdf?: T;
   communiquePresse?: T;
   youtube?: T;
+  lots?: T;
   shopifyHandle?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lots_select".
+ */
+export interface LotsSelect<T extends boolean = true> {
+  titre?: T;
+  livres?: T;
+  modePrix?: T;
+  remisePourcent?: T;
+  prix?: T;
+  description?: T;
+  image?: T;
+  disponible?: T;
   generateSlug?: T;
   slug?: T;
   updatedAt?: T;

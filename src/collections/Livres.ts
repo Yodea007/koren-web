@@ -215,6 +215,16 @@ export const Livres: CollectionConfig = {
       label: 'Lien YouTube (événement)',
     },
     {
+      name: 'lots',
+      type: 'join',
+      collection: 'lots',
+      on: 'livres',
+      label: 'Présent dans les lots',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'shopifyHandle',
       type: 'text',
       index: true,
