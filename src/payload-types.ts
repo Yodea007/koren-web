@@ -826,6 +826,10 @@ export interface Livre {
          * Laisser vide pour utiliser le prix du livre.
          */
         prix?: number | null;
+        /**
+         * En grammes. Laisser vide pour utiliser le poids du livre.
+         */
+        poids?: number | null;
         disponible?: boolean | null;
         id?: string | null;
       }[]
@@ -842,6 +846,12 @@ export interface Livre {
   nouveaute?: boolean | null;
   disponible?: boolean | null;
   dimensions?: string | null;
+  /**
+   * En grammes — servira au calcul des frais de port.
+   */
+  poids?: number | null;
+  couverture?: ('rigide' | 'souple') | null;
+  pages?: number | null;
   /**
    * Ex. « 17 vol. », « coffret 4 livres »
    */
@@ -1353,6 +1363,7 @@ export interface LivresSelect<T extends boolean = true> {
         nom?: T;
         isbn?: T;
         prix?: T;
+        poids?: T;
         disponible?: T;
         id?: T;
       };
@@ -1362,6 +1373,9 @@ export interface LivresSelect<T extends boolean = true> {
   nouveaute?: T;
   disponible?: T;
   dimensions?: T;
+  poids?: T;
+  couverture?: T;
+  pages?: T;
   conditionnement?: T;
   extraitPdf?: T;
   communiquePresse?: T;

@@ -97,6 +97,14 @@ export const Livres: CollectionConfig = {
           },
         },
         {
+          name: 'poids',
+          type: 'number',
+          min: 0,
+          admin: {
+            description: 'En grammes. Laisser vide pour utiliser le poids du livre.',
+          },
+        },
+        {
           name: 'disponible',
           type: 'checkbox',
           defaultValue: true,
@@ -148,6 +156,35 @@ export const Livres: CollectionConfig = {
     {
       name: 'dimensions',
       type: 'text',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'poids',
+      type: 'number',
+      min: 0,
+      admin: {
+        position: 'sidebar',
+        description: 'En grammes — servira au calcul des frais de port.',
+      },
+    },
+    {
+      name: 'couverture',
+      type: 'select',
+      options: [
+        { label: 'Rigide', value: 'rigide' },
+        { label: 'Souple', value: 'souple' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'pages',
+      type: 'number',
+      label: 'Nombre de pages',
+      min: 0,
       admin: {
         position: 'sidebar',
       },
