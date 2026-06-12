@@ -12,6 +12,9 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   : process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000'
 
 const nextConfig: NextConfig = {
+  // The Dockerfile needs the standalone output; `next start` does not support it,
+  // so it is only enabled when building inside Docker (see ENV in Dockerfile).
+  output: process.env.BUILD_STANDALONE === 'true' ? 'standalone' : undefined,
   // Temporarily required on Windows until Next.js fixes Turbopack Sass resolution.
   // See: https://github.com/vercel/next.js/issues/86431
   sassOptions: {

@@ -7,8 +7,8 @@ node_modules
 next-env.d.ts
 .vercel
 
-# Payload default media upload directory
-public/media/
+# Payload media upload directory
+/editeur-livres/
 
 public/robots.txt
 public/sitemap*.xml

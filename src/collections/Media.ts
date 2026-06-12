@@ -40,8 +40,9 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
-    staticDir: path.resolve(dirname, '../../public/media'),
+    // All persistent data lives under the `editeur-livres` folder at the project root
+    // (gitignored). Files are served through Payload's /api/media/file/* route only.
+    staticDir: path.resolve(dirname, '../../editeur-livres/media'),
     adminThumbnail: 'thumbnail',
     focalPoint: true,
     imageSizes: [
