@@ -69,6 +69,8 @@ export interface Config {
   collections: {
     pages: Page;
     posts: Post;
+    livres: Livre;
+    auteurs: Auteur;
     media: Media;
     categories: Category;
     users: User;
@@ -91,6 +93,8 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    livres: LivresSelect<false> | LivresSelect<true>;
+    auteurs: AuteursSelect<false> | AuteursSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -783,6 +787,113 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "livres".
+ */
+export interface Livre {
+  id: number;
+  titre: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Prix public en euros. Une déclinaison peut le remplacer par le sien.
+   */
+  prix: number;
+  /**
+   * Pour un livre sans déclinaisons. Sinon, renseigner l’ISBN de chaque déclinaison.
+   */
+  isbn?: string | null;
+  /**
+   * Éditions du même livre : couleur, langue, tradition… Chacune a son ISBN.
+   */
+  declinaisons?:
+    | {
+        nom: string;
+        isbn?: string | null;
+        /**
+         * Laisser vide pour utiliser le prix du livre.
+         */
+        prix?: number | null;
+        disponible?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * La première image est la couverture.
+   */
+  images?: (number | Media)[] | null;
+  auteurs?: (number | Auteur)[] | null;
+  categories?: (number | Category)[] | null;
+  /**
+   * Mis en avant sur la page d’accueil.
+   */
+  nouveaute?: boolean | null;
+  disponible?: boolean | null;
+  dimensions?: string | null;
+  /**
+   * Ex. « 17 vol. », « coffret 4 livres »
+   */
+  conditionnement?: string | null;
+  extraitPdf?: (number | null) | Media;
+  communiquePresse?: (number | null) | Media;
+  youtube?: string | null;
+  /**
+   * Identifiant d’origine sur Shopify (importé).
+   */
+  shopifyHandle?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "auteurs".
+ */
+export interface Auteur {
+  id: number;
+  nom: string;
+  biographie?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  photo?: (number | null) | Media;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -978,6 +1089,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'livres';
+        value: number | Livre;
+      } | null)
+    | ({
+        relationTo: 'auteurs';
+        value: number | Auteur;
       } | null)
     | ({
         relationTo: 'media';
@@ -1218,6 +1337,53 @@ export interface PostsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "livres_select".
+ */
+export interface LivresSelect<T extends boolean = true> {
+  titre?: T;
+  description?: T;
+  prix?: T;
+  isbn?: T;
+  declinaisons?:
+    | T
+    | {
+        nom?: T;
+        isbn?: T;
+        prix?: T;
+        disponible?: T;
+        id?: T;
+      };
+  images?: T;
+  auteurs?: T;
+  categories?: T;
+  nouveaute?: T;
+  disponible?: T;
+  dimensions?: T;
+  conditionnement?: T;
+  extraitPdf?: T;
+  communiquePresse?: T;
+  youtube?: T;
+  shopifyHandle?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "auteurs_select".
+ */
+export interface AuteursSelect<T extends boolean = true> {
+  nom?: T;
+  biographie?: T;
+  photo?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
