@@ -59,7 +59,8 @@ export default buildConfig({
   editor: defaultLexical,
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URL || '',
+      connectionString: process.env.DATABASE_URI || '',
+      ssl: { rejectUnauthorized: false },
     },
   }),
   collections: [Pages, Posts, Media, Categories, Users],
