@@ -26,7 +26,8 @@ Objectifs du nouveau site :
 ### Vitrine
 - **Accueil** : nouveautés en avant, sélections, accès direct au catalogue
 - **Catalogue** : liste filtrable, recherche
-- **Fiche livre** : couverture, description, extrait (PDF feuilletable ?⚠️), prix, auteur, caractéristiques (format, pages, ISBN)
+- **Fiche livre** : couverture, description, prix, auteur, caractéristiques (format, pages, ISBN)
+  + champs optionnels selon le livre : extrait PDF, communiqué de presse PDF, lien YouTube (événement)
 - Pages : à propos de Koren, contact, CGV, mentions légales
 - Actualités / événements ⚠️ (existe sur le site actuel — à garder ?)
 
@@ -45,10 +46,10 @@ Piste : remplacer l'arbre unique Shopify par des **facettes croisables** :
 
 ### Espace libraire B2B
 - Demande de compte → validation manuelle dans l'admin Payload
-- Remise appliquée automatiquement ⚠️ (taux unique pour tous les libraires, ou taux par libraire ?)
+- Remise **propre à chaque libraire** (taux défini sur son compte), appliquée automatiquement
 - Commande sans paiement immédiat : génère un **bon de commande / facture à 3 mois**
 - Historique des commandes, bons enregistrés (re-commande rapide)
-- ⚠️ Qui valide chaque commande à 3 mois — automatique ou validation manuelle par Koren ?
+- Chaque commande à 3 mois est **validée manuellement** par Koren dans l'admin
 
 ### Administration (back-office Payload)
 - Gestion du catalogue (livres, catégories, nouveautés, mises en avant accueil)
@@ -69,7 +70,10 @@ Piste : remplacer l'arbre unique Shopify par des **facettes croisables** :
 
 ## 6. Socle technique (existant)
 - Payload CMS 3 + Next.js 16, PostgreSQL — déjà installé et fonctionnel
-- Stripe pour les paiements ; emails transactionnels ⚠️ (service à choisir, ex. Resend)
+- Paiements : **Stripe** (décision par défaut) ⚠️ à comparer avec la solution e-commerce
+  de la BNP (Axepta) sur les frais — voir avec la banque ; le reste du site n'en dépend pas
+- Emails transactionnels (confirmations, expéditions) : service à choisir en phase 2,
+  ex. **Brevo** (français, très répandu) ou Resend — ce n'est pas un service bancaire
 - Données persistantes centralisées dans `editeur-livres/` (cf. CLAUDE.md)
 - Hébergement : local aujourd'hui, serveur perso à terme (Docker prêt)
 
