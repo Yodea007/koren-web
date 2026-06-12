@@ -92,22 +92,33 @@ const lookup = (titrePdf, prixShopify, contexte) => {
   return entrée
 }
 
+// Réconciliation : le code-barres Shopify (par variante) et l'ISBN du bon de commande
+// doivent coïncider ; en cas de désaccord on garde le code-barres Shopify et on signale.
+const conflits = []
+const réconcilier = (v, entréePdf, contexte) => {
+  const barcode = v.barcode || null
+  const pdf = entréePdf?.isbn ?? null
+  if (barcode && pdf && barcode !== pdf)
+    conflits.push(`${contexte} : Shopify ${barcode} ≠ bon de commande ${pdf}`)
+  v.isbn = barcode || pdf
+}
+
 for (const p of products) {
   const corr = CORRESPONDANCE[p.title]
-  if (!corr) continue
   if (typeof corr === 'string') {
     const e = lookup(corr, p.variants[0].price, p.title)
-    p.isbn = e.isbn
+    réconcilier(p.variants[0], e, p.title)
+    p.isbn = p.variants[0].isbn
     p.dimensions = e.dimensions ?? null
     p.prix_catalogue_2026 = e.prix
   } else {
     for (const v of p.variants) {
-      const titrePdf = corr[v.title]
-      if (!titrePdf) continue
-      const e = lookup(titrePdf, v.price, `${p.title} / ${v.title}`)
-      v.isbn = e.isbn
-      p.dimensions ??= e.dimensions ?? null
+      const titrePdf = corr?.[v.title]
+      const e = titrePdf ? lookup(titrePdf, v.price, `${p.title} / ${v.title}`) : null
+      réconcilier(v, e, `${p.title}${p.variants.length > 1 ? ` / ${v.title}` : ''}`)
+      if (e) p.dimensions ??= e.dimensions ?? null
     }
+    if (p.variants.length === 1) p.isbn = p.variants[0].isbn
   }
 }
 
@@ -119,10 +130,15 @@ fs.writeFileSync(
 // ---- Rapport ----
 const sansIsbn = products.filter((p) => !p.isbn && !p.variants.some((v) => v.isbn))
 const pdfSeuls = catalogue.filter((e) => !utilisés.has(e.titre) && !e.note?.includes('doublon'))
-const isbnInvalides = catalogue.filter((e) => !isbnValide(e.isbn))
+const isbnInvalides = catalogue
+  .filter((e) => !isbnValide(e.isbn))
+  .concat(products.flatMap((p) => p.variants.filter((v) => v.isbn && !isbnValide(v.isbn))
+    .map((v) => ({ titre: `${p.title} / ${v.title}`, isbn: v.isbn }))))
 
-console.log(`Produits Shopify enrichis : ${products.length - sansIsbn.length}/${products.length}`)
-console.log(`\n— Sur Shopify mais absents du bon de commande (pas d'ISBN) :`)
+console.log(`Produits Shopify avec ISBN : ${products.length - sansIsbn.length}/${products.length}`)
+console.log(`\n— Conflits d'ISBN entre Shopify et le bon de commande :`)
+conflits.forEach((l) => console.log(`  • ${l}`))
+console.log(`\n— Toujours sans aucun ISBN :`)
 sansIsbn.forEach((p) => console.log(`  • ${p.title}`))
 console.log(`\n— Au bon de commande mais absents de Shopify :`)
 pdfSeuls.forEach((e) => console.log(`  • ${e.titre} (${e.prix}€)`))

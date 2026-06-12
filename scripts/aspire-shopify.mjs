@@ -39,8 +39,18 @@ fs.mkdirSync(IMAGES, { recursive: true })
 
 // 1. Tous les produits
 const products = await fetchAllPages('/products.json', 'products')
-fs.writeFileSync(path.join(OUT, 'products.json'), JSON.stringify(products, null, 2))
 console.log(`Produits : ${products.length}`)
+
+// 1bis. Les codes-barres (ISBN) ne sont exposés que par /products/{handle}.js
+for (const p of products) {
+  await sleep(200)
+  const detail = await fetchJSON(`${BASE}/products/${p.handle}.js`)
+  const barcodes = new Map(detail.variants.map((v) => [v.id, v.barcode || null]))
+  for (const v of p.variants) v.barcode = barcodes.get(v.id) ?? null
+}
+const avecIsbn = products.filter((p) => p.variants.some((v) => v.barcode)).length
+fs.writeFileSync(path.join(OUT, 'products.json'), JSON.stringify(products, null, 2))
+console.log(`  dont avec code-barres/ISBN : ${avecIsbn}`)
 
 // 2. Collections + appartenance des produits (la structure de navigation)
 const collections = await fetchAllPages('/collections.json', 'collections')
