@@ -6,12 +6,34 @@ import {
   InlineToolbarFeature,
   OrderedListFeature,
   UnorderedListFeature,
+  UploadFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from 'payload'
+
+// Options partagées entre le livre et ses déclinaisons
+export const optionsLangues = [
+  { label: 'Hébreu', value: 'he' },
+  { label: 'Français', value: 'fr' },
+  { label: 'Anglais', value: 'en' },
+  { label: 'Allemand', value: 'de' },
+  { label: 'Araméen', value: 'arc' },
+]
+
+export const optionsRite = [
+  { label: 'Séfarade', value: 'sefarade' },
+  { label: 'Ashkénaze', value: 'ashkenaze' },
+  { label: 'Commun / tous rites', value: 'commun' },
+]
+
+export const optionsReliure = [
+  { label: 'Bordeaux', value: 'bordeaux' },
+  { label: 'Marine', value: 'marine' },
+  { label: 'Vert', value: 'vert' },
+]
 
 // Éditeur avec barres d'outils visibles (le defaultLexical n'en affiche aucune)
 export const editeurAvecOutils = lexicalEditor({
@@ -20,6 +42,19 @@ export const editeurAvecOutils = lexicalEditor({
     HeadingFeature({ enabledHeadingSizes: ['h2', 'h3'] }),
     UnorderedListFeature(),
     OrderedListFeature(),
+    UploadFeature({
+      collections: {
+        media: {
+          fields: [
+            {
+              name: 'caption',
+              type: 'richText',
+              editor: lexicalEditor(),
+            },
+          ],
+        },
+      },
+    }),
     FixedToolbarFeature(),
     InlineToolbarFeature(),
   ],
@@ -46,6 +81,14 @@ export const Livres: CollectionConfig = {
       name: 'titre',
       type: 'text',
       required: true,
+    },
+    {
+      name: 'accroche',
+      type: 'text',
+      label: 'Accroche',
+      admin: {
+        description: 'Sous-titre court affiché sous le titre (hero, fiche). Ex. « une lecture de la Torah ».',
+      },
     },
     {
       name: 'description',
@@ -83,6 +126,40 @@ export const Livres: CollectionConfig = {
           name: 'nom',
           type: 'text',
           required: true,
+        },
+        {
+          name: 'tome',
+          type: 'number',
+          min: 1,
+          admin: {
+            description: 'Numéro de tome/volume. Rempli → un sélecteur « Volume » apparaît sur la fiche.',
+          },
+        },
+        {
+          name: 'rite',
+          type: 'select',
+          options: optionsRite,
+          admin: {
+            description: 'À renseigner si le rite varie d’une édition à l’autre.',
+          },
+        },
+        {
+          name: 'langues',
+          type: 'select',
+          hasMany: true,
+          options: optionsLangues,
+          admin: {
+            description: 'Laisser vide pour utiliser les langues du livre.',
+          },
+        },
+        {
+          name: 'couleurReliure',
+          type: 'select',
+          options: optionsReliure,
+          label: 'Couleur de reliure',
+          admin: {
+            description: 'Rempli → un sélecteur de couleur (pastilles) apparaît sur la fiche.',
+          },
         },
         {
           name: 'isbn',
@@ -142,7 +219,17 @@ export const Livres: CollectionConfig = {
       defaultValue: false,
       admin: {
         position: 'sidebar',
-        description: 'Mis en avant sur la page d’accueil.',
+        description: 'Mis en avant en hero sur la page d’accueil.',
+      },
+    },
+    {
+      name: 'selection',
+      type: 'checkbox',
+      label: 'Sélection de la maison',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Affiché dans « La sélection de la maison » sur l’accueil.',
       },
     },
     {
@@ -191,10 +278,21 @@ export const Livres: CollectionConfig = {
     },
     {
       name: 'langues',
-      type: 'text',
+      type: 'select',
+      hasMany: true,
+      options: optionsLangues,
       admin: {
         position: 'sidebar',
-        description: 'Ex. « Hébreu / Français », « Uniquement en Hébreu »',
+        description: 'Langues du livre (défaut). Une déclinaison peut les remplacer.',
+      },
+    },
+    {
+      name: 'rite',
+      type: 'select',
+      options: optionsRite,
+      admin: {
+        position: 'sidebar',
+        description: 'Rite du livre (défaut). Une déclinaison peut le remplacer.',
       },
     },
     {

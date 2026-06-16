@@ -79,6 +79,8 @@ export interface Config {
     forms: Form;
     'form-submissions': FormSubmission;
     search: Search;
+    exports: Export;
+    imports: Import;
     'payload-kv': PayloadKv;
     'payload-jobs': PayloadJob;
     'payload-folders': FolderInterface;
@@ -107,6 +109,8 @@ export interface Config {
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     search: SearchSelect<false> | SearchSelect<true>;
+    exports: ExportsSelect<false> | ExportsSelect<true>;
+    imports: ImportsSelect<false> | ImportsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-folders': PayloadFoldersSelect<false> | PayloadFoldersSelect<true>;
@@ -133,6 +137,8 @@ export interface Config {
   user: User;
   jobs: {
     tasks: {
+      createCollectionExport: TaskCreateCollectionExport;
+      createCollectionImport: TaskCreateCollectionImport;
       schedulePublish: TaskSchedulePublish;
       inline: {
         input: unknown;
@@ -797,6 +803,10 @@ export interface Form {
 export interface Livre {
   id: number;
   titre: string;
+  /**
+   * Sous-titre court affiché sous le titre (hero, fiche). Ex. « une lecture de la Torah ».
+   */
+  accroche?: string | null;
   description?: {
     root: {
       type: string;
@@ -826,6 +836,22 @@ export interface Livre {
   declinaisons?:
     | {
         nom: string;
+        /**
+         * Numéro de tome/volume. Rempli → un sélecteur « Volume » apparaît sur la fiche.
+         */
+        tome?: number | null;
+        /**
+         * À renseigner si le rite varie d’une édition à l’autre.
+         */
+        rite?: ('sefarade' | 'ashkenaze' | 'commun') | null;
+        /**
+         * Laisser vide pour utiliser les langues du livre.
+         */
+        langues?: ('he' | 'fr' | 'en' | 'de' | 'arc')[] | null;
+        /**
+         * Rempli → un sélecteur de couleur (pastilles) apparaît sur la fiche.
+         */
+        couleurReliure?: ('bordeaux' | 'marine' | 'vert') | null;
         isbn?: string | null;
         /**
          * Laisser vide pour utiliser le prix du livre.
@@ -846,9 +872,13 @@ export interface Livre {
   auteurs?: (number | Auteur)[] | null;
   categories?: (number | Category)[] | null;
   /**
-   * Mis en avant sur la page d’accueil.
+   * Mis en avant en hero sur la page d’accueil.
    */
   nouveaute?: boolean | null;
+  /**
+   * Affiché dans « La sélection de la maison » sur l’accueil.
+   */
+  selection?: boolean | null;
   disponible?: boolean | null;
   dimensions?: string | null;
   /**
@@ -858,9 +888,13 @@ export interface Livre {
   couverture?: ('rigide' | 'souple') | null;
   pages?: number | null;
   /**
-   * Ex. « Hébreu / Français », « Uniquement en Hébreu »
+   * Langues du livre (défaut). Une déclinaison peut les remplacer.
    */
-  langues?: string | null;
+  langues?: ('he' | 'fr' | 'en' | 'de' | 'arc')[] | null;
+  /**
+   * Rite du livre (défaut). Une déclinaison peut le remplacer.
+   */
+  rite?: ('sefarade' | 'ashkenaze' | 'commun') | null;
   /**
    * Ex. « 17 vol. », « coffret 4 livres »
    */
@@ -1033,6 +1067,80 @@ export interface Search {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exports".
+ */
+export interface Export {
+  id: number;
+  name?: string | null;
+  format: 'csv' | 'json';
+  limit?: number | null;
+  page?: number | null;
+  sort?: string | null;
+  sortOrder?: ('asc' | 'desc') | null;
+  drafts?: ('yes' | 'no') | null;
+  selectionToUse?: ('currentSelection' | 'currentFilters' | 'all') | null;
+  fields?: string[] | null;
+  collectionSlug: string;
+  where?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "imports".
+ */
+export interface Import {
+  id: number;
+  collectionSlug: string;
+  importMode?: ('create' | 'update' | 'upsert') | null;
+  matchField?: string | null;
+  status?: ('pending' | 'completed' | 'partial' | 'failed') | null;
+  summary?: {
+    imported?: number | null;
+    updated?: number | null;
+    total?: number | null;
+    issues?: number | null;
+    issueDetails?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -1100,7 +1208,7 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'schedulePublish';
+        taskSlug: 'inline' | 'createCollectionExport' | 'createCollectionImport' | 'schedulePublish';
         taskID: string;
         input?:
           | {
@@ -1133,7 +1241,7 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'schedulePublish') | null;
+  taskSlug?: ('inline' | 'createCollectionExport' | 'createCollectionImport' | 'schedulePublish') | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -1413,6 +1521,7 @@ export interface PostsSelect<T extends boolean = true> {
  */
 export interface LivresSelect<T extends boolean = true> {
   titre?: T;
+  accroche?: T;
   description?: T;
   prix?: T;
   isbn?: T;
@@ -1420,6 +1529,10 @@ export interface LivresSelect<T extends boolean = true> {
     | T
     | {
         nom?: T;
+        tome?: T;
+        rite?: T;
+        langues?: T;
+        couleurReliure?: T;
         isbn?: T;
         prix?: T;
         poids?: T;
@@ -1430,12 +1543,14 @@ export interface LivresSelect<T extends boolean = true> {
   auteurs?: T;
   categories?: T;
   nouveaute?: T;
+  selection?: T;
   disponible?: T;
   dimensions?: T;
   poids?: T;
   couverture?: T;
   pages?: T;
   langues?: T;
+  rite?: T;
   conditionnement?: T;
   extraitPdf?: T;
   communiquePresse?: T;
@@ -1809,6 +1924,64 @@ export interface SearchSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exports_select".
+ */
+export interface ExportsSelect<T extends boolean = true> {
+  name?: T;
+  format?: T;
+  limit?: T;
+  page?: T;
+  sort?: T;
+  sortOrder?: T;
+  drafts?: T;
+  selectionToUse?: T;
+  fields?: T;
+  collectionSlug?: T;
+  where?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "imports_select".
+ */
+export interface ImportsSelect<T extends boolean = true> {
+  collectionSlug?: T;
+  importMode?: T;
+  matchField?: T;
+  status?: T;
+  summary?:
+    | T
+    | {
+        imported?: T;
+        updated?: T;
+        total?: T;
+        issues?: T;
+        issueDetails?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -2003,6 +2176,70 @@ export interface CollectionsWidget {
     [k: string]: unknown;
   };
   width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskCreateCollectionExport".
+ */
+export interface TaskCreateCollectionExport {
+  input: {
+    id: string;
+    name: string;
+    batchSize?: number | null;
+    collectionSlug:
+      | 'pages'
+      | 'posts'
+      | 'livres'
+      | 'lots'
+      | 'auteurs'
+      | 'media'
+      | 'categories'
+      | 'users'
+      | 'redirects'
+      | 'forms'
+      | 'form-submissions'
+      | 'search'
+      | 'exports'
+      | 'imports';
+    drafts?: ('yes' | 'no') | null;
+    exportCollection: string;
+    fields?: string[] | null;
+    format: 'csv' | 'json';
+    limit?: number | null;
+    locale?: string | null;
+    maxLimit?: number | null;
+    page?: number | null;
+    sort?: string | null;
+    userCollection?: string | null;
+    userID?: string | null;
+    where?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+  };
+  output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskCreateCollectionImport".
+ */
+export interface TaskCreateCollectionImport {
+  input: {
+    importId: string;
+    importCollection: string;
+    userID?: string | null;
+    userCollection?: string | null;
+    batchSize?: number | null;
+    debug?: boolean | null;
+    defaultVersionStatus?: ('draft' | 'published') | null;
+    maxLimit?: number | null;
+  };
+  output?: unknown;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
