@@ -1,0 +1,76 @@
+import Link from 'next/link'
+import React from 'react'
+
+import type { Livre } from '@/payload-types'
+
+import { Media } from '@/components/Media'
+import { couverture, eyebrow, formatPrix, languePills } from '@/utilities/koren'
+
+export const BookCard: React.FC<{ livre: Livre }> = ({ livre }) => {
+  const href = `/livres/${livre.slug}`
+  const cover = couverture(livre)
+  const pills = languePills(livre)
+  const eb = eyebrow(livre)
+  const indisponible = livre.disponible === false
+
+  return (
+    <article className="flex flex-col">
+      <Link href={href} className="group block">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-[2px] bg-lin border border-ligne">
+          {cover ? (
+            <Media
+              resource={cover}
+              fill
+              size="(max-width: 768px) 45vw, 22vw"
+              imgClassName="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center p-4 text-center font-display text-lg text-encre-pale">
+              {livre.titre}
+            </div>
+          )}
+
+          {livre.nouveaute && (
+            <span className="absolute right-2 top-2 bg-bordeaux px-2 py-1 font-mono text-[9px] uppercase tracking-[1.5px] text-[#f7efe0]">
+              Nouveauté
+            </span>
+          )}
+          {indisponible && (
+            <span className="absolute right-2 top-2 bg-nuit px-2 py-1 font-mono text-[9px] uppercase tracking-[1.5px] text-[#d8cdb8]">
+              Indisponible
+            </span>
+          )}
+        </div>
+      </Link>
+
+      <div className="mt-3 flex flex-1 flex-col">
+        {eb && <p className="mb-1 font-serif text-sm italic text-encre-douce">{eb}</p>}
+
+        <Link href={href}>
+          <h3 className="font-display text-xl font-semibold leading-tight text-encre hover:text-bordeaux">
+            {livre.titre}
+          </h3>
+        </Link>
+
+        {pills.length > 0 && (
+          <div className="mt-2">
+            <span className="inline-block rounded-[3px] border border-ligne px-1.5 py-0.5 font-mono text-[10px] tracking-[1px] text-encre-douce">
+              {pills.join('/')}
+            </span>
+          </div>
+        )}
+
+        <div className="mt-auto flex items-center justify-between gap-2 pt-3">
+          <span className="font-display text-2xl text-bordeaux">{formatPrix(livre.prix)}</span>
+          <button
+            type="button"
+            className="rounded-[5px] border border-bordeaux px-3 py-1.5 font-mono text-[10px] uppercase tracking-[1.5px] text-bordeaux transition-colors hover:bg-bordeaux hover:text-[#f7efe0] disabled:cursor-not-allowed disabled:opacity-40"
+            disabled={indisponible}
+          >
+            Ajouter
+          </button>
+        </div>
+      </div>
+    </article>
+  )
+}
