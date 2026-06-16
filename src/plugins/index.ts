@@ -1,4 +1,5 @@
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
+import { importExportPlugin } from '@payloadcms/plugin-import-export'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
@@ -88,5 +89,31 @@ export const plugins: Plugin[] = [
         return [...defaultFields, ...searchFields]
       },
     },
+  }),
+  // Import / export CSV depuis l'admin (gestion du catalogue par des non-programmeurs).
+  // Mode synchrone (disableJobsQueue) : pas besoin de worker/cron, le catalogue est petit.
+  importExportPlugin({
+    collections: [
+      {
+        slug: 'livres',
+        export: { format: 'csv', disableJobsQueue: true },
+        import: { disableJobsQueue: true },
+      },
+      {
+        slug: 'auteurs',
+        export: { format: 'csv', disableJobsQueue: true },
+        import: { disableJobsQueue: true },
+      },
+      {
+        slug: 'categories',
+        export: { format: 'csv', disableJobsQueue: true },
+        import: { disableJobsQueue: true },
+      },
+      {
+        slug: 'lots',
+        export: { format: 'csv', disableJobsQueue: true },
+        import: { disableJobsQueue: true },
+      },
+    ],
   }),
 ]
