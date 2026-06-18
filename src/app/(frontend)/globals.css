@@ -196,6 +196,10 @@
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
     font-family: var(--font-source-serif), Georgia, serif;
+    /* Site présenté comme une « page » centrée et encadrée (cf. maquette) */
+    max-width: 1280px;
+    margin-inline: auto;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
   }
   ::selection {
     background: #93142e;
@@ -221,6 +225,7 @@
 
 html {
   opacity: 0;
+  background-color: #e8e0d0;
 }
 
 html[data-theme='dark'],
