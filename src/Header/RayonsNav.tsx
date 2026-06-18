@@ -10,7 +10,7 @@ export const RayonsNavLinks: React.FC<{ rayons: Rayon[]; activeSlug: string | nu
   rayons,
   activeSlug,
 }) => (
-  <nav className="flex items-center justify-center gap-5 md:gap-[34px] py-3 px-4 bg-secondary border-b border-[#dbccae] font-mono text-[11px] tracking-[1.5px] uppercase overflow-x-auto">
+  <nav className="flex items-center justify-center gap-5 md:gap-[34px] py-3 px-4 bg-secondary border-b border-[#dbccae] font-mono text-[11px] tracking-[1.5px] uppercase overflow-x-auto overflow-y-hidden">
     {rayons.map((r) => {
       const active = r.slug === activeSlug
       return (
