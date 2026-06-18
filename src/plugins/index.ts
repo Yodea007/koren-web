@@ -1,6 +1,7 @@
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { importExportPlugin } from '@payloadcms/plugin-import-export'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
@@ -89,6 +90,13 @@ export const plugins: Plugin[] = [
         return [...defaultFields, ...searchFields]
       },
     },
+  }),
+  // Stockage des médias sur Vercel Blob — activé uniquement si le token est présent
+  // (donc en prod Vercel). En local sans token, Payload garde le disque (editeur-livres/media).
+  vercelBlobStorage({
+    enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+    collections: { media: true },
+    token: process.env.BLOB_READ_WRITE_TOKEN,
   }),
   // Import / export CSV depuis l'admin (gestion du catalogue par des non-programmeurs).
   // Mode synchrone (disableJobsQueue) : pas besoin de worker/cron, le catalogue est petit.
