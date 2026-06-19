@@ -8,7 +8,7 @@ import React from 'react'
 import type { Auteur, Livre } from '@/payload-types'
 
 import { Media } from '@/components/Media'
-import { BookRail } from '@/components/koren/BookRail'
+import { BookSwiper } from '@/components/koren/BookSwiper'
 import { Hero, type HeroSlide } from '@/components/koren/Hero'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { couverture, formatPrix, labelRayon, ordreRayon } from '@/utilities/koren'
@@ -153,10 +153,10 @@ export default async function Accueil() {
               </Link>
             </div>
 
-            <BookRail>
+            <BookSwiper>
               {r.books.map((b) => (
-                <Link key={b.id} href={`/livres/${b.slug}`} className="group w-[148px] flex-none">
-                  <Cover livre={b} sizes="148px" />
+                <Link key={b.id} href={`/livres/${b.slug}`} className="group w-[170px] flex-none">
+                  <Cover livre={b} sizes="170px" />
                   <div className="font-serif text-sm font-medium leading-tight text-encre">
                     {b.titre}
                   </div>
@@ -165,7 +165,7 @@ export default async function Accueil() {
                   </div>
                 </Link>
               ))}
-            </BookRail>
+            </BookSwiper>
           </div>
         ))}
       </section>
