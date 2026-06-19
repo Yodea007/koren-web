@@ -14,18 +14,19 @@ export const dynamic = 'force-dynamic'
 const LIMIT = 12
 
 type Args = {
-  searchParams: Promise<{ rayon?: string; page?: string }>
+  searchParams: Promise<{ rayon?: string; page?: string; nouveaute?: string }>
 }
 
 export default async function CataloguePage({ searchParams }: Args) {
-  const { rayon, page: pageParam } = await searchParams
+  const { rayon, page: pageParam, nouveaute } = await searchParams
   const page = Math.max(1, Number(pageParam) || 1)
+  const nouveauteOnly = nouveaute === '1'
 
   const payload = await getPayload({ config: configPromise })
 
   // Rayon courant (pour le titre)
   let rayonTitre: string | null = null
-  if (rayon) {
+  if (rayon && !nouveauteOnly) {
     const cat = await payload.find({
       collection: 'categories',
       where: { slug: { equals: rayon } },
@@ -35,7 +36,11 @@ export default async function CataloguePage({ searchParams }: Args) {
     rayonTitre = (cat.docs[0]?.title as string) ?? null
   }
 
-  const where: Where = rayon ? { 'categories.slug': { equals: rayon } } : {}
+  const where: Where = nouveauteOnly
+    ? { nouveaute: { equals: true } }
+    : rayon
+      ? { 'categories.slug': { equals: rayon } }
+      : {}
 
   const result = await payload.find({
     collection: 'livres',
@@ -49,7 +54,8 @@ export default async function CataloguePage({ searchParams }: Args) {
 
   const buildHref = (p: number) => {
     const params = new URLSearchParams()
-    if (rayon) params.set('rayon', rayon)
+    if (nouveauteOnly) params.set('nouveaute', '1')
+    else if (rayon) params.set('rayon', rayon)
     if (p > 1) params.set('page', String(p))
     const qs = params.toString()
     return qs ? `/catalogue?${qs}` : '/catalogue'
@@ -60,10 +66,10 @@ export default async function CataloguePage({ searchParams }: Args) {
       <header className="mb-10 flex flex-wrap items-end justify-between gap-4 border-b border-ligne pb-6">
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[2.5px] text-or">
-            {rayonTitre ? 'Le rayon' : 'Le catalogue'}
+            {nouveauteOnly ? 'Les dernières parutions' : rayonTitre ? 'Le rayon' : 'Le catalogue'}
           </p>
           <h1 className="mt-2 font-display text-5xl font-medium text-encre">
-            {rayonTitre ?? 'Tous les ouvrages'}
+            {nouveauteOnly ? 'Nouveautés' : (rayonTitre ?? 'Tous les ouvrages')}
           </h1>
         </div>
         <p className="font-mono text-[11px] uppercase tracking-[1.5px] text-encre-pale">
@@ -72,7 +78,9 @@ export default async function CataloguePage({ searchParams }: Args) {
       </header>
 
       {result.docs.length === 0 ? (
-        <p className="py-20 text-center font-serif text-encre-douce">Aucun ouvrage dans ce rayon.</p>
+        <p className="py-20 text-center font-serif text-encre-douce">
+          {nouveauteOnly ? 'Aucune nouveauté pour le moment.' : 'Aucun ouvrage dans ce rayon.'}
+        </p>
       ) : (
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
           {result.docs.map((livre) => (

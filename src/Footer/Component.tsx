@@ -26,7 +26,7 @@ export async function Footer() {
       <div className="mx-auto max-w-[1180px] px-5 pb-10 pt-14 md:px-16">
         <div className="grid grid-cols-1 gap-12 border-b border-[#3a3225] pb-11 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
           {/* Newsletter */}
-          <div>
+          <div id="newsletter" className="scroll-mt-28">
             <div className="font-display text-[28px] font-medium text-[#F1E7D2]">La lettre Koren</div>
             <p className="my-3 mb-[18px] max-w-[300px] font-serif text-[15px] leading-relaxed text-[#9c9079]">
               Nouveautés, entretiens d&apos;auteurs et offres réservées. Une fois par mois, sans excès.
@@ -64,6 +64,9 @@ export async function Footer() {
           <div>
             <div className="mb-4 font-mono text-[10px] uppercase tracking-[2px] text-or">Aide</div>
             <div className="flex flex-col gap-[11px] font-serif text-[15px] text-[#C9BEA8]">
+              <Link href="/libraires" className="transition-colors hover:text-[#F1E7D2]">
+                Espace libraires
+              </Link>
               {COL_AIDE.map((item) => (
                 <span key={item}>{item}</span>
               ))}

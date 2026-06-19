@@ -6,26 +6,41 @@ import React from 'react'
 
 type Rayon = { title: string; slug: string }
 
-export const RayonsNavLinks: React.FC<{ rayons: Rayon[]; activeSlug: string | null }> = ({
-  rayons,
-  activeSlug,
-}) => (
-  <nav className="flex items-center justify-center gap-5 md:gap-[34px] py-3 px-4 bg-secondary border-b border-[#dbccae] font-mono text-[11px] tracking-[1.5px] uppercase overflow-x-auto overflow-y-hidden">
-    {rayons.map((r) => {
+export const RayonsNavLinks: React.FC<{
+  rayons: Rayon[]
+  activeSlug: string | null
+  nouveauteActive?: boolean
+}> = ({ rayons, activeSlug, nouveauteActive = false }) => (
+  <nav className="flex items-center justify-center gap-3.5 md:gap-[18px] py-3 px-4 bg-secondary border-b border-[#dbccae] font-mono text-[13px] font-semibold tracking-[1.5px] uppercase overflow-x-auto overflow-y-hidden">
+    <Link
+      href="/catalogue?nouveaute=1"
+      className={
+        'whitespace-nowrap rounded-full border px-3.5 py-1.5 transition-colors ' +
+        (nouveauteActive
+          ? 'border-bordeaux bg-bordeaux text-[#f7efe0]'
+          : 'border-bordeaux text-bordeaux hover:bg-bordeaux hover:text-[#f7efe0]')
+      }
+    >
+      Nouveautés
+    </Link>
+    <span className="h-4 w-px shrink-0 bg-[#cbb98f]" aria-hidden />
+    {rayons.map((r, i) => {
       const active = r.slug === activeSlug
       return (
-        <Link
-          key={r.slug}
-          href={`/catalogue?rayon=${r.slug}`}
-          className={
-            'whitespace-nowrap pb-[11px] -mb-[13px] border-b-2 transition-colors ' +
-            (active
-              ? 'text-bordeaux border-bordeaux'
-              : 'text-encre-douce border-transparent hover:text-bordeaux')
-          }
-        >
-          {r.title}
-        </Link>
+        <React.Fragment key={r.slug}>
+          {i > 0 && <span className="h-4 w-px shrink-0 bg-[#cbb98f]" aria-hidden />}
+          <Link
+            href={`/catalogue?rayon=${r.slug}`}
+            className={
+              'whitespace-nowrap pb-[11px] -mb-[13px] border-b-2 transition-colors ' +
+              (active
+                ? 'text-bordeaux border-bordeaux'
+                : 'text-encre-douce border-transparent hover:text-bordeaux')
+            }
+          >
+            {r.title}
+          </Link>
+        </React.Fragment>
       )
     })}
   </nav>
@@ -34,6 +49,10 @@ export const RayonsNavLinks: React.FC<{ rayons: Rayon[]; activeSlug: string | nu
 export const RayonsNav: React.FC<{ rayons: Rayon[] }> = ({ rayons }) => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const activeSlug = pathname === '/catalogue' ? searchParams.get('rayon') : null
-  return <RayonsNavLinks rayons={rayons} activeSlug={activeSlug} />
+  const onCatalogue = pathname === '/catalogue'
+  const activeSlug = onCatalogue ? searchParams.get('rayon') : null
+  const nouveauteActive = onCatalogue && searchParams.get('nouveaute') === '1'
+  return (
+    <RayonsNavLinks rayons={rayons} activeSlug={activeSlug} nouveauteActive={nouveauteActive} />
+  )
 }

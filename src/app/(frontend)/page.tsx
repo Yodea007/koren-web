@@ -39,12 +39,12 @@ const Cover: React.FC<{ livre: Livre; sizes: string }> = ({ livre, sizes }) => {
         </div>
       )}
       {livre.nouveaute && (
-        <span className="absolute right-1.5 top-1.5 bg-bordeaux px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-[1.5px] text-[#f7efe0]">
+        <span className="absolute left-2 top-2 rounded-[3px] border border-bordeaux bg-papier/95 px-2 py-[3px] font-mono text-[9px] font-semibold uppercase tracking-[1.5px] text-bordeaux backdrop-blur-[1px]">
           Nouveauté
         </span>
       )}
       {livre.disponible === false && (
-        <span className="absolute right-1.5 top-1.5 bg-nuit px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-[1.5px] text-[#d8cdb8]">
+        <span className="absolute right-2 top-2 rounded-[3px] border border-[#b9ab8e] bg-papier/95 px-2 py-[3px] font-mono text-[9px] font-semibold uppercase tracking-[1.5px] text-encre-douce backdrop-blur-[1px]">
           Indisponible
         </span>
       )}
@@ -103,8 +103,6 @@ export default async function Accueil() {
     )
   ).filter((r) => r.books.length > 0)
 
-  const totalOuvrages = rayons.reduce((s, r) => s + r.count, 0)
-
   // Sélection de la maison (curée en admin ; sinon repli sur les plus récents)
   let selection = (
     await payload.find({
@@ -126,30 +124,19 @@ export default async function Accueil() {
 
       {/* PUBLICATIONS — rails par rayon */}
       <section className="border-y border-ligne bg-white py-12">
-        <div className="mx-auto flex max-w-[1180px] items-baseline justify-between gap-6 px-5 md:px-16">
-          <h2 className="font-display text-[34px] font-medium text-encre">Publications</h2>
-          <span className="text-right font-mono text-[11px] uppercase tracking-[1.5px] text-or">
-            ≈ {totalOuvrages} ouvrages · Koren · Maggid · The Toby Press
-          </span>
-        </div>
-
         {rayons.map((r) => (
-          <div key={r.slug} className="mt-7">
-            <div className="mx-auto flex max-w-[1180px] items-baseline justify-between gap-5 px-5 pb-2.5 md:px-16">
-              <Link href={`/catalogue?rayon=${r.slug}`} className="flex items-baseline gap-3 hover:opacity-70">
-                <h3 className="font-display text-2xl font-semibold text-encre">
-                  {r.title}
-                  <span className="ml-2 text-lg text-bordeaux">›</span>
-                </h3>
-                <span className="font-mono text-[10px] uppercase tracking-[1.5px] text-or">
-                  {r.count} {r.count > 1 ? 'titres' : 'titre'}
-                </span>
-              </Link>
+          <div key={r.slug} className="first:mt-0 mt-7">
+            <div className="mx-auto max-w-[1180px] px-5 pb-3.5 md:px-16">
               <Link
                 href={`/catalogue?rayon=${r.slug}`}
-                className="whitespace-nowrap font-mono text-[11px] tracking-[1px] text-bordeaux"
+                className="group flex items-baseline gap-3 border-b border-bordeaux pb-1.5"
               >
-                Tout voir →
+                <h3 className="font-display text-[28px] font-bold leading-none tracking-[-0.01em] text-encre transition-colors group-hover:text-bordeaux">
+                  {r.title}
+                </h3>
+                <span className="font-mono text-[10px] uppercase tracking-[2px] text-or">
+                  {r.count} {r.count > 1 ? 'titres' : 'titre'}
+                </span>
               </Link>
             </div>
 

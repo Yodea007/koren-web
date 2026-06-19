@@ -31,12 +31,12 @@ export const BookCard: React.FC<{ livre: Livre }> = ({ livre }) => {
           )}
 
           {livre.nouveaute && (
-            <span className="absolute right-2 top-2 bg-bordeaux px-2 py-1 font-mono text-[9px] uppercase tracking-[1.5px] text-[#f7efe0]">
+            <span className="absolute left-2 top-2 rounded-[3px] border border-bordeaux bg-papier/95 px-2 py-1 font-mono text-[9px] font-semibold uppercase tracking-[1.5px] text-bordeaux backdrop-blur-[1px]">
               Nouveauté
             </span>
           )}
           {indisponible && (
-            <span className="absolute right-2 top-2 bg-nuit px-2 py-1 font-mono text-[9px] uppercase tracking-[1.5px] text-[#d8cdb8]">
+            <span className="absolute right-2 top-2 rounded-[3px] border border-[#b9ab8e] bg-papier/95 px-2 py-1 font-mono text-[9px] font-semibold uppercase tracking-[1.5px] text-encre-douce backdrop-blur-[1px]">
               Indisponible
             </span>
           )}
