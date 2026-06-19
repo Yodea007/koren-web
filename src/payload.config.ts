@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { resendAdapter } from '@payloadcms/email-resend'
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
@@ -6,6 +7,7 @@ import { fileURLToPath } from 'url'
 
 import { Auteurs } from './collections/Auteurs'
 import { Categories } from './collections/Categories'
+import { Commandes } from './collections/Commandes'
 import { Livres } from './collections/Livres'
 import { Lots } from './collections/Lots'
 import { Media } from './collections/Media'
@@ -66,8 +68,17 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Posts, Livres, Lots, Auteurs, Media, Categories, Users],
+  collections: [Pages, Posts, Livres, Lots, Commandes, Auteurs, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
+  // Envoi d'e-mail (copie des commandes libraires). Actif seulement si RESEND_API_KEY est défini ;
+  // sinon Payload tourne sans e-mail et la route POST sauvegarde quand même la commande.
+  email: process.env.RESEND_API_KEY
+    ? resendAdapter({
+        apiKey: process.env.RESEND_API_KEY,
+        defaultFromAddress: process.env.EMAIL_FROM || 'onboarding@resend.dev',
+        defaultFromName: process.env.EMAIL_FROM_NAME || 'Koren France',
+      })
+    : undefined,
   globals: [Header, Footer, Hero],
   plugins,
   secret: process.env.PAYLOAD_SECRET,

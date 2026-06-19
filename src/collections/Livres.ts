@@ -182,6 +182,15 @@ export const Livres: CollectionConfig = {
           },
         },
         {
+          name: 'parCarton',
+          type: 'number',
+          label: 'Nombre par carton',
+          min: 0,
+          admin: {
+            description: 'Laisser vide pour utiliser la valeur du livre.',
+          },
+        },
+        {
           name: 'disponible',
           type: 'checkbox',
           defaultValue: true,
@@ -254,6 +263,16 @@ export const Livres: CollectionConfig = {
       admin: {
         position: 'sidebar',
         description: 'En grammes — servira au calcul des frais de port.',
+      },
+    },
+    {
+      name: 'parCarton',
+      type: 'number',
+      label: 'Nombre par carton',
+      min: 0,
+      admin: {
+        position: 'sidebar',
+        description: 'Quantité de cet ouvrage par carton (tarif libraires).',
       },
     },
     {

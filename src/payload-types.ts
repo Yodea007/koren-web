@@ -71,6 +71,7 @@ export interface Config {
     posts: Post;
     livres: Livre;
     lots: Lot;
+    commandes: Commande;
     auteurs: Auteur;
     media: Media;
     categories: Category;
@@ -101,6 +102,7 @@ export interface Config {
     posts: PostsSelect<false> | PostsSelect<true>;
     livres: LivresSelect<false> | LivresSelect<true>;
     lots: LotsSelect<false> | LotsSelect<true>;
+    commandes: CommandesSelect<false> | CommandesSelect<true>;
     auteurs: AuteursSelect<false> | AuteursSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
@@ -863,6 +865,10 @@ export interface Livre {
          * En grammes. Laisser vide pour utiliser le poids du livre.
          */
         poids?: number | null;
+        /**
+         * Laisser vide pour utiliser la valeur du livre.
+         */
+        parCarton?: number | null;
         disponible?: boolean | null;
         id?: string | null;
       }[]
@@ -887,6 +893,10 @@ export interface Livre {
    * En grammes — servira au calcul des frais de port.
    */
   poids?: number | null;
+  /**
+   * Quantité de cet ouvrage par carton (tarif libraires).
+   */
+  parCarton?: number | null;
   couverture?: ('rigide' | 'souple') | null;
   pages?: number | null;
   /**
@@ -990,6 +1000,49 @@ export interface Lot {
    */
   generateSlug?: boolean | null;
   slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Bons de commande validés en ligne par les libraires.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "commandes".
+ */
+export interface Commande {
+  id: number;
+  /**
+   * Généré automatiquement (magasin + date).
+   */
+  reference?: string | null;
+  statut?: ('nouvelle' | 'traitee') | null;
+  libraire: {
+    magasin: string;
+    nom?: string | null;
+    email: string;
+    telephone?: string | null;
+    adresse?: string | null;
+  };
+  remisePourcent?: number | null;
+  lignes?:
+    | {
+        titre?: string | null;
+        isbn?: string | null;
+        prixTTC?: number | null;
+        qte?: number | null;
+        totalLigne?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  totaux?: {
+    nbArticles?: number | null;
+    montantBrut?: number | null;
+    montantNet?: number | null;
+  };
+  /**
+   * Copie générée à la validation.
+   */
+  pdf?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -1274,6 +1327,10 @@ export interface PayloadLockedDocument {
         value: number | Lot;
       } | null)
     | ({
+        relationTo: 'commandes';
+        value: number | Commande;
+      } | null)
+    | ({
         relationTo: 'auteurs';
         value: number | Auteur;
       } | null)
@@ -1538,6 +1595,7 @@ export interface LivresSelect<T extends boolean = true> {
         isbn?: T;
         prix?: T;
         poids?: T;
+        parCarton?: T;
         disponible?: T;
         id?: T;
       };
@@ -1549,6 +1607,7 @@ export interface LivresSelect<T extends boolean = true> {
   disponible?: T;
   dimensions?: T;
   poids?: T;
+  parCarton?: T;
   couverture?: T;
   pages?: T;
   langues?: T;
@@ -1579,6 +1638,44 @@ export interface LotsSelect<T extends boolean = true> {
   disponible?: T;
   generateSlug?: T;
   slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "commandes_select".
+ */
+export interface CommandesSelect<T extends boolean = true> {
+  reference?: T;
+  statut?: T;
+  libraire?:
+    | T
+    | {
+        magasin?: T;
+        nom?: T;
+        email?: T;
+        telephone?: T;
+        adresse?: T;
+      };
+  remisePourcent?: T;
+  lignes?:
+    | T
+    | {
+        titre?: T;
+        isbn?: T;
+        prixTTC?: T;
+        qte?: T;
+        totalLigne?: T;
+        id?: T;
+      };
+  totaux?:
+    | T
+    | {
+        nbArticles?: T;
+        montantBrut?: T;
+        montantNet?: T;
+      };
+  pdf?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2256,6 +2353,7 @@ export interface TaskCreateCollectionExport {
       | 'posts'
       | 'livres'
       | 'lots'
+      | 'commandes'
       | 'auteurs'
       | 'media'
       | 'categories'
