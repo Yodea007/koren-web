@@ -9,15 +9,11 @@ import type { Auteur, Livre } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { BookRail } from '@/components/koren/BookRail'
+import { Hero, type HeroSlide } from '@/components/koren/Hero'
+import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { couverture, formatPrix, labelRayon, ordreRayon } from '@/utilities/koren'
 
 export const dynamic = 'force-dynamic'
-
-const PRESSE = [
-  { citation: 'Une lumière pour notre nation.', source: 'Le Roi Charles III' },
-  { citation: 'La précision textuelle faite référence.', source: 'Tribune Juive' },
-  { citation: 'Des éditions d’une élégance rare.', source: 'Actualité Juive' },
-]
 
 const auteurNoms = (livre: Livre): string =>
   ((livre.auteurs ?? []) as (Auteur | number)[])
@@ -59,18 +55,26 @@ const Cover: React.FC<{ livre: Livre; sizes: string }> = ({ livre, sizes }) => {
 export default async function Accueil() {
   const payload = await getPayload({ config: configPromise })
 
-  // Hero : nouveauté (sinon le plus récent)
-  const nouv = await payload.find({
-    collection: 'livres',
-    depth: 2,
-    limit: 1,
-    sort: '-updatedAt',
-    where: { nouveaute: { equals: true } },
-  })
-  const hero =
-    nouv.docs[0] ??
-    (await payload.find({ collection: 'livres', depth: 2, limit: 1, sort: '-updatedAt' })).docs[0] ??
-    null
+  // Hero (diaporama éditable depuis l'admin)
+  const heroData = await payload.findGlobal({ slug: 'hero', depth: 1 })
+  const heroSlides: HeroSlide[] = []
+  for (const s of heroData?.slides ?? []) {
+    const img = typeof s.image === 'object' && s.image ? s.image : null
+    if (!img?.url) continue
+    const slide: HeroSlide = {
+      src: getMediaUrl(img.url, img.updatedAt),
+      alt: s.titre || img.alt || '',
+    }
+    const lien = s.lien
+    if (lien && typeof lien === 'object' && lien.value && typeof lien.value === 'object') {
+      const slug = (lien.value as { slug?: string }).slug
+      if (slug) slide.href = lien.relationTo === 'livres' ? `/livres/${slug}` : `/posts/${slug}`
+    } else if (s.lienUrl) {
+      slide.href = s.lienUrl
+    }
+    heroSlides.push(slide)
+  }
+  const heroInterval = (heroData?.intervalle ?? 5) * 1000
 
   // Catégories ordonnées
   const { docs: cats } = await payload.find({
@@ -118,61 +122,10 @@ export default async function Accueil() {
 
   return (
     <div>
-      {/* HERO — la nouveauté de la maison */}
-      {hero && (
-        <section className="bg-lin">
-          <div className="mx-auto grid max-w-[1180px] grid-cols-1 items-center gap-9 px-5 py-8 md:grid-cols-[150px_1fr] md:px-16">
-            <Link href={`/livres/${hero.slug}`} className="group block w-[150px] justify-self-center md:justify-self-start">
-              <Cover livre={hero} sizes="150px" />
-            </Link>
-
-            <div>
-              <div className="font-mono text-[10px] uppercase tracking-[2.5px] text-bordeaux">
-                La nouveauté de la maison
-              </div>
-              <h1 className="mt-1.5 font-display text-[33px] font-medium leading-[1.05] text-encre">
-                {hero.titre}
-              </h1>
-              {(auteurNoms(hero) || hero.accroche) && (
-                <div className="mt-1 font-serif text-[15px] italic text-encre-douce">
-                  {auteurNoms(hero)}
-                  {auteurNoms(hero) && hero.accroche ? ' · ' : ''}
-                  {hero.accroche}
-                </div>
-              )}
-              {hero.accroche && (
-                <p className="mt-2.5 max-w-[540px] font-serif text-sm leading-relaxed text-[#4d4234]">
-                  {hero.accroche}
-                </p>
-              )}
-              <div className="mt-[18px] flex flex-wrap items-center gap-[18px]">
-                <span className="font-display text-[26px] font-semibold text-encre">
-                  {formatPrix(hero.prix)}
-                </span>
-                <Link
-                  href={`/livres/${hero.slug}`}
-                  className="rounded-[4px] bg-bordeaux px-[22px] py-[11px] font-mono text-[11px] uppercase tracking-[1.5px] text-[#fbf6ec] transition-colors hover:bg-bordeaux-profond"
-                >
-                  Ajouter au panier
-                </Link>
-                {hero.extraitPdf && typeof hero.extraitPdf === 'object' && hero.extraitPdf.url && (
-                  <a
-                    href={hero.extraitPdf.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-serif text-sm italic text-encre-douce underline underline-offset-[3px]"
-                  >
-                    Feuilleter un extrait
-                  </a>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+      <Hero slides={heroSlides} intervalMs={heroInterval} />
 
       {/* PUBLICATIONS — rails par rayon */}
-      <section className="border-y border-ligne bg-carte py-12">
+      <section className="border-y border-ligne bg-white py-12">
         <div className="mx-auto flex max-w-[1180px] items-baseline justify-between gap-6 px-5 md:px-16">
           <h2 className="font-display text-[34px] font-medium text-encre">Publications</h2>
           <span className="text-right font-mono text-[11px] uppercase tracking-[1.5px] text-or">
@@ -204,7 +157,7 @@ export default async function Accueil() {
               {r.books.map((b) => (
                 <Link key={b.id} href={`/livres/${b.slug}`} className="group w-[148px] flex-none">
                   <Cover livre={b} sizes="148px" />
-                  <div className="font-display text-base font-semibold leading-tight text-encre">
+                  <div className="font-serif text-sm font-medium leading-tight text-encre">
                     {b.titre}
                   </div>
                   <div className="mt-0.5 font-display text-sm font-semibold text-bordeaux">
@@ -259,24 +212,6 @@ export default async function Accueil() {
         </section>
       )}
 
-      {/* PRESSE */}
-      <section className="bg-encre px-5 py-14 text-[#E7DEC9] md:px-16">
-        <div className="mx-auto max-w-[1180px]">
-          <div className="mb-1.5 font-display text-6xl leading-none text-or">“</div>
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
-            {PRESSE.map((p) => (
-              <div key={p.source} className="border-l border-[#4a4030] pl-6">
-                <div className="font-display text-[25px] font-normal italic leading-snug text-[#F1E7D2]">
-                  {p.citation}
-                </div>
-                <div className="mt-3.5 font-mono text-[11px] uppercase tracking-[1.5px] text-or">
-                  — {p.source}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
     </div>
   )
 }

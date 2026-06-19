@@ -14,6 +14,7 @@ import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
+import { Hero } from './Hero/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -67,7 +68,7 @@ export default buildConfig({
   }),
   collections: [Pages, Posts, Livres, Lots, Auteurs, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, Hero],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

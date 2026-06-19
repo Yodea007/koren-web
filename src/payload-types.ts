@@ -125,10 +125,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    hero: Hero;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    hero: HeroSelect<false> | HeroSelect<true>;
   };
   locale: null;
   widgets: {
@@ -2122,6 +2124,50 @@ export interface Footer {
   createdAt?: string | null;
 }
 /**
+ * Le bandeau en haut de la page d’accueil (diaporama).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero".
+ */
+export interface Hero {
+  id: number;
+  /**
+   * Durée d’affichage de chaque diapositive avant transition.
+   */
+  intervalle?: number | null;
+  /**
+   * Idéalement des images en bandeau (format large, ~2:1).
+   */
+  slides?:
+    | {
+        image: number | Media;
+        /**
+         * Texte alternatif / légende (accessibilité).
+         */
+        titre?: string | null;
+        /**
+         * Fiche livre ou article vers lequel pointe la diapositive (clic).
+         */
+        lien?:
+          | ({
+              relationTo: 'livres';
+              value: number | Livre;
+            } | null)
+          | ({
+              relationTo: 'posts';
+              value: number | Post;
+            } | null);
+        /**
+         * Utilisée si aucun document n’est choisi ci-dessus. Ex. /catalogue
+         */
+        lienUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -2161,6 +2207,25 @@ export interface FooterSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero_select".
+ */
+export interface HeroSelect<T extends boolean = true> {
+  intervalle?: T;
+  slides?:
+    | T
+    | {
+        image?: T;
+        titre?: T;
+        lien?: T;
+        lienUrl?: T;
         id?: T;
       };
   updatedAt?: T;
