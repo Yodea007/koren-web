@@ -1,4 +1,5 @@
 import configPromise from '@payload-config'
+import { after } from 'next/server'
 import { getPayload } from 'payload'
 
 import type { Article } from '@/utilities/tarif'
@@ -7,6 +8,7 @@ import { articlesDeLivre } from '@/utilities/tarif'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
+export const maxDuration = 60
 
 const round2 = (n: number) => Math.round(n * 100) / 100
 
@@ -88,58 +90,62 @@ export async function POST(req: Request): Promise<Response> {
   // 2) Générer le PDF rempli
   const pdf = await renderCommandePdf({ reference, libraire, remisePourcent, lignes, totaux }, dateStr)
 
-  // 3) Joindre le PDF à la fiche (best-effort)
-  try {
-    const media = await payload.create({
-      collection: 'media',
-      data: { alt: `Bon de commande ${reference}` },
-      file: {
-        data: pdf,
-        mimetype: 'application/pdf',
-        name: `bon-commande-${commande.id}.pdf`,
-        size: pdf.length,
-      },
-    })
-    await payload.update({ collection: 'commandes', id: commande.id, data: { pdf: media.id } })
-  } catch (err) {
-    payload.logger.error({ err, msg: 'Bon de commande : échec attachement PDF' })
-  }
-
-  // 4) Envoyer la copie par e-mail (best-effort, seulement si le SMTP est configuré)
-  if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+  // 3) Tâches lentes APRÈS la réponse (after) : le navigateur n'attend pas l'upload ni le SMTP,
+  //    ce qui évite tout timeout (504). La commande est déjà enregistrée à ce stade.
+  after(async () => {
+    // 3a) Joindre le PDF à la fiche (best-effort)
     try {
-      const diffuseur = process.env.COMMANDES_EMAIL || 'e.alhadef@gmail.com'
-      // Envoi aux DEUX : le libraire (sa confirmation) ET Koren (la copie).
-      const destinataires = [...new Set([diffuseur, libraire.email].filter(Boolean))]
-      await payload.sendEmail({
-        to: destinataires,
-        replyTo: diffuseur,
-        subject: `Commande Koren France — ${libraire.magasin}`,
-        text: [
-          `Bonjour,`,
-          ``,
-          `Voici le récapitulatif de la commande (PDF en pièce jointe).`,
-          ``,
-          `Magasin : ${libraire.magasin}`,
-          libraire.nom ? `Contact : ${libraire.nom}` : null,
-          `E-mail : ${libraire.email}`,
-          libraire.telephone ? `Téléphone : ${libraire.telephone}` : null,
-          ``,
-          `Articles : ${nbArticles} · Brut : ${montantBrut} € · Remise : ${remisePourcent} % · Net : ${montantNet} €`,
-          `Référence : ${reference}`,
-          ``,
-          `— Koren France (copie : libraire + diffuseur)`,
-        ]
-          .filter(Boolean)
-          .join('\n'),
-        attachments: [{ filename: `bon-commande-${reference}.pdf`, content: pdf }],
+      const media = await payload.create({
+        collection: 'media',
+        data: { alt: `Bon de commande ${reference}` },
+        file: {
+          data: pdf,
+          mimetype: 'application/pdf',
+          name: `bon-commande-${commande.id}.pdf`,
+          size: pdf.length,
+        },
       })
+      await payload.update({ collection: 'commandes', id: commande.id, data: { pdf: media.id } })
     } catch (err) {
-      payload.logger.error({ err, msg: 'Bon de commande : échec envoi e-mail' })
+      payload.logger.error({ err, msg: 'Bon de commande : échec attachement PDF' })
     }
-  }
 
-  // 5) Renvoyer le PDF pour téléchargement immédiat
+    // 3b) Envoyer la copie par e-mail (best-effort, seulement si le SMTP est configuré)
+    if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+      try {
+        const diffuseur = process.env.COMMANDES_EMAIL || 'e.alhadef@gmail.com'
+        // Envoi aux DEUX : le libraire (sa confirmation) ET Koren (la copie).
+        const destinataires = [...new Set([diffuseur, libraire.email].filter(Boolean))]
+        await payload.sendEmail({
+          to: destinataires,
+          replyTo: diffuseur,
+          subject: `Commande Koren France — ${libraire.magasin}`,
+          text: [
+            `Bonjour,`,
+            ``,
+            `Voici le récapitulatif de la commande (PDF en pièce jointe).`,
+            ``,
+            `Magasin : ${libraire.magasin}`,
+            libraire.nom ? `Contact : ${libraire.nom}` : null,
+            `E-mail : ${libraire.email}`,
+            libraire.telephone ? `Téléphone : ${libraire.telephone}` : null,
+            ``,
+            `Articles : ${nbArticles} · Brut : ${montantBrut} € · Remise : ${remisePourcent} % · Net : ${montantNet} €`,
+            `Référence : ${reference}`,
+            ``,
+            `— Koren France (copie : libraire + diffuseur)`,
+          ]
+            .filter(Boolean)
+            .join('\n'),
+          attachments: [{ filename: `bon-commande-${reference}.pdf`, content: pdf }],
+        })
+      } catch (err) {
+        payload.logger.error({ err, msg: 'Bon de commande : échec envoi e-mail' })
+      }
+    }
+  })
+
+  // 4) Renvoyer le PDF tout de suite (téléchargement immédiat)
   return new Response(new Uint8Array(pdf), {
     headers: {
       'Content-Type': 'application/pdf',
