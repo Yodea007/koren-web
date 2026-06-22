@@ -48,7 +48,7 @@ export const Newsletter: React.FC = () => {
       <button
         type="submit"
         disabled={status === 'loading'}
-        className="rounded-r-[4px] bg-or px-5 font-mono text-[11px] uppercase tracking-[1px] text-[#211B15] transition-opacity hover:opacity-90 disabled:opacity-60"
+        className="rounded-r-[4px] bg-or-clair px-5 font-mono text-[11px] uppercase tracking-[1px] text-[#211B15] transition-opacity hover:opacity-90 disabled:opacity-60"
       >
         {status === 'loading' ? '…' : 'OK'}
       </button>

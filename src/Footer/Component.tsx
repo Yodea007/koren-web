@@ -74,7 +74,7 @@ export async function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 pt-[22px] font-mono text-[10.5px] uppercase tracking-[1px] text-[#6e644f] md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-2 pt-[22px] font-mono text-[10.5px] uppercase tracking-[1px] text-encre-pale md:flex-row md:items-center md:justify-between">
           <span>© 2026 Koren France · Koren Publishers Jerusalem</span>
           <span>Koren · Maggid · The Toby Press</span>
         </div>
