@@ -108,11 +108,18 @@ export async function POST(req: Request): Promise<Response> {
   // 4) Envoyer la copie par e-mail (best-effort, seulement si le SMTP est configuré)
   if (process.env.SMTP_USER && process.env.SMTP_PASS) {
     try {
+      const diffuseur = process.env.COMMANDES_EMAIL || 'e.alhadef@gmail.com'
+      // Envoi aux DEUX : le libraire (sa confirmation) ET Koren (la copie).
+      const destinataires = [...new Set([diffuseur, libraire.email].filter(Boolean))]
       await payload.sendEmail({
-        to: process.env.COMMANDES_EMAIL || 'l.alhadef@gmail.com',
-        replyTo: libraire.email,
-        subject: `Nouvelle commande libraire — ${libraire.magasin}`,
+        to: destinataires,
+        replyTo: diffuseur,
+        subject: `Commande Koren France — ${libraire.magasin}`,
         text: [
+          `Bonjour,`,
+          ``,
+          `Voici le récapitulatif de la commande (PDF en pièce jointe).`,
+          ``,
           `Magasin : ${libraire.magasin}`,
           libraire.nom ? `Contact : ${libraire.nom}` : null,
           `E-mail : ${libraire.email}`,
@@ -120,6 +127,8 @@ export async function POST(req: Request): Promise<Response> {
           ``,
           `Articles : ${nbArticles} · Brut : ${montantBrut} € · Remise : ${remisePourcent} % · Net : ${montantNet} €`,
           `Référence : ${reference}`,
+          ``,
+          `— Koren France (copie : libraire + diffuseur)`,
         ]
           .filter(Boolean)
           .join('\n'),
