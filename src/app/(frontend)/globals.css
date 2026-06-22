@@ -57,7 +57,8 @@
   --color-encre-pale: #9a8e78;
   --color-bordeaux: #93142e;
   --color-bordeaux-profond: #6e1726;
-  --color-or: #9c7b3f;
+  --color-or: #806230; /* doré foncé — petits textes sur fond clair (AA ≥ 4,5:1) */
+  --color-or-clair: #c9a96a; /* doré clair — petits textes sur fond sombre (footer) */
   --color-ligne: #e4d9c4;
   --color-nuit: #211b15;
 

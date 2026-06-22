@@ -36,7 +36,7 @@ export async function Footer() {
 
           {/* Les rayons */}
           <div>
-            <div className="mb-4 font-mono text-[10px] uppercase tracking-[2px] text-or">Les rayons</div>
+            <div className="mb-4 font-mono text-[10px] uppercase tracking-[2px] text-or-clair">Les rayons</div>
             <div className="flex flex-col gap-[11px] font-serif text-[15px]">
               {rayons.map((r) => (
                 <Link
@@ -52,7 +52,7 @@ export async function Footer() {
 
           {/* La maison */}
           <div>
-            <div className="mb-4 font-mono text-[10px] uppercase tracking-[2px] text-or">La maison</div>
+            <div className="mb-4 font-mono text-[10px] uppercase tracking-[2px] text-or-clair">La maison</div>
             <div className="flex flex-col gap-[11px] font-serif text-[15px] text-[#C9BEA8]">
               {COL_MAISON.map((item) => (
                 <span key={item}>{item}</span>
@@ -62,7 +62,7 @@ export async function Footer() {
 
           {/* Aide */}
           <div>
-            <div className="mb-4 font-mono text-[10px] uppercase tracking-[2px] text-or">Aide</div>
+            <div className="mb-4 font-mono text-[10px] uppercase tracking-[2px] text-or-clair">Aide</div>
             <div className="flex flex-col gap-[11px] font-serif text-[15px] text-[#C9BEA8]">
               <Link href="/libraires" className="transition-colors hover:text-[#F1E7D2]">
                 Espace libraires
