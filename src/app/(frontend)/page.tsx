@@ -13,7 +13,9 @@ import { Hero, type HeroSlide } from '@/components/koren/Hero'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { couverture, formatPrix, labelRayon, ordreRayon } from '@/utilities/koren'
 
-export const dynamic = 'force-dynamic'
+// Accueil mis en cache et régénéré à la demande (hooks admin sur livres/catégories/hero).
+// Le revalidate horaire n'est qu'un filet de sécurité.
+export const revalidate = 3600
 
 const auteurNoms = (livre: Livre): string =>
   ((livre.auteurs ?? []) as (Auteur | number)[])

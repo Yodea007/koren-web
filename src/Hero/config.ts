@@ -1,5 +1,7 @@
 import type { GlobalConfig } from 'payload'
 
+import { revalidateAccueilGlobal } from '../hooks/revalidateAccueil'
+
 export const Hero: GlobalConfig = {
   slug: 'hero',
   label: 'Hero (accueil)',
@@ -8,6 +10,9 @@ export const Hero: GlobalConfig = {
   },
   admin: {
     description: 'Le bandeau en haut de la page d’accueil (diaporama).',
+  },
+  hooks: {
+    afterChange: [revalidateAccueilGlobal],
   },
   fields: [
     {

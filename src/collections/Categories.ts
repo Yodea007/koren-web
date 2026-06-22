@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from 'payload'
+import { revalidateAccueil, revalidateAccueilDelete } from '../hooks/revalidateAccueil'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -14,6 +15,10 @@ export const Categories: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+  },
+  hooks: {
+    afterChange: [revalidateAccueil],
+    afterDelete: [revalidateAccueilDelete],
   },
   fields: [
     {

@@ -13,6 +13,7 @@ import {
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from 'payload'
+import { revalidateLivre, revalidateLivreDelete } from '../hooks/revalidateLivre'
 
 // Options partagées entre le livre et ses déclinaisons
 export const optionsLangues = [
@@ -75,6 +76,10 @@ export const Livres: CollectionConfig = {
   admin: {
     useAsTitle: 'titre',
     defaultColumns: ['titre', 'prix', 'disponible', 'nouveaute', 'updatedAt'],
+  },
+  hooks: {
+    afterChange: [revalidateLivre],
+    afterDelete: [revalidateLivreDelete],
   },
   fields: [
     {
