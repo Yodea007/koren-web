@@ -45,6 +45,17 @@ export const Media: CollectionConfig = {
     staticDir: path.resolve(dirname, '../../editeur-livres/media'),
     adminThumbnail: 'thumbnail',
     focalPoint: true,
+    // Compression auto à l'upload : on borne l'original à 2000 px de large
+    // (sans agrandir les images plus petites) et on le convertit en WebP.
+    // Les fichiers non-image (PDF) ne sont pas touchés par sharp.
+    resizeOptions: {
+      width: 2000,
+      withoutEnlargement: true,
+    },
+    formatOptions: {
+      format: 'webp',
+      options: { quality: 80 },
+    },
     imageSizes: [
       {
         name: 'thumbnail',
