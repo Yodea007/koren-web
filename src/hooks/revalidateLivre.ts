@@ -13,11 +13,12 @@ export const revalidateLivre: CollectionAfterChangeHook<Livre> = ({
   if (!context.disableRevalidate) {
     revalidatePath('/')
     revalidateTag('catalogue', 'max')
+    revalidateTag('livres-sitemap', 'max')
     if (doc?.slug) revalidatePath(`/livres/${doc.slug}`)
     if (previousDoc?.slug && previousDoc.slug !== doc?.slug) {
       revalidatePath(`/livres/${previousDoc.slug}`)
     }
-    payload.logger.info(`Revalidation accueil + fiche livre + catalogue (${doc?.slug ?? doc?.id})`)
+    payload.logger.info(`Revalidation accueil + fiche livre + catalogue + sitemap (${doc?.slug ?? doc?.id})`)
   }
   return doc
 }
@@ -29,6 +30,7 @@ export const revalidateLivreDelete: CollectionAfterDeleteHook<Livre> = ({
   if (!context.disableRevalidate) {
     revalidatePath('/')
     revalidateTag('catalogue', 'max')
+    revalidateTag('livres-sitemap', 'max')
     if (doc?.slug) revalidatePath(`/livres/${doc.slug}`)
   }
   return doc
