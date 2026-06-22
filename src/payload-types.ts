@@ -878,6 +878,17 @@ export interface Livre {
    */
   images?: (number | Media)[] | null;
   auteurs?: (number | Auteur)[] | null;
+  extraitPdf?: (number | null) | Media;
+  communiquePresse?: (number | null) | Media;
+  youtube?: string | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
   categories?: (number | Category)[] | null;
   /**
    * Mis en avant en hero sur la page d’accueil.
@@ -911,9 +922,6 @@ export interface Livre {
    * Ex. « 17 vol. », « coffret 4 livres »
    */
   conditionnement?: string | null;
-  extraitPdf?: (number | null) | Media;
-  communiquePresse?: (number | null) | Media;
-  youtube?: string | null;
   lots?: {
     docs?: (number | Lot)[];
     hasNextPage?: boolean;
@@ -923,14 +931,6 @@ export interface Livre {
    * Identifiant d’origine sur Shopify (importé).
    */
   shopifyHandle?: string | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
-  };
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -1609,6 +1609,16 @@ export interface LivresSelect<T extends boolean = true> {
       };
   images?: T;
   auteurs?: T;
+  extraitPdf?: T;
+  communiquePresse?: T;
+  youtube?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
   categories?: T;
   nouveaute?: T;
   selection?: T;
@@ -1621,18 +1631,8 @@ export interface LivresSelect<T extends boolean = true> {
   langues?: T;
   rite?: T;
   conditionnement?: T;
-  extraitPdf?: T;
-  communiquePresse?: T;
-  youtube?: T;
   lots?: T;
   shopifyHandle?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        image?: T;
-        description?: T;
-      };
   generateSlug?: T;
   slug?: T;
   updatedAt?: T;
