@@ -82,7 +82,7 @@ export const Livres: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'titre',
-    defaultColumns: ['titre', 'prix', 'disponible', 'nouveaute', 'seoStatut', 'updatedAt'],
+    defaultColumns: ['titre', 'etatFiche', 'seoStatut', 'prix', 'disponible', 'updatedAt'],
   },
   hooks: {
     afterChange: [revalidateLivre],
@@ -398,6 +398,17 @@ export const Livres: CollectionConfig = {
         readOnly: true,
         position: 'sidebar',
         description: 'Identifiant d’origine sur Shopify (importé).',
+      },
+    },
+    {
+      // Colonne « État fiche » : complétude globale (champs obligatoires + SEO).
+      name: 'etatFiche',
+      type: 'ui',
+      label: 'État fiche',
+      admin: {
+        components: {
+          Cell: '@/components/admin/FicheStatusCell',
+        },
       },
     },
     {
