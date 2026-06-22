@@ -55,7 +55,9 @@ export const BookSwiper: React.FC<{ children: React.ReactNode }> = ({ children }
         className="!pt-1.5 !pb-9"
       >
         {items.map((child, i) => (
-          <SwiperSlide key={i} className="!w-[170px]">
+          // mr-5 (= 20px, valeur de spaceBetween) réservé dès le SSR : sans lui,
+          // Swiper ajoute la marge à l'hydratation et décale les cartes → CLS.
+          <SwiperSlide key={i} className="!mr-5 !w-[170px]">
             {child}
           </SwiperSlide>
         ))}
