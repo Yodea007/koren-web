@@ -13,9 +13,9 @@ import { Hero, type HeroSlide } from '@/components/koren/Hero'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { couverture, formatPrix, labelRayon, ordreRayon } from '@/utilities/koren'
 
-// Accueil mis en cache et régénéré à la demande (hooks admin sur livres/catégories/hero).
-// Le revalidate horaire n'est qu'un filet de sécurité.
-export const revalidate = 3600
+// Accueil mis en cache, régénéré à la demande (hooks admin sur livres/catégories/hero)
+// + filet quotidien via le cron Vercel de minuit (/api/revalidate). Pas de timer glissant.
+export const revalidate = false
 
 const auteurNoms = (livre: Livre): string =>
   ((livre.auteurs ?? []) as (Auteur | number)[])
