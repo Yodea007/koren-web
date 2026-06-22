@@ -36,11 +36,11 @@ export async function Header() {
       <div className="bg-bordeaux flex items-center justify-between gap-6 px-5 md:px-11 py-2">
         <Link href="/" className="shrink-0">
           <img
-            src="/koren-logo.png"
+            src="/koren-logo.svg"
             alt="Koren France"
-            width={359}
-            height={120}
-            className="h-14 w-auto block brightness-0 invert"
+            width={922}
+            height={296}
+            className="h-14 w-auto block"
           />
         </Link>
         <div className="flex items-center gap-4 md:gap-6 text-[#f3e7cf]">
