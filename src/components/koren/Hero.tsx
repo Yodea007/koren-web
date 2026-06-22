@@ -61,11 +61,15 @@ export const Hero: React.FC<{ slides: HeroSlide[]; intervalMs?: number }> = ({
               aria-label={`Visuel ${i + 1}`}
               aria-current={i === index}
               onClick={() => setIndex(i)}
-              className={
-                'h-2 w-2 rounded-full transition-colors ' +
-                (i === index ? 'bg-white' : 'bg-white/50 hover:bg-white/80')
-              }
-            />
+              className="group flex h-6 w-6 items-center justify-center"
+            >
+              <span
+                className={
+                  'h-2 w-2 rounded-full transition-colors ' +
+                  (i === index ? 'bg-white' : 'bg-white/50 group-hover:bg-white/80')
+                }
+              />
+            </button>
           ))}
         </div>
       )}

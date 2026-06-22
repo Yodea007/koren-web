@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+</style>
+</helmet>
+
+<div style="min-height:100vh; background:#F4ECDB; padding:64px 28px 110px; font-family:'Source Serif 4',Georgia,serif; color:#2A231C;">
+
+  <!-- header -->
+  <div style="max-width:1120px; margin:0 auto 8px; display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:#9C7B3F;">Koren France · Direction 01 Parchemin</div>
+      <h1 style="font-family:'Cormorant',serif; font-weight:500; font-size:60px; line-height:1; margin:12px 0 0; letter-spacing:-1px; color:#2A231C;">Design tokens</h1>
+    </div>
+    <img src="assets/koren-logo-burgundy.png" alt="Koren" style="height:44px; width:auto;">
+  </div>
+  <div style="max-width:1120px; margin:0 auto 48px;">
+    <p style="font-family:'Source Serif 4',serif; font-size:16px; line-height:1.6; color:#6E6153; max-width:620px;">Le système exact de la maquette retenue : palette, échelle typographique, espacements et rayons de bordure. La couverture est le héros ; tout le reste s'efface — beaucoup de papier, une seule couleur de marque, deux familles de caractères.</p>
+  </div>
+
+  <!-- =================== PALETTE =================== -->
+  <div style="max-width:1120px; margin:0 auto 22px; display:flex; align-items:baseline; gap:16px;">
+    <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:2px; color:#9C7B3F;">01</span>
+    <h2 style="font-family:'Cormorant',serif; font-weight:500; font-size:34px; color:#2A231C; margin:0; white-space:nowrap; flex-shrink:0;">Palette</h2>
+    <span style="flex:1; height:1px; background:#E0D4BC;"></span>
+  </div>
+
+  <div style="max-width:1120px; margin:0 auto 24px;">
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:2px; color:#9a8e78; text-transform:uppercase; margin-bottom:12px;">Surfaces &amp; encre</div>
+    <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:14px;">
+      <sc-for list="{{ neutrals }}" as="c" hint-placeholder-count="6">
+        <div style="background:#FBF6EC; border:1px solid #E4D9C4; border-radius:8px; overflow:hidden;">
+          <div style="height:84px; background:{{ c.hex }}; border-bottom:1px solid rgba(0,0,0,.06);"></div>
+          <div style="padding:12px 13px 14px;">
+            <div style="font-family:'Cormorant',serif; font-weight:600; font-size:17px; color:#2A231C; line-height:1.1;">{{ c.name }}</div>
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#93142E; margin-top:4px;">{{ c.hex }}</div>
+            <div style="font-family:'Source Serif 4',serif; font-size:12px; color:#9a8e78; margin-top:5px; line-height:1.35;">{{ c.role }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="max-width:1120px; margin:0 auto 24px;">
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:2px; color:#9a8e78; text-transform:uppercase; margin-bottom:12px;">Marque &amp; accents</div>
+    <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:14px;">
+      <sc-for list="{{ brand }}" as="c" hint-placeholder-count="4">
+        <div style="background:#FBF6EC; border:1px solid #E4D9C4; border-radius:8px; overflow:hidden;">
+          <div style="height:84px; background:{{ c.hex }};"></div>
+          <div style="padding:12px 13px 14px;">
+            <div style="font-family:'Cormorant',serif; font-weight:600; font-size:17px; color:#2A231C; line-height:1.1;">{{ c.name }}</div>
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#93142E; margin-top:4px;">{{ c.hex }}</div>
+            <div style="font-family:'Source Serif 4',serif; font-size:12px; color:#9a8e78; margin-top:5px; line-height:1.35;">{{ c.role }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="max-width:1120px; margin:0 auto 56px;">
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:2px; color:#9a8e78; text-transform:uppercase; margin-bottom:12px;">Fonds de couverture · réservés aux livres, jamais à l'interface</div>
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <sc-for list="{{ covers }}" as="c" hint-placeholder-count="6">
+        <div style="display:flex; align-items:center; gap:9px; background:#FBF6EC; border:1px solid #E4D9C4; border-radius:20px; padding:6px 14px 6px 6px;">
+          <span style="width:26px; height:26px; border-radius:50%; background:{{ c.hex }};"></span>
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#6E6153;">{{ c.hex }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- =================== TYPOGRAPHIE =================== -->
+  <div style="max-width:1120px; margin:0 auto 22px; display:flex; align-items:baseline; gap:16px;">
+    <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:2px; color:#9C7B3F;">02</span>
+    <h2 style="font-family:'Cormorant',serif; font-weight:500; font-size:34px; color:#2A231C; margin:0; white-space:nowrap; flex-shrink:0;">Typographie</h2>
+    <span style="flex:1; height:1px; background:#E0D4BC;"></span>
+  </div>
+
+  <div style="max-width:1120px; margin:0 auto 22px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px;">
+    <div style="background:#FBF6EC; border:1px solid #E4D9C4; border-radius:8px; padding:22px;">
+      <div style="font-family:'Cormorant',serif; font-weight:500; font-size:40px; line-height:1; color:#2A231C;">Cormorant</div>
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1px; color:#9a8e78; margin-top:10px;">DISPLAY · TITRES · PRIX</div>
+      <div style="font-family:'Source Serif 4',serif; font-size:13px; line-height:1.5; color:#6E6153; margin-top:8px;">Contraste élevé, lignée Garamond — restitue l'Arno <em>display</em> des couvertures.</div>
+    </div>
+    <div style="background:#FBF6EC; border:1px solid #E4D9C4; border-radius:8px; padding:22px;">
+      <div style="font-family:'Source Serif 4',serif; font-weight:600; font-size:34px; line-height:1; color:#2A231C;">Source Serif 4</div>
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1px; color:#9a8e78; margin-top:10px;">TEXTE COURANT</div>
+      <div style="font-family:'Source Serif 4',serif; font-size:13px; line-height:1.5; color:#6E6153; margin-top:8px;">Du même dessinateur que l'Arno (R. Slimbach), calibrée pour l'écran.</div>
+    </div>
+    <div style="background:#FBF6EC; border:1px solid #E4D9C4; border-radius:8px; padding:22px;">
+      <div style="font-family:'IBM Plex Mono',monospace; font-weight:500; font-size:30px; line-height:1; color:#2A231C;">Plex Mono</div>
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1px; color:#9a8e78; margin-top:10px;">LABELS · MÉTA · ISBN</div>
+      <div style="font-family:'Source Serif 4',serif; font-size:13px; line-height:1.5; color:#6E6153; margin-top:8px;">Eyebrows, prix techniques, ISBN, langues — le registre « catalogue raisonné ».</div>
+    </div>
+  </div>
+
+  <div style="max-width:1120px; margin:0 auto 56px; background:#FBF6EC; border:1px solid #E4D9C4; border-radius:8px; overflow:hidden;">
+    <sc-for list="{{ scale }}" as="t" hint-placeholder-count="7">
+      <div style="display:flex; align-items:baseline; gap:24px; padding:18px 26px; border-bottom:1px solid #EFE7D6;">
+        <div style="width:118px; flex:none;">
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1px; color:#9a8e78; text-transform:uppercase;">{{ t.label }}</div>
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#93142E; margin-top:3px;">{{ t.spec }}</div>
+        </div>
+        <div style="flex:1; min-width:0; color:#2A231C; overflow:hidden;">{{ t.sample }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- =================== ESPACEMENTS =================== -->
+  <div style="max-width:1120px; margin:0 auto 22px; display:flex; align-items:baseline; gap:16px;">
+    <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:2px; color:#9C7B3F;">03</span>
+    <h2 style="font-family:'Cormorant',serif; font-weight:500; font-size:34px; color:#2A231C; margin:0; white-space:nowrap; flex-shrink:0;">Espacements</h2>
+    <span style="flex:1; height:1px; background:#E0D4BC;"></span>
+  </div>
+
+  <div style="max-width:1120px; margin:0 auto 18px; background:#FBF6EC; border:1px solid #E4D9C4; border-radius:8px; padding:26px;">
+    <div style="font-family:'Source Serif 4',serif; font-size:14px; color:#6E6153; margin-bottom:18px;">Échelle de 4 px. Rythme vertical calme — sections desktop à 56–64 px, mobile à 22 px.</div>
+    <div style="display:flex; align-items:flex-end; gap:18px; flex-wrap:wrap;">
+      <sc-for list="{{ spacing }}" as="s" hint-placeholder-count="9">
+        <div style="text-align:center;">
+          <div style="width:{{ s.px }}; height:{{ s.px }}; background:#93142E; border-radius:2px; opacity:.9;"></div>
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#6E6153; margin-top:8px;">{{ s.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="max-width:1120px; margin:0 auto 56px; display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+    <div style="background:#FBF6EC; border:1px solid #E4D9C4; border-radius:8px; padding:22px;">
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1.5px; color:#9a8e78; text-transform:uppercase;">Largeurs &amp; gouttières</div>
+      <div style="font-family:'Source Serif 4',serif; font-size:15px; line-height:1.7; color:#3f372d; margin-top:10px;">Conteneur max <strong>1180 px</strong> · gouttière desktop <strong>34 px</strong> · grille catalogue <strong>4 colonnes</strong> (desktop) / <strong>2</strong> (mobile) · mobile <strong>390 px</strong>, marges <strong>22 px</strong>.</div>
+    </div>
+    <div style="background:#FBF6EC; border:1px solid #E4D9C4; border-radius:8px; padding:22px;">
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1.5px; color:#9a8e78; text-transform:uppercase;">Cible tactile</div>
+      <div style="font-family:'Source Serif 4',serif; font-size:15px; line-height:1.7; color:#3f372d; margin-top:10px;">Boutons d'achat mobile <strong>≥ 48 px</strong> de haut, barre fixe en bas d'écran. Pastilles de déclinaison <strong>30–32 px</strong>.</div>
+    </div>
+  </div>
+
+  <!-- =================== RAYONS =================== -->
+  <div style="max-width:1120px; margin:0 auto 22px; display:flex; align-items:baseline; gap:16px;">
+    <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:2px; color:#9C7B3F;">04</span>
+    <h2 style="font-family:'Cormorant',serif; font-weight:500; font-size:34px; color:#2A231C; margin:0; white-space:nowrap; flex-shrink:0;">Rayons de bordure</h2>
+    <span style="flex:1; height:1px; background:#E0D4BC;"></span>
+  </div>
+
+  <div style="max-width:1120px; margin:0 auto;">
+    <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:14px;">
+      <sc-for list="{{ radii }}" as="r" hint-placeholder-count="6">
+        <div style="background:#FBF6EC; border:1px solid #E4D9C4; border-radius:8px; padding:18px; text-align:center;">
+          <div style="height:60px; background:#EFE3CB; border:1px solid #ddd0b7; border-radius:{{ r.px }}; margin:0 auto;"></div>
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#93142E; margin-top:12px;">{{ r.px }}</div>
+          <div style="font-family:'Source Serif 4',serif; font-size:12px; color:#9a8e78; margin-top:4px; line-height:1.35;">{{ r.role }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const neutrals = [
+      { name: "Papier", hex: "#F4ECDB", role: "Fond de page" },
+      { name: "Carte", hex: "#FBF6EC", role: "Surfaces, cartes" },
+      { name: "Lin", hex: "#F2EADB", role: "Fond alterné" },
+      { name: "Encre", hex: "#2A231C", role: "Texte principal, pied" },
+      { name: "Encre douce", hex: "#6E6153", role: "Texte secondaire" },
+      { name: "Encre pâle", hex: "#9A8E78", role: "Méta, légendes" },
+    ];
+    const brand = [
+      { name: "Bordeaux Koren", hex: "#93142E", role: "Marque, prix, boutons" },
+      { name: "Bordeaux profond", hex: "#6E1726", role: "Reliures, survol" },
+      { name: "Or sourd", hex: "#9C7B3F", role: "Eyebrows, accents" },
+      { name: "Ligne", hex: "#E4D9C4", role: "Filets, séparateurs" },
+      { name: "Nuit", hex: "#211B15", role: "Pied de page, presse" },
+    ];
+    const covers = [
+      { hex: "#6E1726" }, { hex: "#1E2A44" }, { hex: "#243A2E" },
+      { hex: "#33223A" }, { hex: "#5A1E2A" }, { hex: "#1C3438" }, { hex: "#3A2A18" },
+    ];
+    const R = React;
+    const mk = (style, txt) => R.createElement("div", { style }, txt);
+    const scale = [
+      { label: "Display", spec: "Cormorant 62", sample: mk({ fontFamily: "'Cormorant',serif", fontWeight: 500, fontSize: "44px", lineHeight: 1, letterSpacing: "-1px", whiteSpace: "nowrap" }, "Les Voix de l'Alliance") },
+      { label: "Titre H2", spec: "Cormorant 34", sample: mk({ fontFamily: "'Cormorant',serif", fontWeight: 500, fontSize: "30px", lineHeight: 1, whiteSpace: "nowrap" }, "La sélection de la maison") },
+      { label: "Titre carte", spec: "Cormorant 600 · 21", sample: mk({ fontFamily: "'Cormorant',serif", fontWeight: 600, fontSize: "21px", whiteSpace: "nowrap" }, "Le Siddour Koren") },
+      { label: "Corps", spec: "Source Serif · 17/1.7", sample: mk({ fontFamily: "'Source Serif 4',serif", fontSize: "16px", lineHeight: 1.6, color: "#3f372d" }, "Une vie de réflexion sur la liberté, la foi et la responsabilité.") },
+      { label: "Corps petit", spec: "Source Serif · 14", sample: mk({ fontFamily: "'Source Serif 4',serif", fontSize: "14px", color: "#6E6153" }, "Siddour et Mahzor pour toute l'année, tous rites.") },
+      { label: "Eyebrow", spec: "Plex Mono · 11 · +2.5", sample: mk({ fontFamily: "'IBM Plex Mono',monospace", fontSize: "11px", letterSpacing: "2.5px", textTransform: "uppercase", color: "#9C7B3F" }, "La nouveauté de la maison") },
+      { label: "Méta / ISBN", spec: "Plex Mono · 11", sample: mk({ fontFamily: "'IBM Plex Mono',monospace", fontSize: "11px", letterSpacing: "1px", color: "#6E6153" }, "HE/FR · 978-1-59264-667-8 · 29 €") },
+    ];
+    const spacing = [
+      { label: "4", px: "4px" }, { label: "8", px: "8px" }, { label: "12", px: "12px" },
+      { label: "16", px: "16px" }, { label: "24", px: "24px" }, { label: "32", px: "32px" },
+      { label: "48", px: "48px" }, { label: "64", px: "64px" },
+    ];
+    const radii = [
+      { px: "2px", role: "Couvertures" },
+      { px: "3px", role: "Chips, tags" },
+      { px: "5px", role: "Boutons, champs" },
+      { px: "6px", role: "Cartes, filtres" },
+      { px: "8px", role: "Grandes cartes" },
+      { px: "20px", role: "Pastilles / pills" },
+    ];
+    return { neutrals, brand, covers, scale, spacing, radii };
+  }
+}
+</script>
+</body>
+</html>

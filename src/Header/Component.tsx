@@ -38,6 +38,9 @@ export async function Header() {
           <img
             src="/koren-logo.png"
             alt="Koren France"
+            width={359}
+            height={120}
+            fetchPriority="high"
             className="h-14 w-auto block brightness-0 invert"
           />
         </Link>
@@ -50,6 +53,7 @@ export async function Header() {
           </Link>
           <Link
             href="/#newsletter"
+            aria-label="Newsletter"
             className="flex items-center gap-2 rounded-full border border-[#e7c56b] bg-[#e7c56b] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[1.5px] text-bordeaux transition-colors hover:bg-[#f0d586]"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">

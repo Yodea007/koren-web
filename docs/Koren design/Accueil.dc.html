@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  .kscroll::-webkit-scrollbar { height: 6px; }
+  .kscroll::-webkit-scrollbar-thumb { background: rgba(147,20,46,.25); border-radius: 3px; }
+</style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="min-height:100vh; background:#D7D6D2; padding:48px 24px 90px; font-family:'Source Serif 4',Georgia,serif; color:#2A231C;">
+
+  <!-- canvas header -->
+  <div style="max-width:1360px; margin:0 auto 14px;">
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:#6b6a64;">Koren France · Direction 01 Parchemin</div>
+    <h1 style="font-family:'Cormorant',serif; font-weight:500; font-size:52px; line-height:1; margin:10px 0 0; letter-spacing:-0.5px; color:#1a1a18;">Accueil</h1>
+    <p style="max-width:680px; font-size:15.5px; line-height:1.6; color:#54534d; margin:14px 0 0;">Mise en avant des nouveautés, accès aux six rayons, sélection de la maison, bandeau presse, newsletter en pied de page. Maquette desktop puis mobile.</p>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- DESKTOP -->
+  <!-- ============================================================= -->
+  <div style="max-width:1360px; margin:36px auto 0;">
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:2px; color:#8a897f; margin-bottom:12px;">DESKTOP · 1280</div>
+
+    <div style="background:#FBF6EC; border-radius:10px; overflow:hidden; box-shadow:0 30px 70px -34px rgba(40,30,18,.5); border:1px solid #cfc6b4;">
+      <!-- browser chrome -->
+      <div style="display:flex; align-items:center; gap:14px; padding:11px 16px; background:#ECE3D2; border-bottom:1px solid #ddd2bd;">
+        <div style="display:flex; gap:7px;"><span style="width:11px;height:11px;border-radius:50%;background:#D8A39B;"></span><span style="width:11px;height:11px;border-radius:50%;background:#E0C79A;"></span><span style="width:11px;height:11px;border-radius:50%;background:#A9C2A0;"></span></div>
+        <div style="flex:1; max-width:340px; margin:0 auto; background:#FBF6EC; border:1px solid #ddd2bd; border-radius:6px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:11px; color:#8a7d68; padding:5px 0;">korenfrance.fr</div>
+        <div style="width:54px;"></div>
+      </div>
+
+      <!-- site -->
+      <div style="background:#F4ECDB;">
+
+        <!-- header partagé -->
+        <dc-import name="SiteHeader" cart="0" active="" hint-size="100%,158px" style="display:block;"></dc-import>
+
+        <!-- HERO — bandeau compact, clair -->
+        <div style="display:grid; grid-template-columns:150px 1fr; gap:36px; align-items:center; padding:28px 64px 30px; max-width:1180px; margin:0 auto;">
+          <div style="width:150px;">
+            <dc-import name="Cover" title="Les Voix de l'Alliance" author="Jonathan Sacks" publisher="Koren · Maggid" bg="#6E1726" fg="#F3E8D2" accent="#C9A24A" badge="Nouveauté" hint-size="150px,225px" style="display:block; width:150px;"></dc-import>
+          </div>
+          <div>
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:#93142E;">La nouveauté de la maison</div>
+            <h2 style="font-family:'Cormorant',serif; font-weight:500; font-size:33px; line-height:1.05; letter-spacing:-0.5px; color:#2A231C; margin:6px 0 0;">Les Voix de l'Alliance</h2>
+            <div style="font-family:'Source Serif 4',serif; font-style:italic; font-size:15px; color:#6E6153; margin-top:5px;">Jonathan Sacks · Genèse et Exode</div>
+            <p style="font-size:14px; line-height:1.55; color:#4d4234; max-width:540px; margin:10px 0 0;">Le grand-rabbin Sacks relit la Torah comme une conversation continue entre le Ciel et l'humanité — lumineuse, exigeante, profondément actuelle.</p>
+            <div style="display:flex; align-items:center; gap:18px; margin-top:18px;">
+              <span style="font-family:'Cormorant',serif; font-weight:600; font-size:26px; color:#2A231C; white-space:nowrap; flex-shrink:0;">29 €</span>
+              <button style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:#FBF6EC; background:#93142E; border:none; border-radius:4px; padding:11px 22px; cursor:pointer;">Ajouter au panier</button>
+              <span style="font-family:'Source Serif 4',serif; font-style:italic; font-size:14px; color:#6E6153; text-decoration:underline; text-underline-offset:3px; cursor:pointer;">Feuilleter un extrait</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIX RAYONS — rails type Netflix -->
+        <div style="background:#FBF6EC; border-top:1px solid #E4D9C4; border-bottom:1px solid #E4D9C4; padding:46px 0 40px;">
+          <div style="max-width:1180px; margin:0 auto; padding:0 64px;">
+            <div style="display:flex; align-items:baseline; justify-content:space-between; gap:24px;">
+              <h3 style="font-family:'Cormorant',serif; font-weight:500; font-size:34px; color:#2A231C; margin:0; white-space:nowrap;">Publications</h3>
+              <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1.5px; color:#9C7B3F; text-align:right;">≈ 40 OUVRAGES · KOREN · MAGGID · THE TOBY PRESS</span>
+            </div>
+          </div>
+
+          <sc-for list="{{ rayons }}" as="r" hint-placeholder-count="6">
+            <div style="margin-top:26px;">
+              <div style="max-width:1180px; margin:0 auto; padding:0 64px 10px; display:flex; align-items:baseline; justify-content:space-between; gap:20px;">
+                <a href="Catalogue.dc.html" style="text-decoration:none; display:flex; align-items:baseline; gap:13px; color:inherit;" style-hover="opacity:.7;">
+                  <h4 style="font-family:'Cormorant',serif; font-weight:600; font-size:24px; color:#2A231C; margin:0;">{{ r.name }}<span style="color:#93142E; font-size:18px; margin-left:8px;">›</span></h4>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1.5px; color:#9C7B3F;">{{ r.count }}</span>
+                </a>
+                <a href="Catalogue.dc.html" style="text-decoration:none; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1px; color:#93142E; cursor:pointer; white-space:nowrap;">Tout voir →</a>
+              </div>
+
+              <div class="rail-wrap" style="position:relative;">
+                <div class="rail kscroll swipe" style="display:flex; gap:20px; overflow-x:auto; scroll-behavior:smooth; scroll-snap-type:x mandatory; padding:6px 64px 16px;">
+                  <sc-for list="{{ r.books }}" as="b" hint-placeholder-count="6">
+                    <a href="Fiche Livre.dc.html" style="text-decoration:none; color:inherit; flex:none; width:148px; scroll-snap-align:start;">
+                      <dc-import name="Cover" title="{{ b.title }}" author="{{ b.author }}" publisher="{{ b.publisher }}" bg="{{ b.bg }}" fg="{{ b.fg }}" accent="{{ b.accent }}" badge="{{ b.badge }}" hint-size="148px,222px" style="display:block; width:148px; margin-bottom:9px;"></dc-import>
+                      <div style="font-family:'Cormorant',serif; font-weight:600; font-size:16px; line-height:1.12; color:#2A231C;">{{ b.title }}</div>
+                      <div style="font-family:'Cormorant',serif; font-weight:600; font-size:14px; color:#93142E; margin-top:2px;">{{ b.price }}</div>
+                    </a>
+                  </sc-for>
+                </div>
+                <button onClick="{{ railPrev }}" aria-label="Précédent" style="position:absolute; left:16px; top:117px; transform:translateY(-50%); width:42px; height:42px; border-radius:50%; border:1px solid #d8cdb8; background:#FBF6EC; color:#93142E; font-size:17px; cursor:pointer; box-shadow:0 6px 16px -6px rgba(40,30,18,.45); display:flex; align-items:center; justify-content:center;" style-hover="background:#93142E; color:#FBF6EC; border-color:#93142E;">←</button>
+                <button onClick="{{ railNext }}" aria-label="Continuer" style="position:absolute; right:16px; top:117px; transform:translateY(-50%); width:42px; height:42px; border-radius:50%; border:1px solid #d8cdb8; background:#FBF6EC; color:#93142E; font-size:17px; cursor:pointer; box-shadow:0 6px 16px -6px rgba(40,30,18,.45); display:flex; align-items:center; justify-content:center;" style-hover="background:#93142E; color:#FBF6EC; border-color:#93142E;">→</button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- SÉLECTION -->
+        <div style="padding:58px 64px;">
+          <div style="max-width:1180px; margin:0 auto;">
+            <div style="text-align:center; margin-bottom:40px;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:2.5px; text-transform:uppercase; color:#9C7B3F;">Choisis par nos libraires</div>
+              <h3 style="font-family:'Cormorant',serif; font-weight:500; font-size:38px; color:#2A231C; margin:10px 0 0;">La sélection de la maison</h3>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:34px;">
+              <sc-for list="{{ selection }}" as="b" hint-placeholder-count="4">
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                  <dc-import name="Cover" title="{{ b.title }}" author="{{ b.author }}" publisher="{{ b.publisher }}" bg="{{ b.bg }}" fg="{{ b.fg }}" accent="{{ b.accent }}" badge="{{ b.badge }}" hint-size="100%,330px" style="display:block; width:100%; margin-bottom:8px;"></dc-import>
+                  <div style="font-family:'Source Serif 4',serif; font-style:italic; font-size:14px; color:#6E6153;">{{ b.author }}</div>
+                  <div style="font-family:'Cormorant',serif; font-weight:600; font-size:20px; line-height:1.15; color:#2A231C;">{{ b.title }}</div>
+                  <div style="display:flex; align-items:center; justify-content:space-between; margin-top:4px;">
+                    <span style="font-family:'Cormorant',serif; font-weight:600; font-size:19px; color:#93142E; white-space:nowrap;">{{ b.price }}</span>
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:1px; color:#6E6153; border:1px solid #d8cdb8; border-radius:3px; padding:5px 10px; cursor:pointer; white-space:nowrap;">AJOUTER</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRESS -->
+        <div style="background:#2A231C; color:#E7DEC9; padding:60px 64px;">
+          <div style="max-width:1180px; margin:0 auto;">
+            <div style="font-family:'Cormorant',serif; font-weight:600; font-size:64px; line-height:1; color:#9C7B3F; margin-bottom:6px;">“</div>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:48px;">
+              <sc-for list="{{ press }}" as="p" hint-placeholder-count="3">
+                <div style="border-left:1px solid #4a4030; padding-left:26px; display:flex; flex-direction:column;">
+                  <div style="font-family:'Cormorant',serif; font-weight:400; font-style:italic; font-size:25px; line-height:1.25; color:#F1E7D2; min-height:100px;">{{ p.quote }}</div>
+                  <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1.5px; color:#9C7B3F; margin-top:14px;">— {{ p.who }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEWSLETTER + FOOTER -->
+        <div style="background:#211B15; color:#C9BEA8; padding:58px 64px 40px;">
+          <div style="max-width:1180px; margin:0 auto;">
+            <div style="display:grid; grid-template-columns:1.3fr 1fr 1fr 1fr; gap:48px; padding-bottom:44px; border-bottom:1px solid #3a3225;">
+              <div>
+                <div style="font-family:'Cormorant',serif; font-weight:500; font-size:28px; color:#F1E7D2;">La lettre Koren</div>
+                <p style="font-size:15px; line-height:1.6; color:#9c9079; margin:12px 0 18px; max-width:300px;">Nouveautés, entretiens d'auteurs et offres réservées. Une fois par mois, sans excès.</p>
+                <div style="display:flex; gap:0; max-width:330px;">
+                  <input placeholder="Votre adresse e-mail" style="flex:1; background:#2C261E; border:1px solid #4a4030; border-right:none; border-radius:4px 0 0 4px; padding:12px 14px; font-family:'Source Serif 4',serif; font-size:14px; color:#E7DEC9; outline:none;">
+                  <button style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1px; color:#211B15; background:#9C7B3F; border:none; border-radius:0 4px 4px 0; padding:0 20px; cursor:pointer;">OK</button>
+                </div>
+              </div>
+              <div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:2px; color:#9C7B3F; text-transform:uppercase; margin-bottom:16px;">Les rayons</div>
+                <div style="display:flex; flex-direction:column; gap:11px; font-family:'Source Serif 4',serif; font-size:15px; color:#C9BEA8;"><span>Bibles &amp; Tanakh</span><span>Prières</span><span>Talmud</span><span>Essais</span><span>Littérature</span><span>Jeunesse</span></div>
+              </div>
+              <div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:2px; color:#9C7B3F; text-transform:uppercase; margin-bottom:16px;">La maison</div>
+                <div style="display:flex; flex-direction:column; gap:11px; font-family:'Source Serif 4',serif; font-size:15px; color:#C9BEA8;"><span>Histoire depuis 1962</span><span>Eliyahou Koren</span><span>Nos auteurs</span><span>Espace libraires</span></div>
+              </div>
+              <div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:2px; color:#9C7B3F; text-transform:uppercase; margin-bottom:16px;">Aide</div>
+                <div style="display:flex; flex-direction:column; gap:11px; font-family:'Source Serif 4',serif; font-size:15px; color:#C9BEA8;"><span>Livraison &amp; retours</span><span>Suivi de commande</span><span>Nous contacter</span><span>Mentions légales</span></div>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding-top:22px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:1px; color:#6e644f;">
+              <span>© 2026 KOREN FRANCE · KOREN PUBLISHERS JERUSALEM</span>
+              <span>KOREN · MAGGID · THE TOBY PRESS</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- MOBILE -->
+  <!-- ============================================================= -->
+  <div style="max-width:1360px; margin:56px auto 0;">
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:2px; color:#8a897f; margin-bottom:12px;">MOBILE · 390</div>
+
+    <div style="display:flex; gap:40px; flex-wrap:wrap; align-items:flex-start;">
+
+      <!-- phone -->
+      <div style="width:390px; background:#1a1714; border-radius:46px; padding:12px; box-shadow:0 36px 70px -30px rgba(40,28,14,.6);">
+        <div style="background:#F4ECDB; border-radius:36px; overflow:hidden; position:relative;">
+          <!-- status bar -->
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 26px 6px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:#2A231C;">
+            <span>9:41</span><span style="letter-spacing:1px;">● ● ● ▮</span>
+          </div>
+          <!-- sticky header -->
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 20px; border-bottom:1px solid #E4D9C4; background:#F4ECDB;">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:18px; color:#93142E;">☰</span>
+            <img src="assets/koren-logo-burgundy.png" alt="Koren" style="height:24px; width:auto;">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:14px; color:#93142E;">⌕ ⛟</span>
+          </div>
+
+          <div style="max-height:720px; overflow-y:auto;" class="kscroll">
+            <!-- hero -->
+            <div style="padding:18px 22px 22px; text-align:center; border-bottom:1px solid #E4D9C4;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#93142E;">La nouveauté</div>
+              <div style="display:grid; grid-template-columns:118px 1fr; gap:18px; align-items:center; text-align:left; margin-top:14px;">
+                <div style="width:118px;">
+                  <dc-import name="Cover" title="Les Voix de l'Alliance" author="Jonathan Sacks" publisher="Koren · Maggid" bg="#6E1726" fg="#F3E8D2" accent="#C9A24A" badge="Nouveauté" hint-size="118px,177px" style="display:block; width:118px;"></dc-import>
+                </div>
+                <div>
+                  <h2 style="font-family:'Cormorant',serif; font-weight:500; font-size:26px; line-height:1.05; color:#2A231C; margin:0;">Les Voix de l'Alliance</h2>
+                  <div style="font-family:'Source Serif 4',serif; font-style:italic; font-size:14px; color:#6E6153; margin-top:4px;">Jonathan Sacks</div>
+                  <div style="font-family:'Cormorant',serif; font-weight:600; font-size:23px; color:#2A231C; margin-top:8px;">29 €</div>
+                </div>
+              </div>
+              <button style="width:100%; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#FBF6EC; background:#93142E; border:none; border-radius:5px; padding:14px 0; margin-top:14px; cursor:pointer;">Ajouter au panier</button>
+            </div>
+
+            <!-- rayons — rails -->
+            <div style="padding:24px 0; border-bottom:1px solid #E4D9C4;">
+              <div style="padding:0 22px;">
+                <h3 style="font-family:'Cormorant',serif; font-weight:600; font-size:24px; color:#2A231C; margin:0;">Les six rayons</h3>
+              </div>
+              <sc-for list="{{ rayons }}" as="r" hint-placeholder-count="6">
+                <div style="margin-top:18px;">
+                  <div style="padding:0 22px 8px; display:flex; align-items:baseline; justify-content:space-between;">
+                    <a href="Catalogue.dc.html" style="text-decoration:none; color:inherit; display:flex; align-items:baseline; gap:9px;">
+                      <h4 style="font-family:'Cormorant',serif; font-weight:600; font-size:19px; color:#2A231C; margin:0;">{{ r.name }}</h4>
+                      <span style="font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:1px; color:#9C7B3F;">{{ r.count }}</span>
+                    </a>
+                    <a href="Catalogue.dc.html" style="text-decoration:none; font-family:'IBM Plex Mono',monospace; font-size:14px; color:#93142E;">→</a>
+                  </div>
+                  <div style="display:flex; gap:14px; overflow-x:auto; padding:2px 22px 8px; scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain;" class="kscroll swipe">
+                    <sc-for list="{{ r.books }}" as="b" hint-placeholder-count="6">
+                      <div style="flex:none; width:108px; scroll-snap-align:start;">
+                        <dc-import name="Cover" title="{{ b.title }}" author="{{ b.author }}" publisher="{{ b.publisher }}" bg="{{ b.bg }}" fg="{{ b.fg }}" accent="{{ b.accent }}" badge="{{ b.badge }}" hint-size="108px,162px" style="display:block; width:108px;"></dc-import>
+                        <div style="font-family:'Cormorant',serif; font-weight:600; font-size:13px; line-height:1.1; color:#2A231C; margin-top:7px;">{{ b.title }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+
+            <!-- sélection horizontal -->
+            <div style="padding:24px 0; border-bottom:1px solid #E4D9C4;">
+              <div style="padding:0 22px; margin-bottom:16px;">
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#9C7B3F;">Choisis par nos libraires</div>
+                <h3 style="font-family:'Cormorant',serif; font-weight:600; font-size:24px; color:#2A231C; margin:6px 0 0;">La sélection de la maison</h3>
+              </div>
+              <div style="display:flex; gap:16px; overflow-x:auto; padding:4px 22px 10px; scroll-snap-type:x proximity; -webkit-overflow-scrolling:touch;" class="kscroll swipe">
+                <sc-for list="{{ selection }}" as="b" hint-placeholder-count="4">
+                  <div style="flex:none; width:132px; scroll-snap-align:start;">
+                    <dc-import name="Cover" title="{{ b.title }}" author="{{ b.author }}" publisher="{{ b.publisher }}" bg="{{ b.bg }}" fg="{{ b.fg }}" accent="{{ b.accent }}" badge="{{ b.badge }}" hint-size="132px,198px" style="display:block; width:132px;"></dc-import>
+                    <div style="font-family:'Cormorant',serif; font-weight:600; font-size:15px; line-height:1.1; color:#2A231C; margin-top:10px;">{{ b.title }}</div>
+                    <div style="font-family:'Cormorant',serif; font-weight:600; font-size:15px; color:#93142E; margin-top:3px;">{{ b.price }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <!-- press -->
+            <div style="background:#2A231C; color:#E7DEC9; padding:30px 22px;">
+              <div style="font-family:'Cormorant',serif; font-weight:500; font-size:60px; line-height:0.4; color:#9C7B3F; height:30px;">“</div>
+              <div style="font-family:'Cormorant',serif; font-style:italic; font-size:24px; line-height:1.25; color:#F1E7D2; margin-top:8px;">Une lumière pour notre nation.</div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1.5px; color:#9C7B3F; margin-top:14px;">— LE ROI CHARLES III</div>
+            </div>
+
+            <!-- newsletter -->
+            <div style="background:#211B15; color:#C9BEA8; padding:30px 22px;">
+              <div style="font-family:'Cormorant',serif; font-weight:500; font-size:24px; color:#F1E7D2;">La lettre Koren</div>
+              <p style="font-size:14px; line-height:1.55; color:#9c9079; margin:8px 0 14px;">Nouveautés et entretiens, une fois par mois.</p>
+              <div style="display:flex;">
+                <input placeholder="Votre e-mail" style="flex:1; background:#2C261E; border:1px solid #4a4030; border-right:none; border-radius:5px 0 0 5px; padding:12px; font-family:'Source Serif 4',serif; font-size:14px; color:#E7DEC9; outline:none;">
+                <button style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#211B15; background:#9C7B3F; border:none; border-radius:0 5px 5px 0; padding:0 18px; cursor:pointer;">OK</button>
+              </div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:1px; color:#6e644f; margin-top:22px; text-align:center;">KOREN · MAGGID · THE TOBY PRESS</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- mobile note -->
+      <div style="flex:1; min-width:240px; max-width:340px; padding-top:8px;">
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:2px; color:#8a897f;">NOTES MOBILE</div>
+        <ul style="font-family:'Source Serif 4',serif; font-size:15px; line-height:1.6; color:#54534d; padding-left:18px; margin:14px 0 0;">
+          <li>En-tête fixe : menu, logo, recherche + panier au pouce.</li>
+          <li>Nouveauté plein cadre, bouton d'achat large (≥ 48 px).</li>
+          <li>Rayons en grille 2 colonnes, sélection en défilement horizontal.</li>
+          <li>Couverture = héros ; le décor s'efface (beaucoup de papier).</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  rootRef = React.createRef();
+  componentDidMount() {
+    this._drags = [];
+    const root = this.rootRef.current;
+    if (!root) return;
+    requestAnimationFrame(() => {
+      root.querySelectorAll('.swipe').forEach((rail) => {
+        let down = false, moved = false, startX = 0, startScroll = 0;
+        const onDown = (e) => { down = true; moved = false; startX = e.clientX; startScroll = rail.scrollLeft; rail.style.cursor = 'grabbing'; };
+        const onMove = (e) => {
+          if (!down) return;
+          const dx = e.clientX - startX;
+          if (Math.abs(dx) > 4) moved = true;
+          rail.scrollLeft = startScroll - dx;
+        };
+        const onUp = () => { down = false; rail.style.cursor = 'grab'; };
+        const onClick = (e) => { if (moved) { e.preventDefault(); e.stopPropagation(); } };
+        rail.style.cursor = 'grab';
+        rail.addEventListener('pointerdown', onDown);
+        window.addEventListener('pointermove', onMove);
+        window.addEventListener('pointerup', onUp);
+        rail.addEventListener('click', onClick, true);
+        this._drags.push(() => { window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerup', onUp); });
+      });
+    });
+  }
+  componentWillUnmount() { (this._drags || []).forEach((fn) => fn()); }
+  renderVals() {
+    const P = [
+      { bg: "#6E1726", fg: "#F3E8D2", accent: "#C9A24A" },
+      { bg: "#1E2A44", fg: "#EDE3CC", accent: "#C9A24A" },
+      { bg: "#33223A", fg: "#EBDDE9", accent: "#C99AB0" },
+      { bg: "#2C3A38", fg: "#E6DEC8", accent: "#B98A52" },
+      { bg: "#5A1E2A", fg: "#F0E3CD", accent: "#D2A24A" },
+      { bg: "#1C3A3A", fg: "#E0EAD8", accent: "#C9A24A" },
+    ];
+    const shelf = (name, count, items) => ({
+      name, count,
+      books: items.map((it, i) => ({
+        title: it[0], author: it[1], price: it[2], publisher: "Koren", badge: it[3] || "",
+        bg: P[i % P.length].bg, fg: P[i % P.length].fg, accent: P[i % P.length].accent,
+      })),
+    });
+    const rayons = [
+      shelf("Bibles & Tanakh", "12 titres", [
+        ["Tanakh Koren", "Édition de référence", "49 €"],
+        ["Le Pentateuque", "Les cinq livres", "39 €"],
+        ["Tehilim", "Les Psaumes", "22 €"],
+        ["Les Cinq Rouleaux", "Méguilot", "19 €"],
+        ["Haftarot", "Édition annotée", "28 €"],
+        ["Tanakh de poche", "Format voyage", "24 €"],
+      ]),
+      shelf("Prières", "9 titres", [
+        ["Siddour Koren", "Rite séfarade", "35 €"],
+        ["Siddour Koren", "Rite ashkénaze", "35 €"],
+        ["Mahzor Roch Hachana", "Nouvel an", "39 €", "Nouveauté"],
+        ["Mahzor Yom Kippour", "Grand Pardon", "39 €"],
+        ["Selihot", "Pénitences", "21 €"],
+        ["Birkat Hamazon", "Actions de grâce", "12 €"],
+      ]),
+      shelf("Talmud & commentaires", "7 titres", [
+        ["Talmud Steinsaltz", "Coffret · 29 vol.", "695 €"],
+        ["Berakhot", "Steinsaltz", "42 €"],
+        ["Chabbat", "Steinsaltz", "42 €"],
+        ["Pessahim", "Steinsaltz", "42 €"],
+        ["Baba Metsia", "Steinsaltz", "42 €"],
+        ["Sanhédrin", "Steinsaltz", "42 €"],
+      ]),
+      shelf("Essais", "8 titres", [
+        ["Les Voix de l'Alliance", "Jonathan Sacks", "29 €", "Nouveauté"],
+        ["La dignité de la différence", "Jonathan Sacks", "24 €"],
+        ["Une lettre dans le rouleau", "Jonathan Sacks", "22 €"],
+        ["Le grand partenariat", "Jonathan Sacks", "23 €"],
+        ["La rose aux treize pétales", "Adin Steinsaltz", "20 €"],
+        ["Crise et Alliance", "Pensée juive", "26 €"],
+      ]),
+      shelf("Littérature", "6 titres", [
+        ["La Porte de Jérusalem", "Naomi Ragen", "21 €"],
+        ["Sotah", "Naomi Ragen", "21 €"],
+        ["Jephté", "Naomi Ragen", "19 €"],
+        ["La fille du rabbin", "Naomi Ragen", "21 €"],
+        ["Chuppah", "Naomi Ragen", "19 €"],
+        ["Une terre promise", "Récits", "23 €"],
+      ]),
+      shelf("Jeunesse", "5 titres", [
+        ["L'Alphabet hébreu", "Album illustré", "16 €"],
+        ["Les fêtes en images", "Tout-petits", "15 €"],
+        ["Récits de la Genèse", "Bande dessinée", "18 €"],
+        ["Mon premier Siddour", "Dès 5 ans", "17 €"],
+        ["Histoires du Talmud", "Récits graphiques", "18 €"],
+        ["Mon premier Tanakh", "Dès 7 ans", "19 €"],
+      ]),
+    ];
+    const railNext = (e) => { const r = e.currentTarget.closest('.rail-wrap').querySelector('.rail'); if (r) r.scrollBy({ left: Math.max(r.clientWidth - 180, 336), behavior: 'smooth' }); };
+    const railPrev = (e) => { const r = e.currentTarget.closest('.rail-wrap').querySelector('.rail'); if (r) r.scrollBy({ left: -Math.max(r.clientWidth - 180, 336), behavior: 'smooth' }); };
+    const selection = [
+      { title: "Le Siddour Koren", author: "Édition séfarade", publisher: "Koren", price: "35 €", badge: "", bg: "#1E2A44", fg: "#EDE3CC", accent: "#C9A24A" },
+      { title: "Talmud Steinsaltz", author: "Coffret · 29 volumes", publisher: "Koren", price: "695 €", badge: "", bg: "#33223A", fg: "#EBDDE9", accent: "#C99AB0" },
+      { title: "Maximes des Pères", author: "Pirké Avot", publisher: "Koren · Maggid", price: "18 €", badge: "", bg: "#5A1E2A", fg: "#F0E3CD", accent: "#D2A24A" },
+      { title: "Mahzor de Roch Hachana", author: "Rite ashkénaze", publisher: "Koren", price: "39 €", badge: "Indisponible", bg: "#2C3A38", fg: "#E6DEC8", accent: "#B98A52" },
+    ];
+    const press = [
+      { quote: "Une lumière pour notre nation.", who: "Le Roi Charles III" },
+      { quote: "La précision textuelle faite référence.", who: "Tribune Juive" },
+      { quote: "Des éditions d'une élégance rare.", who: "Actualité Juive" },
+    ];
+    return { rayons, selection, press, railNext, railPrev, rootRef: this.rootRef };
+  }
+}
+</script>
+</body>
+</html>

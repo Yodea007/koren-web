@@ -17,8 +17,8 @@ export const Logo = (props: Props) => {
     /* eslint-disable @next/next/no-img-element */
     <img
       alt="Koren France"
-      width={150}
-      height={36}
+      width={359}
+      height={120}
       loading={loading}
       fetchPriority={priority}
       decoding="async"

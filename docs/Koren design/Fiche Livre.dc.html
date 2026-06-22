@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc data-props='{"showExtrait":{"editor":"boolean","default":true,"tsType":"boolean"},"extraitPdfUrl":{"editor":"text","default":"uploads/EU Kcat 2023 FRENCH for print 02.pdf","tsType":"string"},"extraitLabel":{"editor":"text","default":"PDF · 12 P.","tsType":"string"},"showVideo":{"editor":"boolean","default":true,"tsType":"boolean"},"videoUrl":{"editor":"text","default":"","tsType":"string"},"videoTitle":{"editor":"text","default":"Jonathan Sacks présente l&#39;ouvrage","tsType":"string"},"videoDuration":{"editor":"text","default":"4 min","tsType":"string"}}'>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  .kscroll::-webkit-scrollbar { height: 6px; width:6px; }
+  .kscroll::-webkit-scrollbar-thumb { background: rgba(147,20,46,.25); border-radius: 3px; }
+</style>
+</helmet>
+
+<div style="min-height:100vh; background:#D7D6D2; padding:48px 24px 90px; font-family:'Source Serif 4',Georgia,serif; color:#2A231C;">
+
+  <div style="max-width:1360px; margin:0 auto 14px;">
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:3px; text-transform:uppercase; color:#6b6a64;">Koren France · Direction 01 Parchemin</div>
+    <h1 style="font-family:'Cormorant',serif; font-weight:500; font-size:52px; line-height:1; margin:10px 0 0; letter-spacing:-0.5px; color:#1a1a18;">Fiche livre</h1>
+    <p style="max-width:680px; font-size:15.5px; line-height:1.6; color:#54534d; margin:14px 0 0;">Couverture grand format, déclinaisons, caractéristiques, description longue, encart « lot » −5 %, extrait PDF, achat très accessible sur mobile. Desktop puis mobile.</p>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- DESKTOP -->
+  <!-- ============================================================= -->
+  <div style="max-width:1360px; margin:36px auto 0;">
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:2px; color:#8a897f; margin-bottom:12px;">DESKTOP · 1280</div>
+
+    <div style="background:#FBF6EC; border-radius:10px; overflow:hidden; box-shadow:0 30px 70px -34px rgba(40,30,18,.5); border:1px solid #cfc6b4;">
+      <div style="display:flex; align-items:center; gap:14px; padding:11px 16px; background:#ECE3D2; border-bottom:1px solid #ddd2bd;">
+        <div style="display:flex; gap:7px;"><span style="width:11px;height:11px;border-radius:50%;background:#D8A39B;"></span><span style="width:11px;height:11px;border-radius:50%;background:#E0C79A;"></span><span style="width:11px;height:11px;border-radius:50%;background:#A9C2A0;"></span></div>
+        <div style="flex:1; max-width:420px; margin:0 auto; background:#FBF6EC; border:1px solid #ddd2bd; border-radius:6px; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:11px; color:#8a7d68; padding:5px 0;">korenfrance.fr/essais/voix-de-l-alliance</div>
+        <div style="width:54px;"></div>
+      </div>
+
+      <div style="background:#F4ECDB;">
+        <!-- header partagé -->
+        <dc-import name="SiteHeader" cart="1" active="Essais" hint-size="100%,158px" style="display:block;"></dc-import>
+
+        <!-- breadcrumb -->
+        <div style="padding:16px 64px; max-width:1180px; margin:0 auto; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1px; color:#9a8e78;">
+          <span style="cursor:pointer;">Accueil</span> &nbsp;›&nbsp; <span style="cursor:pointer;">Essais</span> &nbsp;›&nbsp; <span style="color:#6E6153;">Les Voix de l'Alliance</span>
+        </div>
+
+        <!-- MAIN -->
+        <div style="padding:14px 64px 56px;">
+          <div style="max-width:1180px; margin:0 auto; display:grid; grid-template-columns:0.95fr 1.05fr; gap:64px; align-items:start;">
+
+            <!-- LEFT: cover + thumbnails -->
+            <div>
+              <div style="position:relative; width:340px; margin:0 auto;">
+                <dc-import name="Cover" title="Les Voix de l'Alliance" author="Jonathan Sacks" publisher="Koren · Maggid" bg="#6E1726" fg="#F3E8D2" accent="#C9A24A" badge="" hint-size="340px,510px" style="display:block; width:340px;"></dc-import>
+              </div>
+              <div style="display:flex; gap:12px; justify-content:center; margin-top:20px;">
+                <div style="width:58px; cursor:pointer; outline:2px solid #93142E; outline-offset:2px; border-radius:2px;"><dc-import name="Cover" title="Les Voix de l'Alliance" author="" publisher="" bg="#6E1726" fg="#F3E8D2" accent="#C9A24A" badge="" hint-size="58px,87px" style="display:block; width:58px;"></dc-import></div>
+                <div style="width:58px; cursor:pointer;"><dc-import name="Cover" title="Les Voix de l'Alliance" author="" publisher="" bg="#1E2A44" fg="#EDE3CC" accent="#C9A24A" badge="" hint-size="58px,87px" style="display:block; width:58px;"></dc-import></div>
+                <div style="width:58px; cursor:pointer;"><dc-import name="Cover" title="Les Voix de l'Alliance" author="" publisher="" bg="#243A2E" fg="#E7E0C8" accent="#C2A24E" badge="" hint-size="58px,87px" style="display:block; width:58px;"></dc-import></div>
+              </div>
+              <sc-if value="{{ hasExtrait }}" hint-placeholder-val="{{ true }}">
+                <a href="{{ extraitPdfUrl }}" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:10px; margin-top:22px; padding:13px; border:1px solid #d8cdb8; border-radius:6px; cursor:pointer; text-decoration:none; background:#FBF6EC;" style-hover="border-color:#93142E;">
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:#93142E;">⎙</span>
+                  <span style="font-family:'Source Serif 4',serif; font-size:15px; color:#2A231C;">Feuilleter un extrait</span>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#9a8e78;">{{ extraitLabel }}</span>
+                </a>
+              </sc-if>
+            </div>
+
+            <!-- RIGHT: buy box -->
+            <div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:2.5px; text-transform:uppercase; color:#9C7B3F;">Koren · Maggid · Essais</div>
+              <h2 style="font-family:'Cormorant',serif; font-weight:500; font-size:56px; line-height:1.0; letter-spacing:-1px; color:#2A231C; margin:14px 0 0;">Les Voix de l'Alliance</h2>
+              <div style="font-family:'Source Serif 4',serif; font-style:italic; font-size:19px; color:#6E6153; margin-top:12px;">Jonathan Sacks · une lecture de la Torah</div>
+
+              <div style="display:flex; align-items:baseline; gap:14px; margin:24px 0 0;">
+                <span style="font-family:'Cormorant',serif; font-weight:600; font-size:40px; color:#2A231C; white-space:nowrap; flex-shrink:0;">29 €</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1px; color:#6E6153;">RELIÉ · 384 PAGES · TTC</span>
+              </div>
+
+              <!-- declination: volume -->
+              <div style="margin-top:30px;">
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1.5px; color:#9a8e78; text-transform:uppercase;">Volume</div>
+                <div style="display:flex; gap:10px; margin-top:11px;">
+                  <span style="font-family:'Source Serif 4',serif; font-size:14.5px; color:#FBF6EC; background:#2A231C; border:1px solid #2A231C; border-radius:5px; padding:11px 16px; cursor:pointer;">Tome I · Genèse — Exode</span>
+                  <span style="font-family:'Source Serif 4',serif; font-size:14.5px; color:#2A231C; border:1px solid #cfc4ac; border-radius:5px; padding:11px 16px; cursor:pointer;">Tome II · Lévitique — Deut.</span>
+                </div>
+              </div>
+
+              <!-- declination: couleur -->
+              <div style="margin-top:24px;">
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1.5px; color:#9a8e78; text-transform:uppercase;">Couleur de reliure · <span style="color:#2A231C;">Bordeaux</span></div>
+                <div style="display:flex; align-items:center; gap:14px; margin-top:12px;">
+                  <span style="width:30px; height:30px; border-radius:50%; background:#6E1726; box-shadow:0 0 0 2px #FBF6EC, 0 0 0 3px #6E1726; cursor:pointer;"></span>
+                  <span style="width:30px; height:30px; border-radius:50%; background:#1E2A44; border:1px solid rgba(0,0,0,.12); cursor:pointer;"></span>
+                  <span style="width:30px; height:30px; border-radius:50%; background:#243A2E; border:1px solid rgba(0,0,0,.12); cursor:pointer;"></span>
+                </div>
+              </div>
+
+              <!-- add to cart -->
+              <div style="display:flex; align-items:stretch; gap:12px; margin-top:30px;">
+                <div style="display:flex; align-items:center; border:1px solid #cfc4ac; border-radius:6px; overflow:hidden;">
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:16px; color:#6E6153; padding:0 16px; cursor:pointer;">–</span>
+                  <span style="font-family:'Source Serif 4',serif; font-size:16px; color:#2A231C; padding:0 6px; min-width:24px; text-align:center;">1</span>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:16px; color:#6E6153; padding:0 16px; cursor:pointer;">+</span>
+                </div>
+                <button style="flex:1; font-family:'IBM Plex Mono',monospace; font-size:13px; letter-spacing:1.5px; text-transform:uppercase; color:#FBF6EC; background:#93142E; border:none; border-radius:6px; padding:16px 0; cursor:pointer;">Ajouter au panier — 29 €</button>
+              </div>
+              <div style="display:flex; align-items:center; gap:18px; margin-top:14px; font-family:'Source Serif 4',serif; font-size:13.5px; color:#6E6153;">
+                <span>✓ Expédié sous 48 h</span><span>✓ Retour 30 jours</span><span style="text-decoration:underline; text-underline-offset:2px; cursor:pointer;">♡ Ajouter à une liste</span>
+              </div>
+
+              <!-- LOT card -->
+              <div style="margin-top:28px; background:#FBF6EC; border:1px solid #E4D9C4; border-radius:8px; padding:20px;">
+                <div style="display:flex; align-items:center; gap:18px;">
+                  <div style="display:flex; flex-shrink:0;">
+                    <div style="width:46px;"><dc-import name="Cover" title="" author="" publisher="" bg="#6E1726" fg="#F3E8D2" accent="#C9A24A" badge="" hint-size="46px,69px" style="display:block; width:46px;"></dc-import></div>
+                    <div style="width:46px; margin-left:-14px;"><dc-import name="Cover" title="" author="" publisher="" bg="#5A1E2A" fg="#F0E3CD" accent="#D2A24A" badge="" hint-size="46px,69px" style="display:block; width:46px;"></dc-import></div>
+                  </div>
+                  <div style="flex:1; min-width:0;">
+                    <div style="display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1px; color:#FBF6EC; background:#9C7B3F; border-radius:3px; padding:3px 8px; white-space:nowrap;">LOT −5 %</div>
+                    <div style="font-family:'Cormorant',serif; font-weight:600; font-size:21px; line-height:1.15; color:#2A231C; margin-top:7px;">Achetez les deux tomes ensemble</div>
+                  </div>
+                </div>
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:14px; margin-top:16px; padding-top:16px; border-top:1px solid #E4D9C4;">
+                  <div style="display:flex; align-items:baseline; gap:10px; white-space:nowrap;">
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:#9a8e78; text-decoration:line-through;">58 €</span>
+                    <span style="font-family:'Cormorant',serif; font-weight:600; font-size:26px; color:#93142E;">55,10 €</span>
+                  </div>
+                  <button style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1px; color:#FBF6EC; background:#2A231C; border:none; border-radius:5px; padding:11px 18px; cursor:pointer; white-space:nowrap;">Ajouter le lot</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DESCRIPTION + CARACTÉRISTIQUES -->
+          <div style="max-width:1180px; margin:60px auto 0; display:grid; grid-template-columns:1.4fr 1fr; gap:64px; align-items:start; border-top:1px solid #E4D9C4; padding-top:48px;">
+            <div>
+              <h3 style="font-family:'Cormorant',serif; font-weight:500; font-size:32px; color:#2A231C; margin:0;">À propos de l'ouvrage</h3>
+              <p style="font-size:16.5px; line-height:1.72; color:#3f372d; margin:18px 0 0;">Pendant plus de vingt ans, Jonathan Sacks a commenté chaque semaine la portion hebdomadaire de la Torah. <span style="font-style:italic;">Les Voix de l'Alliance</span> réunit ces méditations en une lecture continue : non pas un commentaire de versets, mais une conversation sur la liberté, la responsabilité et le sens.</p>
+              <p style="font-size:16.5px; line-height:1.72; color:#3f372d; margin:16px 0 0;">Le grand-rabbin y relit les récits fondateurs — la Création, l'Exode, l'Alliance du Sinaï — comme autant de réponses à la question qui traverse toute son œuvre : comment vivre ensemble sans renoncer à ce qui nous distingue ? Une pensée lumineuse, nourrie de philosophie autant que de tradition.</p>
+              <p style="font-size:16.5px; line-height:1.72; color:#3f372d; margin:16px 0 0;">Cette édition Koren · Maggid propose le texte français en regard, dans la clarté typographique qui fait la signature de la maison.</p>
+            </div>
+
+            <div>
+              <h3 style="font-family:'Cormorant',serif; font-weight:500; font-size:32px; color:#2A231C; margin:0 0 16px;">Caractéristiques</h3>
+              <div style="border-top:1px solid #E4D9C4;">
+                <sc-for list="{{ specs }}" as="s" hint-placeholder-count="7">
+                  <div style="display:flex; align-items:baseline; justify-content:space-between; gap:18px; padding:12px 0; border-bottom:1px solid #E4D9C4;">
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:1px; color:#9a8e78; text-transform:uppercase;">{{ s.k }}</span>
+                    <span style="font-family:'Source Serif 4',serif; font-size:15px; color:#2A231C; text-align:right;">{{ s.v }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <!-- video optionnelle -->
+          <sc-if value="{{ hasVideo }}" hint-placeholder-val="{{ true }}">
+            <div style="max-width:1180px; margin:54px auto 0;">
+              <h3 style="font-family:'Cormorant',serif; font-weight:500; font-size:30px; color:#2A231C; margin:0 0 20px;">En vidéo</h3>
+              <a href="{{ videoHref }}" target="_blank" rel="noopener" style="display:block; position:relative; aspect-ratio:16/9; width:100%; border-radius:10px; overflow:hidden; background:radial-gradient(120% 120% at 30% 18%, #3a2f25 0%, #211B15 72%); text-decoration:none;">
+                <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
+                  <div style="width:80px; height:80px; border-radius:50%; background:rgba(147,20,46,.92); display:flex; align-items:center; justify-content:center; box-shadow:0 12px 32px -8px rgba(0,0,0,.6);">
+                    <span style="display:block; width:0; height:0; border-style:solid; border-width:14px 0 14px 23px; border-color:transparent transparent transparent #FBF6EC; margin-left:6px;"></span>
+                  </div>
+                </div>
+                <div style="position:absolute; left:0; right:0; bottom:0; padding:22px 28px; background:linear-gradient(transparent, rgba(20,16,11,.85)); display:flex; align-items:flex-end; justify-content:space-between; gap:18px;">
+                  <div>
+                    <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#E7C56B;">Rencontre</div>
+                    <div style="font-family:'Cormorant',serif; font-weight:600; font-size:25px; color:#F1E7D2; margin-top:5px;">{{ videoTitle }}</div>
+                  </div>
+                  <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1px; color:#C9BEA8; white-space:nowrap;">{{ videoDuration }}</span>
+                </div>
+              </a>
+            </div>
+          </sc-if>
+
+          <!-- press quote -->
+          <div style="max-width:1180px; margin:48px auto 0;">
+            <div style="background:#2A231C; border-radius:8px; padding:40px 48px; display:flex; align-items:center; gap:28px;">
+              <span style="font-family:'Cormorant',serif; font-weight:600; font-size:70px; line-height:1; color:#9C7B3F;">“</span>
+              <div>
+                <div style="font-family:'Cormorant',serif; font-style:italic; font-weight:400; font-size:30px; line-height:1.25; color:#F1E7D2;">Une lumière pour notre nation.</div>
+                <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1.5px; color:#9C7B3F; margin-top:12px;">— LE ROI CHARLES III, SUR L'ŒUVRE DE JONATHAN SACKS</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- du même auteur -->
+          <div style="max-width:1180px; margin:54px auto 0;">
+            <h3 style="font-family:'Cormorant',serif; font-weight:500; font-size:30px; color:#2A231C; margin:0 0 24px;">Du même auteur</h3>
+            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:34px;">
+              <sc-for list="{{ related }}" as="b" hint-placeholder-count="4">
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                  <dc-import name="Cover" title="{{ b.title }}" author="{{ b.author }}" publisher="{{ b.publisher }}" bg="{{ b.bg }}" fg="{{ b.fg }}" accent="{{ b.accent }}" badge="{{ b.badge }}" hint-size="100%,330px" style="display:block; width:100%; margin-bottom:8px;"></dc-import>
+                  <div style="font-family:'Cormorant',serif; font-weight:600; font-size:19px; line-height:1.12; color:#2A231C; min-height:44px;">{{ b.title }}</div>
+                  <div style="font-family:'Cormorant',serif; font-weight:600; font-size:18px; color:#93142E;">{{ b.price }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#211B15; color:#9c9079; padding:24px 64px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:1px; display:flex; align-items:center; justify-content:space-between;">
+          <span>© 2026 KOREN FRANCE</span><span>KOREN · MAGGID · THE TOBY PRESS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- MOBILE -->
+  <!-- ============================================================= -->
+  <div style="max-width:1360px; margin:56px auto 0;">
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:2px; color:#8a897f; margin-bottom:12px;">MOBILE · 390</div>
+
+    <div style="display:flex; gap:40px; flex-wrap:wrap; align-items:flex-start;">
+      <div style="width:390px; background:#1a1714; border-radius:46px; padding:12px; box-shadow:0 36px 70px -30px rgba(40,28,14,.6);">
+        <div style="background:#F4ECDB; border-radius:36px; overflow:hidden; position:relative;">
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 26px 6px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:#2A231C;"><span>9:41</span><span style="letter-spacing:1px;">● ● ● ▮</span></div>
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 20px; border-bottom:1px solid #E4D9C4;">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:16px; color:#93142E;">‹</span>
+            <img src="assets/koren-logo-burgundy.png" alt="Koren" style="height:22px; width:auto;">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:14px; color:#93142E;">♡ ⛟</span>
+          </div>
+
+          <div style="max-height:720px; overflow-y:auto; position:relative;" class="kscroll">
+            <!-- cover -->
+            <div style="padding:26px 22px 22px; text-align:center; background:#F4ECDB;">
+              <div style="width:212px; margin:0 auto;">
+                <dc-import name="Cover" title="Les Voix de l'Alliance" author="Jonathan Sacks" publisher="Koren · Maggid" bg="#6E1726" fg="#F3E8D2" accent="#C9A24A" badge="" hint-size="212px,318px" style="display:block; width:212px;"></dc-import>
+              </div>
+              <div style="display:flex; gap:8px; justify-content:center; margin-top:14px;">
+                <span style="width:9px; height:9px; border-radius:50%; background:#93142E;"></span>
+                <span style="width:9px; height:9px; border-radius:50%; background:#d8cdb8;"></span>
+                <span style="width:9px; height:9px; border-radius:50%; background:#d8cdb8;"></span>
+              </div>
+            </div>
+
+            <!-- title block -->
+            <div style="padding:6px 22px 20px; border-bottom:1px solid #E4D9C4;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#9C7B3F;">Koren · Maggid · Essais</div>
+              <h2 style="font-family:'Cormorant',serif; font-weight:500; font-size:36px; line-height:1.02; color:#2A231C; margin:8px 0 0; min-height:74px;">Les Voix de l'Alliance</h2>
+              <div style="font-family:'Source Serif 4',serif; font-style:italic; font-size:16px; color:#6E6153; margin-top:6px;">Jonathan Sacks</div>
+              <div style="display:flex; align-items:baseline; gap:12px; margin-top:14px;">
+                <span style="font-family:'Cormorant',serif; font-weight:600; font-size:32px; color:#2A231C; white-space:nowrap; flex-shrink:0;">29 €</span>
+                <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1px; color:#6E6153;">RELIÉ · 384 P.</span>
+              </div>
+            </div>
+
+            <!-- declinations -->
+            <div style="padding:20px 22px; border-bottom:1px solid #E4D9C4;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1.5px; color:#9a8e78; text-transform:uppercase;">Volume</div>
+              <div style="display:flex; gap:8px; margin-top:10px;">
+                <span style="flex:1; text-align:center; font-family:'Source Serif 4',serif; font-size:13.5px; color:#FBF6EC; background:#2A231C; border-radius:6px; padding:11px 6px;">Tome I</span>
+                <span style="flex:1; text-align:center; font-family:'Source Serif 4',serif; font-size:13.5px; color:#2A231C; border:1px solid #cfc4ac; border-radius:6px; padding:11px 6px;">Tome II</span>
+              </div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:1.5px; color:#9a8e78; text-transform:uppercase; margin-top:18px;">Couleur · Bordeaux</div>
+              <div style="display:flex; gap:14px; margin-top:10px;">
+                <span style="width:32px; height:32px; border-radius:50%; background:#6E1726; box-shadow:0 0 0 2px #F4ECDB,0 0 0 3px #6E1726;"></span>
+                <span style="width:32px; height:32px; border-radius:50%; background:#1E2A44; border:1px solid rgba(0,0,0,.12);"></span>
+                <span style="width:32px; height:32px; border-radius:50%; background:#243A2E; border:1px solid rgba(0,0,0,.12);"></span>
+              </div>
+            </div>
+
+            <!-- lot -->
+            <div style="padding:18px 22px; border-bottom:1px solid #E4D9C4;">
+              <div style="background:#FBF6EC; border:1px solid #E4D9C4; border-radius:8px; padding:16px; display:flex; align-items:center; gap:14px;">
+                <div style="width:42px; flex:none;"><dc-import name="Cover" title="" author="" publisher="" bg="#5A1E2A" fg="#F0E3CD" accent="#D2A24A" badge="" hint-size="42px,63px" style="display:block; width:42px;"></dc-import></div>
+                <div style="flex:1;">
+                  <div style="display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:1px; color:#FBF6EC; background:#9C7B3F; border-radius:3px; padding:3px 7px;">LOT −5 %</div>
+                  <div style="font-family:'Cormorant',serif; font-weight:600; font-size:18px; line-height:1.15; color:#2A231C; margin-top:6px;">Les 2 tomes ensemble</div>
+                  <div style="font-family:'Source Serif 4',serif; font-size:13px; color:#93142E; margin-top:2px;"><span style="color:#9a8e78; text-decoration:line-through;">58 €</span> &nbsp;55,10 €</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- description -->
+            <div style="padding:22px; border-bottom:1px solid #E4D9C4;">
+              <h3 style="font-family:'Cormorant',serif; font-weight:600; font-size:23px; color:#2A231C; margin:0 0 10px;">À propos</h3>
+              <p style="font-size:15px; line-height:1.65; color:#3f372d; margin:0;">Vingt ans de commentaires hebdomadaires de la Torah, réunis en une lecture continue sur la liberté, la responsabilité et le sens. Le texte français en regard, dans la clarté de la lettre Koren.</p>
+            </div>
+
+            <!-- media optionnel (extrait + vidéo) -->
+            <sc-if value="{{ hasMedia }}" hint-placeholder-val="{{ true }}">
+              <div style="padding:18px 22px; border-bottom:1px solid #E4D9C4; display:flex; flex-direction:column; gap:14px;">
+                <sc-if value="{{ hasExtrait }}" hint-placeholder-val="{{ true }}">
+                  <a href="{{ extraitPdfUrl }}" target="_blank" rel="noopener" style="display:flex; align-items:center; gap:10px; padding:13px; border:1px solid #d8cdb8; border-radius:6px; text-decoration:none; background:#FBF6EC;">
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:#93142E;">⎙</span>
+                    <span style="font-family:'Source Serif 4',serif; font-size:14.5px; color:#2A231C; flex:1;">Feuilleter un extrait</span>
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:#9a8e78;">{{ extraitLabel }}</span>
+                  </a>
+                </sc-if>
+                <sc-if value="{{ hasVideo }}" hint-placeholder-val="{{ true }}">
+                  <a href="{{ videoHref }}" target="_blank" rel="noopener" style="display:block; position:relative; aspect-ratio:16/9; width:100%; border-radius:9px; overflow:hidden; background:radial-gradient(120% 120% at 30% 18%, #3a2f25 0%, #211B15 72%); text-decoration:none;">
+                    <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
+                      <div style="width:58px; height:58px; border-radius:50%; background:rgba(147,20,46,.92); display:flex; align-items:center; justify-content:center;">
+                        <span style="display:block; width:0; height:0; border-style:solid; border-width:10px 0 10px 17px; border-color:transparent transparent transparent #FBF6EC; margin-left:4px;"></span>
+                      </div>
+                    </div>
+                    <div style="position:absolute; left:0; right:0; bottom:0; padding:13px 16px; background:linear-gradient(transparent, rgba(20,16,11,.85));">
+                      <div style="font-family:'Cormorant',serif; font-weight:600; font-size:18px; color:#F1E7D2;">{{ videoTitle }}</div>
+                    </div>
+                  </a>
+                </sc-if>
+              </div>
+            </sc-if>
+
+            <!-- caractéristiques -->
+            <div style="padding:22px 22px 96px;">
+              <h3 style="font-family:'Cormorant',serif; font-weight:600; font-size:23px; color:#2A231C; margin:0 0 10px;">Caractéristiques</h3>
+              <div style="border-top:1px solid #E4D9C4;">
+                <sc-for list="{{ specs }}" as="s" hint-placeholder-count="7">
+                  <div style="display:flex; align-items:baseline; justify-content:space-between; gap:14px; padding:10px 0; border-bottom:1px solid #E4D9C4;">
+                    <span style="font-family:'IBM Plex Mono',monospace; font-size:9.5px; letter-spacing:1px; color:#9a8e78; text-transform:uppercase;">{{ s.k }}</span>
+                    <span style="font-family:'Source Serif 4',serif; font-size:14px; color:#2A231C; text-align:right;">{{ s.v }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <!-- sticky buy bar -->
+          <div style="position:absolute; left:0; right:0; bottom:0; background:#FBF6EC; border-top:1px solid #E4D9C4; padding:13px 18px; display:flex; align-items:center; gap:14px; box-shadow:0 -10px 24px -16px rgba(40,28,14,.4);">
+            <div style="line-height:1;">
+              <div style="font-family:'Cormorant',serif; font-weight:600; font-size:24px; color:#2A231C; white-space:nowrap;">29 €</div>
+            </div>
+            <button style="flex:1; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#FBF6EC; background:#93142E; border:none; border-radius:7px; padding:15px 0; cursor:pointer;">Ajouter au panier</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="flex:1; min-width:240px; max-width:340px; padding-top:8px;">
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:2px; color:#8a897f;">NOTES MOBILE</div>
+        <ul style="font-family:'Source Serif 4',serif; font-size:15px; line-height:1.6; color:#54534d; padding-left:18px; margin:14px 0 0;">
+          <li>Barre d'achat <strong>fixe en bas</strong> : prix + « Ajouter au panier » toujours au pouce (≥ 48 px).</li>
+          <li>Couverture grand format en tête, pastilles de déclinaison.</li>
+          <li>Déclinaisons (volume, couleur) = même composant que le rite Ashkénaze/Séfarade des livres de prières.</li>
+          <li>Encart lot −5 % juste sous l'achat ; description et caractéristiques en sections.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const specs = [
+      { k: "Pages", v: "384" },
+      { k: "Format", v: "15 × 22 cm" },
+      { k: "Reliure", v: "Toile, tranchefile" },
+      { k: "Langues", v: "Hébreu / Français" },
+      { k: "Éditeur", v: "Koren · Maggid" },
+      { k: "Parution", v: "2024" },
+      { k: "ISBN", v: "978-1-59264-667-8" },
+    ];
+    const related = [
+      { title: "La Dignité de la différence", author: "Jonathan Sacks", publisher: "Koren · Maggid", price: "24 €", badge: "", bg: "#243A2E", fg: "#E7E0C8", accent: "#C2A24E" },
+      { title: "Une lettre dans le rouleau", author: "Jonathan Sacks", publisher: "Maggid", price: "21 €", badge: "", bg: "#1E2A44", fg: "#EDE3CC", accent: "#C9A24A" },
+      { title: "La Grande Partnership", author: "Jonathan Sacks", publisher: "Maggid", price: "26 €", badge: "Nouveauté", bg: "#33223A", fg: "#EBDDE9", accent: "#C99AB0" },
+      { title: "Pas en mon nom", author: "Jonathan Sacks", publisher: "Maggid", price: "23 €", badge: "", bg: "#5A1E2A", fg: "#F0E3CD", accent: "#D2A24A" },
+    ];
+    const showExtrait = this.props.showExtrait ?? true;
+    const extraitPdfUrl = this.props.extraitPdfUrl ?? "";
+    const extraitLabel = this.props.extraitLabel ?? "PDF · 12 P.";
+    const hasExtrait = showExtrait && !!extraitPdfUrl;
+    const showVideo = this.props.showVideo ?? true;
+    const videoUrl = this.props.videoUrl ?? "";
+    const videoTitle = this.props.videoTitle ?? "Présentation de l'ouvrage";
+    const videoDuration = this.props.videoDuration ?? "";
+    const hasVideo = !!showVideo;
+    const videoHref = videoUrl || "#";
+    const hasMedia = hasExtrait || hasVideo;
+    return { specs, related, hasExtrait, extraitPdfUrl, extraitLabel, hasVideo, videoHref, videoTitle, videoDuration, hasMedia };
+  }
+}
+</script>
+</body>
+</html>

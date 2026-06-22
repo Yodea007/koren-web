@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500;600&family=Source+Serif+4:opsz,wght@8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>* { box-sizing:border-box; }</style>
+</helmet>
+
+<div style="font-family:'Source Serif 4',Georgia,serif; background:#F4ECDB;">
+
+  <!-- utility bar -->
+  <div style="background:#2A231C; color:#D8CDB8; font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:1px; display:flex; align-items:center; justify-content:center; gap:8px; padding:8px 0;">
+    <span>LIVRAISON OFFERTE DÈS 60 €</span><span style="opacity:.4;">·</span><span style="color:#E7C56B;">EXPÉDITION SOUS 48 H</span><span style="opacity:.4;">·</span><span>SERVICE LIBRAIRES</span>
+  </div>
+
+  <!-- header : logo à gauche · recherche à droite -->
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:32px; padding:16px 44px; background:#93142E;">
+    <a href="Accueil.dc.html" style="display:block; flex-shrink:0;"><img src="assets/koren-logo-burgundy.png" alt="Koren France" style="height:36px; width:auto; display:block; filter:brightness(0) invert(1);"></a>
+    <div style="display:flex; align-items:center; gap:18px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:#F3E7CF;">
+      <span style="cursor:pointer;">Compte</span>
+      <span style="cursor:pointer; color:#F3D27A;">{{ cartLabel }}</span>
+      <div style="display:flex; align-items:center; gap:10px; width:300px; border:1px solid rgba(255,255,255,.28); border-radius:22px; padding:10px 16px; font-size:11px; letter-spacing:.4px; color:#8a7d68; cursor:pointer; background:#FBF6EC;">
+        <span style="font-size:14px; color:#93142E;">⌕</span>
+        <span>Rechercher un titre, un auteur…</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- nav rayons -->
+  <div style="display:flex; align-items:center; justify-content:center; gap:34px; padding:13px 0; background:#ECDFC6; border-bottom:1px solid #DBCCAE; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:1.5px; text-transform:uppercase;">
+    <sc-for list="{{ rayons }}" as="r" hint-placeholder-count="6">
+      <a href="{{ r.href }}" style="text-decoration:none; cursor:pointer; color:{{ r.color }}; border-bottom:{{ r.border }}; padding-bottom:11px; margin-bottom:-13px;">{{ r.name }}</a>
+    </sc-for>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:160},&quot;cart&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:0,&quot;tsType&quot;:&quot;number&quot;},&quot;active&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;&quot;,&quot;options&quot;:[&quot;&quot;,&quot;Bibles &amp; Tanakh&quot;,&quot;Prières&quot;,&quot;Talmud&quot;,&quot;Essais&quot;,&quot;Littérature&quot;,&quot;Jeunesse&quot;],&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const cart = this.props.cart ?? 0;
+    const active = this.props.active || "";
+    const names = ["Bibles & Tanakh", "Prières", "Talmud", "Essais", "Littérature", "Jeunesse"];
+    const rayons = names.map((n) => ({
+      name: n,
+      href: "Catalogue.dc.html",
+      color: n === active ? "#93142E" : "#6E6153",
+      border: n === active ? "2px solid #93142E" : "2px solid transparent",
+    }));
+    return { cartLabel: "Panier (" + cart + ")", rayons };
+  }
+}
+</script>
+</body>
+</html>
