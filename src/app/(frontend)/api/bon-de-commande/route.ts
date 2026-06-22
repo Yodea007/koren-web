@@ -105,8 +105,8 @@ export async function POST(req: Request): Promise<Response> {
     payload.logger.error({ err, msg: 'Bon de commande : échec attachement PDF' })
   }
 
-  // 4) Envoyer la copie par e-mail (best-effort, seulement si Resend est configuré)
-  if (process.env.RESEND_API_KEY) {
+  // 4) Envoyer la copie par e-mail (best-effort, seulement si le SMTP est configuré)
+  if (process.env.SMTP_USER && process.env.SMTP_PASS) {
     try {
       await payload.sendEmail({
         to: process.env.COMMANDES_EMAIL || 'l.alhadef@gmail.com',

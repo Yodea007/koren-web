@@ -1,5 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { resendAdapter } from '@payloadcms/email-resend'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
@@ -70,15 +70,25 @@ export default buildConfig({
   }),
   collections: [Pages, Posts, Livres, Lots, Commandes, Auteurs, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
-  // Envoi d'e-mail (copie des commandes libraires). Actif seulement si RESEND_API_KEY est défini ;
-  // sinon Payload tourne sans e-mail et la route POST sauvegarde quand même la commande.
-  email: process.env.RESEND_API_KEY
-    ? resendAdapter({
-        apiKey: process.env.RESEND_API_KEY,
-        defaultFromAddress: process.env.EMAIL_FROM || 'onboarding@resend.dev',
-        defaultFromName: process.env.EMAIL_FROM_NAME || 'Koren France',
-      })
-    : undefined,
+  // Envoi d'e-mail via SMTP Gmail (copie des commandes libraires). Actif seulement si SMTP_USER
+  // et SMTP_PASS sont définis ; sinon Payload tourne sans e-mail et la route POST sauvegarde
+  // quand même la commande.
+  email:
+    process.env.SMTP_USER && process.env.SMTP_PASS
+      ? nodemailerAdapter({
+          defaultFromAddress: process.env.EMAIL_FROM || process.env.SMTP_USER,
+          defaultFromName: process.env.EMAIL_FROM_NAME || 'Koren France',
+          transportOptions: {
+            host: process.env.SMTP_HOST || 'smtp.gmail.com',
+            port: Number(process.env.SMTP_PORT) || 465,
+            secure: true,
+            auth: {
+              user: process.env.SMTP_USER,
+              pass: process.env.SMTP_PASS,
+            },
+          },
+        })
+      : undefined,
   globals: [Header, Footer, Hero],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
