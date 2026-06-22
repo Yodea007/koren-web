@@ -271,6 +271,17 @@ export const Livres: CollectionConfig = {
       ],
     },
     {
+      // Encadré récapitulatif (complétude + SEO) en haut de la barre latérale, temps réel.
+      name: 'etatFicheDetail',
+      type: 'ui',
+      admin: {
+        position: 'sidebar',
+        components: {
+          Field: '@/components/admin/FicheChecklist',
+        },
+      },
+    },
+    {
       name: 'categories',
       type: 'relationship',
       relationTo: 'categories',
