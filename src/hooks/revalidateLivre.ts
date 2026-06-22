@@ -1,10 +1,10 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 
 import type { Livre } from '@/payload-types'
 
-// Régénère l'accueil + la fiche du livre dès qu'un livre change dans l'admin.
+// Régénère l'accueil + la fiche du livre + le catalogue dès qu'un livre change dans l'admin.
 export const revalidateLivre: CollectionAfterChangeHook<Livre> = ({
   doc,
   previousDoc,
@@ -12,11 +12,12 @@ export const revalidateLivre: CollectionAfterChangeHook<Livre> = ({
 }) => {
   if (!context.disableRevalidate) {
     revalidatePath('/')
+    revalidateTag('catalogue', 'max')
     if (doc?.slug) revalidatePath(`/livres/${doc.slug}`)
     if (previousDoc?.slug && previousDoc.slug !== doc?.slug) {
       revalidatePath(`/livres/${previousDoc.slug}`)
     }
-    payload.logger.info(`Revalidation accueil + fiche livre (${doc?.slug ?? doc?.id})`)
+    payload.logger.info(`Revalidation accueil + fiche livre + catalogue (${doc?.slug ?? doc?.id})`)
   }
   return doc
 }
@@ -27,6 +28,7 @@ export const revalidateLivreDelete: CollectionAfterDeleteHook<Livre> = ({
 }) => {
   if (!context.disableRevalidate) {
     revalidatePath('/')
+    revalidateTag('catalogue', 'max')
     if (doc?.slug) revalidatePath(`/livres/${doc.slug}`)
   }
   return doc

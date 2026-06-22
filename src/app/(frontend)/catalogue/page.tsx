@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 
 import configPromise from '@payload-config'
 import Link from 'next/link'
+import { unstable_cache } from 'next/cache'
 import { getPayload } from 'payload'
 import React from 'react'
 
@@ -9,9 +10,47 @@ import type { Where } from 'payload'
 
 import { BookCard } from '@/components/koren/BookCard'
 
-export const dynamic = 'force-dynamic'
-
 const LIMIT = 12
+
+// Données du catalogue mises en cache par rayon / page / nouveautés, rafraîchies à la demande
+// via le tag 'catalogue' (hooks admin livres & catégories, bouton et cron de revalidation).
+const getCatalogue = (rayon: string, page: number, nouveauteOnly: boolean) =>
+  unstable_cache(
+    async () => {
+      const payload = await getPayload({ config: configPromise })
+
+      let rayonTitre: string | null = null
+      if (rayon && !nouveauteOnly) {
+        const cat = await payload.find({
+          collection: 'categories',
+          where: { slug: { equals: rayon } },
+          limit: 1,
+          depth: 0,
+        })
+        rayonTitre = (cat.docs[0]?.title as string) ?? null
+      }
+
+      const where: Where = nouveauteOnly
+        ? { nouveaute: { equals: true } }
+        : rayon
+          ? { 'categories.slug': { equals: rayon } }
+          : {}
+
+      const result = await payload.find({
+        collection: 'livres',
+        depth: 1,
+        limit: LIMIT,
+        page,
+        where,
+        overrideAccess: false,
+        sort: '-nouveaute',
+      })
+
+      return { rayonTitre, result }
+    },
+    ['catalogue', rayon, String(page), String(nouveauteOnly)],
+    { tags: ['catalogue'] },
+  )()
 
 type Args = {
   searchParams: Promise<{ rayon?: string; page?: string; nouveaute?: string }>
@@ -22,35 +61,7 @@ export default async function CataloguePage({ searchParams }: Args) {
   const page = Math.max(1, Number(pageParam) || 1)
   const nouveauteOnly = nouveaute === '1'
 
-  const payload = await getPayload({ config: configPromise })
-
-  // Rayon courant (pour le titre)
-  let rayonTitre: string | null = null
-  if (rayon && !nouveauteOnly) {
-    const cat = await payload.find({
-      collection: 'categories',
-      where: { slug: { equals: rayon } },
-      limit: 1,
-      depth: 0,
-    })
-    rayonTitre = (cat.docs[0]?.title as string) ?? null
-  }
-
-  const where: Where = nouveauteOnly
-    ? { nouveaute: { equals: true } }
-    : rayon
-      ? { 'categories.slug': { equals: rayon } }
-      : {}
-
-  const result = await payload.find({
-    collection: 'livres',
-    depth: 1,
-    limit: LIMIT,
-    page,
-    where,
-    overrideAccess: false,
-    sort: '-nouveaute',
-  })
+  const { rayonTitre, result } = await getCatalogue(rayon ?? '', page, nouveauteOnly)
 
   const buildHref = (p: number) => {
     const params = new URLSearchParams()

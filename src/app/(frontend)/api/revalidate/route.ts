@@ -1,5 +1,5 @@
 import configPromise from '@payload-config'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { headers as nextHeaders } from 'next/headers'
 import { getPayload } from 'payload'
 
@@ -28,8 +28,10 @@ async function handle(req: Request): Promise<Response> {
     return Response.json({ error: 'Non autorisé.' }, { status: 401 })
   }
 
-  // 'layout' sur '/' = rafraîchit tout le site (accueil, fiches, etc.)
+  // 'layout' sur '/' = rafraîchit tout le site (accueil, fiches, pages, blog) ;
+  // + le tag 'catalogue' pour les données mises en cache du catalogue.
   revalidatePath('/', 'layout')
+  revalidateTag('catalogue', 'max')
 
   return Response.json({ revalidated: true, scope: 'site', via: cronOk ? 'cron' : 'admin' })
 }

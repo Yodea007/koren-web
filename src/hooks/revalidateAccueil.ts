@@ -1,15 +1,21 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, GlobalAfterChangeHook } from 'payload'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 
-// Régénère l'accueil quand une donnée qui l'alimente change (catégories, hero…).
+// Régénère l'accueil + le catalogue quand une donnée qui les alimente change (catégories, hero…).
 export const revalidateAccueil: CollectionAfterChangeHook = ({ doc, req: { context } }) => {
-  if (!context.disableRevalidate) revalidatePath('/')
+  if (!context.disableRevalidate) {
+    revalidatePath('/')
+    revalidateTag('catalogue', 'max')
+  }
   return doc
 }
 
 export const revalidateAccueilDelete: CollectionAfterDeleteHook = ({ doc, req: { context } }) => {
-  if (!context.disableRevalidate) revalidatePath('/')
+  if (!context.disableRevalidate) {
+    revalidatePath('/')
+    revalidateTag('catalogue', 'max')
+  }
   return doc
 }
 
