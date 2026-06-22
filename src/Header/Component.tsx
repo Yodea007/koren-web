@@ -4,6 +4,7 @@ import { getPayload } from 'payload'
 import React, { Suspense } from 'react'
 
 import { labelRayon, ordreRayon } from '@/utilities/koren'
+import { CartCount } from './CartCount'
 import { RayonsNav, RayonsNavLinks } from './RayonsNav'
 
 export async function Header() {
@@ -72,9 +73,7 @@ export async function Header() {
               <path d="M6 8h12l-1 11.5a1 1 0 0 1-1 .9H8a1 1 0 0 1-1-.9L6 8z" />
               <path d="M9 8V6.5a3 3 0 0 1 6 0V8" />
             </svg>
-            <span className="absolute -right-1.5 -top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#e7c56b] px-1 font-mono text-[9px] font-semibold text-bordeaux">
-              0
-            </span>
+            <CartCount />
           </Link>
         </div>
       </div>
