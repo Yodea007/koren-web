@@ -70,7 +70,7 @@ export const BonCommandeForm: React.FC<{ rayons: RayonArticles[] }> = ({ rayons 
       })
       if (!res.ok) {
         const j = (await res.json().catch(() => ({}))) as { error?: string }
-        throw new Error(j.error || 'Une erreur est survenue.')
+        throw new Error(j.error || `Une erreur est survenue (code ${res.status}).`)
       }
       const blob = await res.blob()
       const url = URL.createObjectURL(blob)
