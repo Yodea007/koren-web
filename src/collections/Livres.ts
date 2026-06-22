@@ -90,10 +90,16 @@ export const Livres: CollectionConfig = {
   },
   fields: [
     {
-      name: 'titre',
-      type: 'text',
-      required: true,
-    },
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Le livre',
+          fields: [
+            {
+              name: 'titre',
+              type: 'text',
+              required: true,
+            },
     {
       name: 'accroche',
       type: 'text',
@@ -225,6 +231,46 @@ export const Livres: CollectionConfig = {
       hasMany: true,
     },
     {
+      name: 'extraitPdf',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Extrait PDF',
+    },
+    {
+      name: 'communiquePresse',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Communiqué de presse (PDF)',
+    },
+    {
+      name: 'youtube',
+      type: 'text',
+      label: 'Lien YouTube (événement)',
+    },
+          ],
+        },
+        {
+          name: 'meta',
+          label: 'SEO',
+          fields: [
+            OverviewField({
+              titlePath: 'meta.title',
+              descriptionPath: 'meta.description',
+              imagePath: 'meta.image',
+            }),
+            MetaTitleField({ hasGenerateFn: true }),
+            MetaImageField({ relationTo: 'media' }),
+            MetaDescriptionField({}),
+            PreviewField({
+              hasGenerateFn: true,
+              titlePath: 'meta.title',
+              descriptionPath: 'meta.description',
+            }),
+          ],
+        },
+      ],
+    },
+    {
       name: 'categories',
       type: 'relationship',
       relationTo: 'categories',
@@ -335,23 +381,6 @@ export const Livres: CollectionConfig = {
       },
     },
     {
-      name: 'extraitPdf',
-      type: 'upload',
-      relationTo: 'media',
-      label: 'Extrait PDF',
-    },
-    {
-      name: 'communiquePresse',
-      type: 'upload',
-      relationTo: 'media',
-      label: 'Communiqué de presse (PDF)',
-    },
-    {
-      name: 'youtube',
-      type: 'text',
-      label: 'Lien YouTube (événement)',
-    },
-    {
       name: 'lots',
       type: 'join',
       collection: 'lots',
@@ -370,26 +399,6 @@ export const Livres: CollectionConfig = {
         position: 'sidebar',
         description: 'Identifiant d’origine sur Shopify (importé).',
       },
-    },
-    {
-      name: 'meta',
-      label: 'SEO',
-      type: 'group',
-      fields: [
-        OverviewField({
-          titlePath: 'meta.title',
-          descriptionPath: 'meta.description',
-          imagePath: 'meta.image',
-        }),
-        MetaTitleField({ hasGenerateFn: true }),
-        MetaImageField({ relationTo: 'media' }),
-        MetaDescriptionField({}),
-        PreviewField({
-          hasGenerateFn: true,
-          titlePath: 'meta.title',
-          descriptionPath: 'meta.description',
-        }),
-      ],
     },
     slugField({
       position: undefined,
