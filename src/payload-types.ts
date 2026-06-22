@@ -923,6 +923,14 @@ export interface Livre {
    * Identifiant d’origine sur Shopify (importé).
    */
   shopifyHandle?: string | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -1618,6 +1626,13 @@ export interface LivresSelect<T extends boolean = true> {
   youtube?: T;
   lots?: T;
   shopifyHandle?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
   generateSlug?: T;
   slug?: T;
   updatedAt?: T;

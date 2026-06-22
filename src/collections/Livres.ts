@@ -13,6 +13,13 @@ import {
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from 'payload'
+import {
+  MetaDescriptionField,
+  MetaImageField,
+  MetaTitleField,
+  OverviewField,
+  PreviewField,
+} from '@payloadcms/plugin-seo/fields'
 import { revalidateLivre, revalidateLivreDelete } from '../hooks/revalidateLivre'
 
 // Options partagées entre le livre et ses déclinaisons
@@ -363,6 +370,26 @@ export const Livres: CollectionConfig = {
         position: 'sidebar',
         description: 'Identifiant d’origine sur Shopify (importé).',
       },
+    },
+    {
+      name: 'meta',
+      label: 'SEO',
+      type: 'group',
+      fields: [
+        OverviewField({
+          titlePath: 'meta.title',
+          descriptionPath: 'meta.description',
+          imagePath: 'meta.image',
+        }),
+        MetaTitleField({ hasGenerateFn: true }),
+        MetaImageField({ relationTo: 'media' }),
+        MetaDescriptionField({}),
+        PreviewField({
+          hasGenerateFn: true,
+          titlePath: 'meta.title',
+          descriptionPath: 'meta.description',
+        }),
+      ],
     },
     slugField({
       position: undefined,

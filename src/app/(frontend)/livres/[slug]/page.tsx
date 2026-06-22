@@ -11,8 +11,16 @@ import type { Auteur, Lot, Media as MediaType } from '@/payload-types'
 import RichText from '@/components/RichText'
 import { BookCard } from '@/components/koren/BookCard'
 import { formatPrix, languePills, RITE_LABELS } from '@/utilities/koren'
+import { getServerSideURL } from '@/utilities/getURL'
 import { Galerie } from './Galerie'
 import { FicheAchat } from './FicheAchat'
+
+// URL d'image absolue (taille og si dispo) pour partage social / données structurées.
+const imageAbsolue = (img?: MediaType | null): string | undefined => {
+  if (!img) return undefined
+  const rel = img.sizes?.og?.url ?? img.url
+  return rel ? getServerSideURL() + rel : undefined
+}
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -59,8 +67,38 @@ export default async function FicheLivre({ params }: Args) {
   const lots = (livre.lots?.docs ?? []).filter((l): l is Lot => typeof l === 'object')
   const memeAuteur = auteurs[0] ? await queryMemeAuteur(auteurs[0].id, livre.id) : []
 
+  // Données structurées Product (Google rich results / Shopping)
+  const pageUrl = `${getServerSideURL()}/livres/${livre.slug}`
+  const descriptionSeo = livre.meta?.description || livre.accroche || undefined
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: livre.titre,
+    ...(imageAbsolue(images[0]) ? { image: [imageAbsolue(images[0])] } : {}),
+    ...(descriptionSeo ? { description: descriptionSeo } : {}),
+    ...(livre.isbn ? { isbn: livre.isbn, gtin13: livre.isbn } : {}),
+    ...(auteurs.length > 0
+      ? { author: auteurs.map((a) => ({ '@type': 'Person', name: a.nom })) }
+      : {}),
+    brand: { '@type': 'Brand', name: 'Koren' },
+    offers: {
+      '@type': 'Offer',
+      price: livre.prix,
+      priceCurrency: 'EUR',
+      availability:
+        livre.disponible === false
+          ? 'https://schema.org/OutOfStock'
+          : 'https://schema.org/InStock',
+      url: pageUrl,
+    },
+  }
+
   return (
     <div className="mx-auto max-w-[1180px] px-5 py-12 md:px-[34px] md:py-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,40%)_minmax(0,1fr)] lg:gap-16">
         {/* Galerie */}
         <Galerie images={images} titre={livre.titre} />
@@ -166,9 +204,36 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
   const { slug = '' } = await params
   const livre = await queryLivreBySlug(decodeURIComponent(slug))
   if (!livre) return { title: 'Livre · Koren France' }
+
+  const url = `${getServerSideURL()}/livres/${livre.slug}`
+  const title = livre.meta?.title || `${livre.titre} · Koren France`
+  const description =
+    livre.meta?.description ||
+    livre.accroche ||
+    `${livre.titre} — éditions Koren · Maggid · The Toby Press.`
+
+  const metaImg = typeof livre.meta?.image === 'object' ? (livre.meta?.image as MediaType) : null
+  const cover = (livre.images ?? []).find((i): i is MediaType => typeof i === 'object') ?? null
+  const ogImage = imageAbsolue(metaImg ?? cover)
+
+  const auteurNoms = (livre.auteurs ?? [])
+    .filter((a): a is Auteur => typeof a === 'object')
+    .map((a) => a.nom)
+
   return {
-    title: `${livre.titre} · Koren France`,
-    description: livre.accroche ?? undefined,
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: 'book',
+      title,
+      description,
+      url,
+      siteName: 'Koren France',
+      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {}),
+      ...(auteurNoms.length > 0 ? { authors: auteurNoms } : {}),
+      ...(livre.isbn ? { isbn: livre.isbn } : {}),
+    },
   }
 }
 
