@@ -89,7 +89,7 @@ export const BonCommandeForm: React.FC<{ rayons: RayonArticles[] }> = ({ rayons 
   }
 
   return (
-    <div className="pb-28">
+    <div>
       {/* Coordonnées */}
       <section className="mb-10 rounded-[6px] border border-ligne bg-carte p-6">
         <h2 className="mb-4 font-mono text-[11px] uppercase tracking-[2px] text-or">Vos coordonnées</h2>
@@ -208,10 +208,10 @@ export const BonCommandeForm: React.FC<{ rayons: RayonArticles[] }> = ({ rayons 
         </section>
       ))}
 
-      {/* Barre récap fixe */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-ligne bg-carte/95 backdrop-blur">
-        <div className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-between gap-4 px-5 py-3 md:px-16">
-          <div className="flex items-center gap-5">
+      {/* Récap + validation (dans le corps de page) */}
+      <section className="mt-6 rounded-[6px] border border-ligne bg-carte p-6">
+        <div className="flex flex-wrap items-center justify-between gap-5">
+          <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
             <label className="flex items-center gap-2">
               <span className="font-mono text-[11px] uppercase tracking-[1px] text-encre-douce">
                 Remise
@@ -231,13 +231,12 @@ export const BonCommandeForm: React.FC<{ rayons: RayonArticles[] }> = ({ rayons 
             <div className="font-mono text-[12px] text-encre-douce">
               {nb} article{nb > 1 ? 's' : ''} · brut {formatPrix(brut)}
             </div>
-            <div className="font-display text-xl font-semibold text-bordeaux">
+            <div className="font-display text-2xl font-semibold text-bordeaux">
               Net {formatPrix(net)}
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            {errMsg && <span className="font-mono text-[11px] text-[#b9302f]">{errMsg}</span>}
             {status === 'done' && (
               <span className="font-mono text-[11px] text-[#2f6b4f]">
                 Commande envoyée — PDF téléchargé ✓
@@ -253,7 +252,8 @@ export const BonCommandeForm: React.FC<{ rayons: RayonArticles[] }> = ({ rayons 
             </button>
           </div>
         </div>
-      </div>
+        {errMsg && <p className="mt-3 font-mono text-[11px] text-[#b9302f]">{errMsg}</p>}
+      </section>
     </div>
   )
 }

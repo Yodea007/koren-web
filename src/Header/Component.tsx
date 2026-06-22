@@ -28,7 +28,7 @@ export async function Header() {
         <span className="text-[#e7c56b]">EXPÉDITION SOUS 48 H</span>
         <span className="opacity-40 hidden sm:inline">·</span>
         <Link href="/libraires" className="hidden sm:inline hover:text-[#e7c56b]">
-          SERVICE LIBRAIRES
+          COMMANDE LIBRAIRE
         </Link>
       </div>
 
