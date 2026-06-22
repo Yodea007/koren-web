@@ -82,7 +82,7 @@ export const Livres: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'titre',
-    defaultColumns: ['titre', 'prix', 'disponible', 'nouveaute', 'updatedAt'],
+    defaultColumns: ['titre', 'prix', 'disponible', 'nouveaute', 'seoStatut', 'updatedAt'],
   },
   hooks: {
     afterChange: [revalidateLivre],
@@ -398,6 +398,17 @@ export const Livres: CollectionConfig = {
         readOnly: true,
         position: 'sidebar',
         description: 'Identifiant d’origine sur Shopify (importé).',
+      },
+    },
+    {
+      // Colonne « SEO » dans la liste : pastille verte/orange/rouge + détail au survol.
+      name: 'seoStatut',
+      type: 'ui',
+      label: 'SEO',
+      admin: {
+        components: {
+          Cell: '@/components/admin/SeoStatusCell',
+        },
       },
     },
     slugField({
