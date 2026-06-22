@@ -40,7 +40,6 @@ export async function Header() {
             alt="Koren France"
             width={359}
             height={120}
-            fetchPriority="high"
             className="h-14 w-auto block brightness-0 invert"
           />
         </Link>
