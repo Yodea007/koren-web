@@ -29,6 +29,7 @@ export const Hero: React.FC<{ slides: HeroSlide[]; intervalMs?: number }> = ({
             alt={s.alt}
             fill
             priority={i === 0}
+            quality={70}
             sizes="100vw"
             className="object-cover"
           />
