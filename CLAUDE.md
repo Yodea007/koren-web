@@ -122,6 +122,10 @@ données structurées Organization + WebSite, en-têtes de sécurité, dorés WC
 3. **Actualité** : enrichir/animer le blog (collection `Posts`).
 4. **Charte graphique** : unifier et embellir (typo, espacements, composants cohérents).
 5. **Accessibilité mobile** : menus (nav rayons sur smartphone), zones tactiles, focus, lecture écran.
+6. **Connecteur MCP (Claude ↔ site)** : exposer le site via un **serveur MCP** pour piloter le contenu/les données
+   en conversation (ex. « ajoute ce livre », « commandes du jour », « publie cet article »). Pistes : envelopper
+   l'API Payload (Local API / REST / GraphQL) dans un serveur MCP (vérifier s'il existe un MCP Payload communautaire) ;
+   cadrer l'**auth** (clé API en lecture seule vs écriture) et le périmètre exposé. À concevoir après le paiement.
 
 **Ajouts recommandés (vus en plus de ta liste)** :
 - ⚖️ **Légal — OBLIGATOIRE avant d'encaisser** : **CGV**, **mentions légales**, **politique de confidentialité (RGPD)**,
