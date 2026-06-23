@@ -81,6 +81,7 @@ export const Livres: CollectionConfig = {
     update: authenticated,
   },
   admin: {
+    group: 'Catalogue',
     useAsTitle: 'titre',
     defaultColumns: ['titre', 'etatFiche', 'seoStatut', 'prix', 'disponible', 'updatedAt'],
   },

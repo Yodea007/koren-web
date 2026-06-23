@@ -131,3 +131,33 @@ données structurées Organization + WebSite, en-têtes de sécurité, dorés WC
 - **Analytics** (ex. Plausible ou GA4) pour mesurer ventes/conversion.
 - **Disponibilité/stock** : aujourd'hui simple booléen `disponible` ; prévoir si gestion de quantités un jour.
 - **Comptes clients** (historique commandes) : reporté après la v1 invité.
+
+---
+
+## 🗂️ Organisation de l'admin (nav visée)
+
+Les groupes de la nav admin se pilotent par `admin.group: '<Nom>'` sur chaque collection/global
+(pur cosmétique, aucune migration). Nav cible validée avec le client :
+
+```
+📚 Catalogue        → Livres · Categories · Lots
+✍️  Auteurs          → Auteurs (+ à enrichir : vidéos, actualités, interviews)
+📰 Actualités        → Posts (blog)
+📄 Contenu           → Pages (Notre histoire, CGV, mentions…)
+⭐ Mise en avant     → Hero (+ à créer : Bannières/Promos)
+🏪 Libraires         → Commandes libraires (+ à créer : Magasins, relié aux commandes)
+🛒 Ventes            → (à créer : Clients · Commandes en ligne — communes au paiement Stripe)
+✉️  Newsletter        → (abonnés via form-submissions ; ENVOI délégué à Brevo/Mailchimp, NE PAS recoder un ESP)
+🖼️  Médias           → Media
+👤 Administration    → Users
+⚙️  Paramètres        → Header · Footer (+ à créer : global « Réglages » : forfait port + seuil gratuité
+                        aujourd'hui en dur dans commerce.ts, contact, réseaux ; + page d'aide liens API/DB)
+```
+
+**Déjà fait** : regroupement des collections/globals existants (les `admin.group` ci-dessus sont en place pour
+Catalogue, Auteurs, Actualités, Contenu, Médias, Administration, Libraires, Mise en avant, Paramètres).
+
+**Reste à créer** (pendant/après le paiement) : collections **Magasins**, **Clients**, **Commandes en ligne**,
+**Bannières/Promos**, global **Réglages** ; enrichir **Auteurs** (vidéos/interviews) ; intégrer **Brevo** pour la newsletter.
+
+**Vigilance** : RGPD dès qu'on stocke des Clients (registre, droit à l'effacement) ; pages légales = prérequis vente.
