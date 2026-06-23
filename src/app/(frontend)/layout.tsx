@@ -1,3 +1,15 @@
+// ┌──────────────────────────────────────────────────────────────────────────┐
+// │ LAYOUT RACINE — la coquille commune à TOUTES les pages du site public.     │
+// │ Acheminement d'une page :                                                  │
+// │   1. <html> + polices (Cormorant / Source Serif / Plex Mono)               │
+// │   2. JSON-LD global (identité éditeur + recherche) injecté dans le <head>  │
+// │   3. <Providers> : Thème + Panier (contexte React partagé par tout le site)│
+// │   4. <Header />  → bandeau, logo, icônes, nav rayons   (src/Header)         │
+// │   5. <main>{children}</main> → le CONTENU de la page courante              │
+// │   6. <Footer />  → liens, newsletter, copyright        (src/Footer)         │
+// │ `children` = le rendu de la page appelée (page.tsx du dossier visité).     │
+// └──────────────────────────────────────────────────────────────────────────┘
+
 import type { Metadata } from 'next'
 
 import { cn } from '@/utilities/ui'
@@ -88,16 +100,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
       </head>
       <body>
+        {/* Providers = contextes globaux (thème + panier). Tout ce qui est dedans
+            peut lire le panier via useCart(). */}
         <Providers>
+          {/* Barre d'admin (visible seulement en preview / connecté). */}
           <AdminBar
             adminBarProps={{
               preview: isEnabled,
             }}
           />
 
-          <Header />
-          <main>{children}</main>
-          <Footer />
+          <Header /> {/* En-tête : logo, recherche, panier, newsletter, nav rayons */}
+          <main>{children}</main> {/* ← Corps : le contenu de la page courante */}
+          <Footer /> {/* Pied : liens, formulaire newsletter, mentions */}
         </Providers>
       </body>
     </html>

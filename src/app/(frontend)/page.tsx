@@ -1,3 +1,17 @@
+// ┌──────────────────────────────────────────────────────────────────────────┐
+// │ PAGE D'ACCUEIL (/). Server Component : tout est rendu côté serveur.         │
+// │ Acheminement (lire la fonction Accueil() plus bas) :                        │
+// │   A. Récupération des données via Payload (getPayload + payload.find) :     │
+// │        • hero (diaporama éditable)   • catégories (rayons)                   │
+// │        • livres par rayon (rails)    • sélection de la maison                │
+// │   B. Rendu des BLOCS dans l'ordre d'affichage :                             │
+// │        1. <Hero>              — diaporama plein écran (client, autoplay)     │
+// │        2. section « rails »   — un <BookSwiper> par rayon                    │
+// │        3. section « sélection » — grille de 4 livres curés                  │
+// │ Composants clés : <Cover> (couverture + badges), <Hero>, <BookSwiper>.      │
+// │ Helpers : auteurNoms(), couverture()/formatPrix() (utilities/koren).        │
+// └──────────────────────────────────────────────────────────────────────────┘
+
 import type { Metadata } from 'next'
 
 import configPromise from '@payload-config'
@@ -56,6 +70,8 @@ const Cover: React.FC<{ livre: Livre; sizes: string }> = ({ livre, sizes }) => {
 
 export default async function Accueil() {
   const payload = await getPayload({ config: configPromise })
+
+  // ===== A. DONNÉES (côté serveur, via Payload) =====
 
   // Hero (diaporama éditable depuis l'admin)
   const heroData = await payload.findGlobal({ slug: 'hero', depth: 1 })
@@ -120,11 +136,13 @@ export default async function Accueil() {
     ).docs
   }
 
+  // ===== B. RENDU (blocs dans l'ordre d'affichage) =====
   return (
     <div>
+      {/* BLOC 1 — Diaporama d'accueil (composant client, autoplay) */}
       <Hero slides={heroSlides} intervalMs={heroInterval} />
 
-      {/* PUBLICATIONS — rails par rayon */}
+      {/* BLOC 2 — PUBLICATIONS : un carrousel (BookSwiper) par rayon */}
       <section className="border-y border-ligne bg-white py-12">
         {rayons.map((r) => (
           <div key={r.slug} className="first:mt-0 mt-7">
@@ -159,7 +177,7 @@ export default async function Accueil() {
         ))}
       </section>
 
-      {/* LA SÉLECTION DE LA MAISON */}
+      {/* BLOC 3 — LA SÉLECTION DE LA MAISON : grille de 4 livres curés */}
       {selection.length > 0 && (
         <section className="px-5 py-14 md:px-16">
           <div className="mx-auto max-w-[1180px]">

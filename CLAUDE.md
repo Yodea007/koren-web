@@ -1,10 +1,133 @@
-# Claude Code
+# Koren France — guide du projet (Claude Code)
 
-This project uses the Payload CMS skill at `.claude/skills/payload/`.
-Start with `.claude/skills/payload/SKILL.md` for a quick reference, then see `.claude/skills/payload/reference/` for detailed docs.
+Boutique en ligne de la maison d'édition **Koren France** (marques *Koren · Maggid · The Toby Press*) :
+bibles/Tanakh, livres de prières, Talmud, essais, littérature, jeunesse. Vente au public **et** aux libraires.
 
-## Notes
+**Stack** : Payload CMS 3.85 + Next.js 16 (App Router) + PostgreSQL (Neon) + Vercel (région `lhr1`, co-localisée avec la DB `eu-west-2`).
 
-- npm, pas pnpm (`npm run dev`, etc.)
-- Toutes les données persistantes (médias, et Postgres via docker-compose) vivent dans `editeur-livres/` à la racine — gitignoré, jamais commité
-- DB pilotée par `DATABASE_URI` ; SSL via `?sslmode=require` dans l'URL (rien en dur dans le code)
+---
+
+## Démarrer
+
+- **npm**, jamais pnpm : `npm run dev` · `npm run build` · `npm run generate:types` · `npm run generate:importmap`
+- Données persistantes (médias, Postgres docker-compose) → dossier `editeur-livres/` à la racine (**gitignoré**, jamais commité)
+- DB pilotée par `DATABASE_URI` ; SSL via `?sslmode=require` dans l'URL (rien en dur)
+- ⚠️ **Le `.env` local pointe sur la MÊME base Neon de PROD** : tout script de données lancé en local affecte la prod.
+- ⚠️ Ajouter/modifier une collection ⇒ **push drizzle interactif** au boot du dev (prompts rename/data-loss). Ajout de colonnes/tables nullable = non destructif. Puis `npm run generate:types`.
+- Compétence Payload : commencer par `.claude/skills/payload/SKILL.md`, détails dans `.claude/skills/payload/reference/`.
+
+---
+
+## Convention de commentaires (à suivre pour toute nouvelle page)
+
+Pour pouvoir suivre l'acheminement **sans entrer dans le code** :
+
+1. **En-tête de chaque `page.tsx`** : un bloc encadré « Acheminement » qui liste, dans l'ordre, les étapes data
+   puis les blocs de rendu. Modèles : [layout.tsx](src/app/(frontend)/layout.tsx) et [page.tsx](src/app/(frontend)/page.tsx).
+2. Dans le corps : marquer les sections par `// ===== A. DONNÉES =====` puis `// ===== B. RENDU =====`,
+   et chaque bloc visuel par `{/* BLOC 1 — … */}`.
+3. **Points d'entrée** : commenter chaque composant appelé dans le JSX (`<Header />` → à quoi il sert).
+4. Les **fonctions principales** portent un commentaire d'une ligne décrivant leur rôle (pas le détail d'implémentation).
+
+---
+
+## Carte des routes — `src/app/(frontend)/`
+
+| Route | Fichier | Rôle |
+|---|---|---|
+| `/` | `page.tsx` | Accueil : Hero + rails par rayon + sélection |
+| `/catalogue` | `catalogue/page.tsx` | Catalogue filtrable (`?rayon=`, `?nouveaute=1`), paginé, mis en cache (`unstable_cache`, tag `catalogue`) |
+| `/livres/[slug]` | `livres/[slug]/page.tsx` | Fiche produit (SEO/JSON-LD) + `FicheAchat.tsx` (choix édition/couleur, **futur bouton panier**) |
+| `/[slug]` | `[slug]/page.tsx` | **Pages statiques** (collection `Pages`) : « Notre histoire », CGV, etc. |
+| `/posts`, `/posts/[slug]`, `/posts/page/[n]` | `posts/…` | Blog / actualité |
+| `/search` | `search/page.tsx` | Recherche (`?q=`) |
+| `/libraires` | `libraires/page.tsx` | Espace libraires : bon de commande en ligne + lien PDF tarif |
+| `/bon-de-commande.pdf` | `bon-de-commande.pdf/route.ts` | PDF tarif vierge, toujours à jour |
+| `/panier` | `panier/page.tsx` | **Placeholder** → deviendra le vrai panier |
+| `/compte` | `compte/page.tsx` | **Placeholder** (comptes clients = plus tard) |
+| `/api/bon-de-commande` | `api/…/route.ts` | POST commande libraire → fiche Payload + e-mail + PDF |
+| `/api/revalidate` | `api/…/route.ts` | Revalidation (cron minuit + bouton admin). Auth Bearer `CRON_SECRET` ou session admin |
+| `(sitemaps)/*.xml` | `(sitemaps)/…` | Sitemaps livres / pages / posts |
+
+---
+
+## Collections & globals (`src/collections`, `src/*/config.ts`)
+
+- **Livres** : catalogue. Onglets « Le livre » / « SEO ». Déclinaisons (éditions/ISBN). Colonnes admin de qualité
+  (`État fiche`, `SEO`) + encadré récap (`components/admin/FicheChecklist`). Hooks de revalidation.
+- **Categories** (rayons), **Auteurs**, **Lots** (offres groupées), **Posts** (blog), **Pages** (pages statiques),
+  **Media** (compression auto à l'upload : ≤ 2000 px + WebP q80), **Users**, **Commandes** (= commandes **libraires**).
+- Globals : **Hero** (diaporama accueil), **Header**, **Footer**.
+
+---
+
+## Fonctions / utilitaires clés (`src/utilities`)
+
+- **`koren.ts`** : `formatPrix`, `couverture`, `labelRayon`/`ordreRayon` (les 6 rayons), libellés langue/rite/reliure.
+- **`tarif.ts`** : `articlesDeLivre(livre)` aplatit un livre en lignes vendables (une par déclinaison, fallback livre)
+  avec un **`ref` stable** (`livre-{id}` ou `livre-{id}-{i}`) — **clé commune au panier et au bon de commande**.
+- **`commerce.ts`** : règles boutique — TVA livres 5,5 %, `fraisDePort()` (forfait + gratuité ≥ 60 €),
+  `tvaIncluse()`/`montantHT()`, conversions centimes Stripe. **Constantes à confirmer en tête de fichier.**
+- **`providers/Cart`** : contexte panier (localStorage) — `add/setQte/remove/clear`, `count`, `sousTotal`. `useCart()`.
+- **`hooks/revalidateLivre.ts`**, **`revalidateAccueil.ts`** : régénèrent accueil/fiche/catalogue/sitemap sur édition admin.
+
+---
+
+## Performance & SEO — **FAIT, ne pas refaire**
+
+Site optimisé (mobile ~90, a11y ~99, best-practices 100, SEO 100), au-dessus de l'ancienne version Shopify.
+Déjà en place : compression média auto, logo SVG, `priority` sur le hero, hero en q70, CLS du swiper à 0,
+données structurées Organization + WebSite, en-têtes de sécurité, dorés WCAG AA (`text-or` foncé + `text-or-clair`).
+
+**Faux positifs Lighthouse à IGNORER** (vérifiés) :
+- « LCP en lazy / sans priority » → faux : le `<link rel=preload>` + `<img>` eager sont bien dans le HTML servi.
+  Lighthouse confond avec une couverture produit nommée « Jonas ».
+- « Polyfills 14 Ko » → bundle `nomodule` de Next, jamais téléchargé par un navigateur moderne. Non configurable.
+- « sizes → 750px » → mauvais conseil : casserait la bannière plein écran sur desktop. `100vw` est correct.
+
+---
+
+## 🔧 CHANTIER EN COURS — Paiement en ligne (Stripe)
+
+**Décisions validées** : Stripe Checkout **hébergé** (redirection) · **achat invité** uniquement ·
+**cartes + Apple/Google Pay** (PayPal ajoutable plus tard, via Stripe) · port **forfait + gratuit ≥ 60 €**.
+*(Axepta/BNP gardé en réserve si le volume justifie un jour de négocier les frais.)*
+
+**Déjà fait (fondations, commitées)** :
+- `utilities/commerce.ts` (TVA + port) · `providers/Cart` (panier) · `Header/CartCount` (compteur) · SDK `stripe` installé.
+
+**Reste à construire** (ordre conseillé) :
+1. Collection **`CommandesClient`** (slug ex. `commandes-client`, distincte des libraires) : n° commande, client,
+   lignes, montants HT/TVA/TTC, port, statut (payée/expédiée), adresse, `stripeSessionId`. → push schéma + `generate:types`.
+2. **Boutons « Ajouter au panier »** : `FicheAchat.tsx` (fiche produit) + cartes accueil/catalogue. Utiliser `useCart().add()`
+   avec le `ref` issu d'`articlesDeLivre`.
+3. Page **`/panier`** réelle : récap lignes, quantités, sous-total, port estimé (`fraisDePort`), bouton « Commander ».
+4. **`POST /api/checkout`** : recalcul **serveur** des prix (relire Payload, ne jamais croire le client) + port,
+   création `stripe.checkout.sessions.create` (mode payment, line_items, shipping_options, locale fr, success/cancel URL).
+5. **`POST /api/stripe/webhook`** : vérifier la signature (`STRIPE_WEBHOOK_SECRET`), sur `checkout.session.completed`
+   → créer la commande Payload + e-mails (client + maison) via `after()` (modèle : `api/bon-de-commande`). Runtime nodejs.
+6. Pages **`/commande/merci`** et **`/commande/annulee`**.
+
+**À obtenir de l'utilisateur pour reprendre** :
+- Montant exact du **forfait de port** + seuil de gratuité (défaut posé : 4,90 € / 60 €) ; **France seule** ou aussi UE/monde ?
+- **Clés Stripe (mode Test)** : `STRIPE_SECRET_KEY` (`sk_test_…`) + `STRIPE_WEBHOOK_SECRET` (à la 1ʳᵉ écoute du webhook).
+  Les mettre en variables d'env Vercel + `.env` local (hors dépôt).
+
+---
+
+## 📋 Feuille de route (TODO)
+
+1. **Finaliser le paiement Stripe** (chantier ci-dessus).
+2. **Pages statiques** via la collection `Pages` : « Notre histoire » ✓ existe — à ajouter (voir Légal ci-dessous + contact).
+3. **Actualité** : enrichir/animer le blog (collection `Posts`).
+4. **Charte graphique** : unifier et embellir (typo, espacements, composants cohérents).
+5. **Accessibilité mobile** : menus (nav rayons sur smartphone), zones tactiles, focus, lecture écran.
+
+**Ajouts recommandés (vus en plus de ta liste)** :
+- ⚖️ **Légal — OBLIGATOIRE avant d'encaisser** : **CGV**, **mentions légales**, **politique de confidentialité (RGPD)**,
+  **politique de retour/remboursement** ; **bandeau cookies** si analytics/tracking ; consentement newsletter.
+  → à créer en pages statiques (`Pages`) avant la mise en ligne du paiement.
+- **E-mails transactionnels** soignés (confirmation de commande, expédition) + éventuelle **facture PDF** (modèle bon de commande).
+- **Analytics** (ex. Plausible ou GA4) pour mesurer ventes/conversion.
+- **Disponibilité/stock** : aujourd'hui simple booléen `disponible` ; prévoir si gestion de quantités un jour.
+- **Comptes clients** (historique commandes) : reporté après la v1 invité.
