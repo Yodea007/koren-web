@@ -20,3 +20,6 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Réglages Claude Code personnels (machine-spécifiques, non partagés)
+.claude/settings.local.json
