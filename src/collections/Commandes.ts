@@ -17,7 +17,6 @@ export const Commandes: CollectionConfig = {
     delete: authenticated,
   },
   admin: {
-    group: 'Libraires',
     useAsTitle: 'reference',
     defaultColumns: ['reference', 'remisePourcent', 'montantNet', 'statut', 'createdAt'],
     description: 'Bons de commande validés en ligne par les libraires.',

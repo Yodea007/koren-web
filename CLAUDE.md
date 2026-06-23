@@ -154,8 +154,9 @@ Les groupes de la nav admin se pilotent par `admin.group: '<Nom>'` sur chaque co
                         aujourd'hui en dur dans commerce.ts, contact, réseaux ; + page d'aide liens API/DB)
 ```
 
-**Déjà fait** : regroupement des collections/globals existants (les `admin.group` ci-dessus sont en place pour
-Catalogue, Auteurs, Actualités, Contenu, Médias, Administration, Libraires, Mise en avant, Paramètres).
+**Statut** : structure **validée mais NON appliquée**. Un essai d'`admin.group` a été annulé (la nav groupée
+par défaut de Payload est jugée trop moche) → à refaire **proprement pendant l'étape charte graphique**
+(thème admin custom + regroupement), pas en l'état brut. Le schéma ci-dessus reste la cible.
 
 **Reste à créer** (pendant/après le paiement) : collections **Magasins**, **Clients**, **Commandes en ligne**,
 **Bannières/Promos**, global **Réglages** ; enrichir **Auteurs** (vidéos/interviews) ; intégrer **Brevo** pour la newsletter.

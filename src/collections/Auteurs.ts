@@ -18,7 +18,6 @@ export const Auteurs: CollectionConfig = {
     update: authenticated,
   },
   admin: {
-    group: 'Auteurs',
     useAsTitle: 'nom',
   },
   fields: [

@@ -14,7 +14,6 @@ export const Categories: CollectionConfig = {
     update: authenticated,
   },
   admin: {
-    group: 'Catalogue',
     useAsTitle: 'title',
   },
   hooks: {
