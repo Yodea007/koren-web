@@ -47,7 +47,7 @@ export const BookCard: React.FC<{ livre: Livre }> = ({ livre }) => {
         {eb && <p className="mb-1 font-serif text-sm italic text-encre-douce">{eb}</p>}
 
         <Link href={href}>
-          <h3 className="font-display text-xl font-semibold leading-tight text-encre hover:text-bordeaux">
+          <h3 className="font-serif text-sm font-medium leading-tight text-encre hover:text-bordeaux">
             {livre.titre}
           </h3>
         </Link>

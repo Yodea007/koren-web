@@ -111,7 +111,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           />
 
           <Header /> {/* En-tête : logo, recherche, panier, newsletter, nav rayons */}
-          <main>{children}</main> {/* ← Corps : le contenu de la page courante */}
+          <main className="bg-white">{children}</main> {/* ← Corps : le contenu de la page courante (fond blanc) */}
           <Footer /> {/* Pied : liens, formulaire newsletter, mentions */}
         </Providers>
       </body>

@@ -22,9 +22,9 @@ export async function Footer() {
     .sort((a, b) => ordreRayon(a.slug) - ordreRayon(b.slug))
 
   return (
-    <footer className="mt-auto bg-nuit text-[#C9BEA8]">
+    <footer className="mt-auto bg-bordeaux text-[#C9BEA8]">
       <div className="mx-auto max-w-[1180px] px-5 pb-10 pt-14 md:px-16">
-        <div className="grid grid-cols-1 gap-12 border-b border-[#3a3225] pb-11 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
+        <div className="grid grid-cols-1 gap-12 border-b border-bordeaux-profond pb-11 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
           {/* Newsletter */}
           <div id="newsletter" className="scroll-mt-28">
             <div className="font-display text-[28px] font-medium text-[#F1E7D2]">La lettre Koren</div>

@@ -76,9 +76,12 @@ export default async function CataloguePage({ searchParams }: Args) {
     <div className="mx-auto max-w-[1180px] px-5 py-12 md:px-[34px] md:py-16">
       <header className="mb-10 flex flex-wrap items-end justify-between gap-4 border-b border-ligne pb-6">
         <div>
-          <p className="font-mono text-[11px] uppercase tracking-[2.5px] text-or">
-            {nouveauteOnly ? 'Les dernières parutions' : rayonTitre ? 'Le rayon' : 'Le catalogue'}
-          </p>
+          {/* Pas d'intitulé « Le rayon » : le nom du rayon est déjà le titre ci-dessous */}
+          {(nouveauteOnly || !rayonTitre) && (
+            <p className="font-mono text-[11px] uppercase tracking-[2.5px] text-or">
+              {nouveauteOnly ? 'Les dernières parutions' : 'Le catalogue'}
+            </p>
+          )}
           <h1 className="mt-2 font-display text-5xl font-medium text-encre">
             {nouveauteOnly ? 'Nouveautés' : (rayonTitre ?? 'Tous les ouvrages')}
           </h1>
