@@ -4,13 +4,13 @@ import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import React from 'react'
 
-type Rayon = { title: string; slug: string }
+type Categorie = { title: string; slug: string }
 
-export const RayonsNavLinks: React.FC<{
-  rayons: Rayon[]
+export const CategoriesNavLinks: React.FC<{
+  categories: Categorie[]
   activeSlug: string | null
   nouveauteActive?: boolean
-}> = ({ rayons, activeSlug, nouveauteActive = false }) => (
+}> = ({ categories, activeSlug, nouveauteActive = false }) => (
   <nav className="flex items-center justify-center gap-3.5 md:gap-[18px] py-3 px-4 bg-secondary border-b border-[#dbccae] font-mono text-[13px] font-semibold tracking-[1.5px] uppercase overflow-x-auto overflow-y-hidden">
     <Link
       href="/catalogue?nouveaute=1"
@@ -24,13 +24,13 @@ export const RayonsNavLinks: React.FC<{
       Nouveautés
     </Link>
     <span className="h-4 w-px shrink-0 bg-[#cbb98f]" aria-hidden />
-    {rayons.map((r, i) => {
+    {categories.map((r, i) => {
       const active = r.slug === activeSlug
       return (
         <React.Fragment key={r.slug}>
           {i > 0 && <span className="h-4 w-px shrink-0 bg-[#cbb98f]" aria-hidden />}
           <Link
-            href={`/catalogue?rayon=${r.slug}`}
+            href={`/catalogue?categorie=${r.slug}`}
             className={
               'whitespace-nowrap pb-[11px] -mb-[13px] border-b-2 transition-colors ' +
               (active
@@ -46,13 +46,13 @@ export const RayonsNavLinks: React.FC<{
   </nav>
 )
 
-export const RayonsNav: React.FC<{ rayons: Rayon[] }> = ({ rayons }) => {
+export const CategoriesNav: React.FC<{ categories: Categorie[] }> = ({ categories }) => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const onCatalogue = pathname === '/catalogue'
-  const activeSlug = onCatalogue ? searchParams.get('rayon') : null
+  const activeSlug = onCatalogue ? (searchParams.get('categorie') ?? searchParams.get('rayon')) : null
   const nouveauteActive = onCatalogue && searchParams.get('nouveaute') === '1'
   return (
-    <RayonsNavLinks rayons={rayons} activeSlug={activeSlug} nouveauteActive={nouveauteActive} />
+    <CategoriesNavLinks categories={categories} activeSlug={activeSlug} nouveauteActive={nouveauteActive} />
   )
 }

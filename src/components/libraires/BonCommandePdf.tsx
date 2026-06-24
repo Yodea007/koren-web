@@ -8,7 +8,7 @@ import {
 } from '@react-pdf/renderer'
 import React from 'react'
 
-import type { RayonArticles } from '@/utilities/tarif'
+import type { CategorieArticles } from '@/utilities/tarif'
 import { formatPrix } from '@/utilities/koren'
 
 export type LibraireInfo = {
@@ -53,7 +53,7 @@ const s = StyleSheet.create({
   docMeta: { fontSize: 7.5, color: C.douce, textAlign: 'right', marginTop: 2 },
   rule: { borderBottomWidth: 1.4, borderBottomColor: C.bordeaux, marginTop: 6, marginBottom: 8 },
   // Tableau
-  rayon: {
+  categorie: {
     backgroundColor: C.bordeaux,
     color: '#f7efe0',
     fontFamily: 'Times-Bold',
@@ -146,14 +146,14 @@ const Header: React.FC<{ titre: string; meta: string }> = ({ titre, meta }) => (
 )
 
 // ---------- Tarif vierge ----------
-const TarifDocument: React.FC<{ rayons: RayonArticles[]; dateStr: string }> = ({ rayons, dateStr }) => (
+const TarifDocument: React.FC<{ categories: CategorieArticles[]; dateStr: string }> = ({ categories, dateStr }) => (
   <Document title="Tarif libraires — Koren France" author="Koren France">
     <Page size="A4" style={s.page}>
       <Header titre="Tarif libraires / Bon de commande" meta={`Tarif au ${dateStr} · Prix TTC`} />
 
-      {rayons.map((r) => (
+      {categories.map((r) => (
         <View key={r.slug} wrap={false}>
-          <Text style={s.rayon}>{r.label}</Text>
+          <Text style={s.categorie}>{r.label}</Text>
           <View style={s.th}>
             <Text style={s.cTitre}>Titre</Text>
             <Text style={s.cISBN}>ISBN</Text>
@@ -272,8 +272,8 @@ const CommandeDocument: React.FC<{ data: CommandeData; dateStr: string }> = ({ d
   )
 }
 
-export function renderTarifPdf(rayons: RayonArticles[], dateStr: string): Promise<Buffer> {
-  return renderToBuffer(<TarifDocument rayons={rayons} dateStr={dateStr} />)
+export function renderTarifPdf(categories: CategorieArticles[], dateStr: string): Promise<Buffer> {
+  return renderToBuffer(<TarifDocument categories={categories} dateStr={dateStr} />)
 }
 
 export function renderCommandePdf(data: CommandeData, dateStr: string): Promise<Buffer> {

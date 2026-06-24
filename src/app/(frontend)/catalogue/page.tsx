@@ -12,28 +12,28 @@ import { BookCard } from '@/components/koren/BookCard'
 
 const LIMIT = 12
 
-// Données du catalogue mises en cache par rayon / page / nouveautés, rafraîchies à la demande
+// Données du catalogue mises en cache par catégorie / page / nouveautés, rafraîchies à la demande
 // via le tag 'catalogue' (hooks admin livres & catégories, bouton et cron de revalidation).
-const getCatalogue = (rayon: string, page: number, nouveauteOnly: boolean) =>
+const getCatalogue = (categorie: string, page: number, nouveauteOnly: boolean) =>
   unstable_cache(
     async () => {
       const payload = await getPayload({ config: configPromise })
 
-      let rayonTitre: string | null = null
-      if (rayon && !nouveauteOnly) {
+      let categorieTitre: string | null = null
+      if (categorie && !nouveauteOnly) {
         const cat = await payload.find({
           collection: 'categories',
-          where: { slug: { equals: rayon } },
+          where: { slug: { equals: categorie } },
           limit: 1,
           depth: 0,
         })
-        rayonTitre = (cat.docs[0]?.title as string) ?? null
+        categorieTitre = (cat.docs[0]?.title as string) ?? null
       }
 
       const where: Where = nouveauteOnly
         ? { nouveaute: { equals: true } }
-        : rayon
-          ? { 'categories.slug': { equals: rayon } }
+        : categorie
+          ? { 'categories.slug': { equals: categorie } }
           : {}
 
       const result = await payload.find({
@@ -46,27 +46,29 @@ const getCatalogue = (rayon: string, page: number, nouveauteOnly: boolean) =>
         sort: '-nouveaute',
       })
 
-      return { rayonTitre, result }
+      return { categorieTitre, result }
     },
-    ['catalogue', rayon, String(page), String(nouveauteOnly)],
+    ['catalogue', categorie, String(page), String(nouveauteOnly)],
     { tags: ['catalogue'] },
   )()
 
 type Args = {
-  searchParams: Promise<{ rayon?: string; page?: string; nouveaute?: string }>
+  // `categorie` = nouveau nom du paramètre ; `rayon` conservé pour les anciens liens
+  searchParams: Promise<{ categorie?: string; rayon?: string; page?: string; nouveaute?: string }>
 }
 
 export default async function CataloguePage({ searchParams }: Args) {
-  const { rayon, page: pageParam, nouveaute } = await searchParams
+  const { categorie, rayon, page: pageParam, nouveaute } = await searchParams
+  const cat = categorie ?? rayon ?? ''
   const page = Math.max(1, Number(pageParam) || 1)
   const nouveauteOnly = nouveaute === '1'
 
-  const { rayonTitre, result } = await getCatalogue(rayon ?? '', page, nouveauteOnly)
+  const { categorieTitre, result } = await getCatalogue(cat, page, nouveauteOnly)
 
   const buildHref = (p: number) => {
     const params = new URLSearchParams()
     if (nouveauteOnly) params.set('nouveaute', '1')
-    else if (rayon) params.set('rayon', rayon)
+    else if (cat) params.set('categorie', cat)
     if (p > 1) params.set('page', String(p))
     const qs = params.toString()
     return qs ? `/catalogue?${qs}` : '/catalogue'
@@ -76,14 +78,14 @@ export default async function CataloguePage({ searchParams }: Args) {
     <div className="mx-auto max-w-[1180px] px-5 py-12 md:px-[34px] md:py-16">
       <header className="mb-10 flex flex-wrap items-end justify-between gap-4 border-b border-ligne pb-6">
         <div>
-          {/* Pas d'intitulé « Le rayon » : le nom du rayon est déjà le titre ci-dessous */}
-          {(nouveauteOnly || !rayonTitre) && (
+          {/* Pas d'intitulé « La catégorie » : le nom de la catégorie est déjà le titre ci-dessous */}
+          {(nouveauteOnly || !categorieTitre) && (
             <p className="font-mono text-[11px] uppercase tracking-[2.5px] text-or">
               {nouveauteOnly ? 'Les dernières parutions' : 'Le catalogue'}
             </p>
           )}
           <h1 className="mt-2 font-display text-5xl font-medium text-encre">
-            {nouveauteOnly ? 'Nouveautés' : (rayonTitre ?? 'Tous les ouvrages')}
+            {nouveauteOnly ? 'Nouveautés' : (categorieTitre ?? 'Tous les ouvrages')}
           </h1>
         </div>
         <p className="font-mono text-[11px] uppercase tracking-[1.5px] text-encre-pale">
@@ -93,7 +95,7 @@ export default async function CataloguePage({ searchParams }: Args) {
 
       {result.docs.length === 0 ? (
         <p className="py-20 text-center font-serif text-encre-douce">
-          {nouveauteOnly ? 'Aucune nouveauté pour le moment.' : 'Aucun ouvrage dans ce rayon.'}
+          {nouveauteOnly ? 'Aucune nouveauté pour le moment.' : 'Aucun ouvrage dans cette catégorie.'}
         </p>
       ) : (
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">

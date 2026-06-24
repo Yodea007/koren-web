@@ -3,9 +3,9 @@ import Link from 'next/link'
 import { getPayload } from 'payload'
 import React, { Suspense } from 'react'
 
-import { labelRayon, ordreRayon } from '@/utilities/koren'
+import { labelCategorie, ordreCategorie } from '@/utilities/koren'
 import { CartCount } from './CartCount'
-import { RayonsNav, RayonsNavLinks } from './RayonsNav'
+import { CategoriesNav, CategoriesNavLinks } from './CategoriesNav'
 
 export async function Header() {
   const payload = await getPayload({ config: configPromise })
@@ -16,9 +16,9 @@ export async function Header() {
     select: { title: true, slug: true },
   })
 
-  const rayons = categories
-    .map((c) => ({ title: labelRayon(c.slug as string, c.title as string), slug: c.slug as string }))
-    .sort((a, b) => ordreRayon(a.slug) - ordreRayon(b.slug))
+  const cats = categories
+    .map((c) => ({ title: labelCategorie(c.slug as string, c.title as string), slug: c.slug as string }))
+    .sort((a, b) => ordreCategorie(a.slug) - ordreCategorie(b.slug))
 
   return (
     <header>
@@ -78,9 +78,9 @@ export async function Header() {
         </div>
       </div>
 
-      {/* Nav rayons */}
-      <Suspense fallback={<RayonsNavLinks rayons={rayons} activeSlug={null} />}>
-        <RayonsNav rayons={rayons} />
+      {/* Nav catégories */}
+      <Suspense fallback={<CategoriesNavLinks categories={cats} activeSlug={null} />}>
+        <CategoriesNav categories={cats} />
       </Suspense>
     </header>
   )

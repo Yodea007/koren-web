@@ -5,7 +5,7 @@ import { getPayload } from 'payload'
 import React from 'react'
 
 import { BonCommandeForm } from '@/components/libraires/BonCommandeForm'
-import { articlesParRayon } from '@/utilities/tarif'
+import { articlesParCategorie } from '@/utilities/tarif'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,7 +19,7 @@ export default async function LibrairesPage() {
     overrideAccess: false,
     sort: 'titre',
   })
-  const rayons = articlesParRayon(docs)
+  const categories = articlesParCategorie(docs)
 
   return (
     <div className="mx-auto max-w-[1180px] px-5 py-12 md:px-16 md:py-16">
@@ -39,7 +39,7 @@ export default async function LibrairesPage() {
         </a>
       </header>
 
-      <BonCommandeForm rayons={rayons} />
+      <BonCommandeForm categories={categories} />
     </div>
   )
 }

@@ -46,9 +46,9 @@ export function couverture(livre: Pick<Livre, 'images'>) {
   return typeof img === 'object' ? img : null
 }
 
-// Les six rayons : ordre d'affichage (design) + libellés courts, par slug de catégorie.
+// Les six catégories : ordre d'affichage (design) + libellés courts, par slug de catégorie.
 // (Les titres complets en base sont plus longs ; on garde la nav compacte.)
-export const RAYON_ORDRE = [
+export const CATEGORIE_ORDRE = [
   'bibles--tanakh--houmash',
   'livres-de-prires--siddour--mahzor',
   'talmud--commentaires',
@@ -57,7 +57,7 @@ export const RAYON_ORDRE = [
   'jeunesse',
 ]
 
-export const RAYON_LABEL: Record<string, string> = {
+export const CATEGORIE_LABEL: Record<string, string> = {
   'bibles--tanakh--houmash': 'Bibles & Tanakh',
   'livres-de-prires--siddour--mahzor': 'Prières',
   'talmud--commentaires': 'Talmud',
@@ -66,12 +66,12 @@ export const RAYON_LABEL: Record<string, string> = {
   jeunesse: 'Jeunesse',
 }
 
-export const ordreRayon = (slug: string): number => {
-  const i = RAYON_ORDRE.indexOf(slug)
+export const ordreCategorie = (slug: string): number => {
+  const i = CATEGORIE_ORDRE.indexOf(slug)
   return i === -1 ? 99 : i
 }
 
-export const labelRayon = (slug: string, fallback: string): string => RAYON_LABEL[slug] ?? fallback
+export const labelCategorie = (slug: string, fallback: string): string => CATEGORIE_LABEL[slug] ?? fallback
 
 /** Eyebrow de carte : accroche si présente, sinon le rite. */
 export function eyebrow(livre: Pick<Livre, 'accroche' | 'rite'>): string | null {

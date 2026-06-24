@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from 'react'
 
-import type { RayonArticles } from '@/utilities/tarif'
+import type { CategorieArticles } from '@/utilities/tarif'
 import { formatPrix } from '@/utilities/koren'
 
 type Libraire = {
@@ -16,7 +16,7 @@ type Libraire = {
 const champ =
   'w-full rounded-[4px] border border-ligne bg-white px-3 py-2 font-serif text-sm text-encre outline-none focus:border-bordeaux'
 
-export const BonCommandeForm: React.FC<{ rayons: RayonArticles[] }> = ({ rayons }) => {
+export const BonCommandeForm: React.FC<{ categories: CategorieArticles[] }> = ({ categories }) => {
   const [qte, setQte] = useState<Record<string, number>>({})
   const [remise, setRemise] = useState<number>(0)
   const [libraire, setLibraire] = useState<Libraire>({
@@ -29,7 +29,7 @@ export const BonCommandeForm: React.FC<{ rayons: RayonArticles[] }> = ({ rayons 
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle')
   const [errMsg, setErrMsg] = useState('')
 
-  const articles = useMemo(() => rayons.flatMap((r) => r.articles), [rayons])
+  const articles = useMemo(() => categories.flatMap((r) => r.articles), [categories])
 
   const { nb, brut } = useMemo(() => {
     let nb = 0
@@ -149,8 +149,8 @@ export const BonCommandeForm: React.FC<{ rayons: RayonArticles[] }> = ({ rayons 
         </div>
       </section>
 
-      {/* Tableaux par rayon */}
-      {rayons.map((r) => (
+      {/* Tableaux par catégorie */}
+      {categories.map((r) => (
         <section key={r.slug} className="mb-9">
           <h3 className="mb-2 border-b border-bordeaux pb-1.5 font-display text-2xl font-bold text-encre">
             {r.label}

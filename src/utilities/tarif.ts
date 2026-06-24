@@ -1,6 +1,6 @@
 import type { Category, Livre } from '@/payload-types'
 
-import { labelRayon, ordreRayon } from './koren'
+import { labelCategorie, ordreCategorie } from './koren'
 
 /** Une ligne vendable du tarif : un livre, ou une déclinaison (édition) d'un livre. */
 export type Article = {
@@ -13,12 +13,12 @@ export type Article = {
   poids: number | null
   dimensions: string | null
   parCarton: number | null
-  rayonSlug: string
-  rayonLabel: string
+  categorieSlug: string
+  categorieLabel: string
   disponible: boolean
 }
 
-export type RayonArticles = {
+export type CategorieArticles = {
   slug: string
   label: string
   articles: Article[]
@@ -36,11 +36,11 @@ const premiereCategorie = (livre: Livre): Category | null => {
  */
 export function articlesDeLivre(livre: Livre): Article[] {
   const cat = premiereCategorie(livre)
-  const rayonSlug = cat?.slug ?? ''
-  const rayonLabel = labelRayon(rayonSlug, cat?.title ?? 'Autres')
+  const categorieSlug = cat?.slug ?? ''
+  const categorieLabel = labelCategorie(categorieSlug, cat?.title ?? 'Autres')
   const base = {
-    rayonSlug,
-    rayonLabel,
+    categorieSlug,
+    categorieLabel,
     dimensions: livre.dimensions ?? null,
   }
 
@@ -72,18 +72,18 @@ export function articlesDeLivre(livre: Livre): Article[] {
   ]
 }
 
-/** Tous les articles d'une liste de livres, groupés et ordonnés par rayon (ordre du catalogue). */
-export function articlesParRayon(livres: Livre[]): RayonArticles[] {
-  const map = new Map<string, RayonArticles>()
+/** Tous les articles d'une liste de livres, groupés et ordonnés par catégorie (ordre du catalogue). */
+export function articlesParCategorie(livres: Livre[]): CategorieArticles[] {
+  const map = new Map<string, CategorieArticles>()
   for (const livre of livres) {
     for (const a of articlesDeLivre(livre)) {
-      let groupe = map.get(a.rayonSlug)
+      let groupe = map.get(a.categorieSlug)
       if (!groupe) {
-        groupe = { slug: a.rayonSlug, label: a.rayonLabel, articles: [] }
-        map.set(a.rayonSlug, groupe)
+        groupe = { slug: a.categorieSlug, label: a.categorieLabel, articles: [] }
+        map.set(a.categorieSlug, groupe)
       }
       groupe.articles.push(a)
     }
   }
-  return [...map.values()].sort((x, y) => ordreRayon(x.slug) - ordreRayon(y.slug))
+  return [...map.values()].sort((x, y) => ordreCategorie(x.slug) - ordreCategorie(y.slug))
 }

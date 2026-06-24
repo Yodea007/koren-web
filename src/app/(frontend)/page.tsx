@@ -2,11 +2,11 @@
 // │ PAGE D'ACCUEIL (/). Server Component : tout est rendu côté serveur.         │
 // │ Acheminement (lire la fonction Accueil() plus bas) :                        │
 // │   A. Récupération des données via Payload (getPayload + payload.find) :     │
-// │        • hero (diaporama éditable)   • catégories (rayons)                   │
-// │        • livres par rayon (rails)    • sélection de la maison                │
+// │        • hero (diaporama éditable)   • catégories                            │
+// │        • livres par catégorie (rails)  • sélection de la maison              │
 // │   B. Rendu des BLOCS dans l'ordre d'affichage :                             │
 // │        1. <Hero>              — diaporama plein écran (client, autoplay)     │
-// │        2. section « rails »   — un <BookSwiper> par rayon                    │
+// │        2. section « rails »   — un <BookSwiper> par catégorie                │
 // │        3. section « sélection » — grille de 4 livres curés                  │
 // │ Composants clés : <Cover> (couverture + badges), <Hero>, <BookSwiper>.      │
 // │ Helpers : auteurNoms(), couverture()/formatPrix() (utilities/koren).        │
@@ -25,7 +25,7 @@ import { Media } from '@/components/Media'
 import { BookSwiper } from '@/components/koren/BookSwiper'
 import { Hero, type HeroSlide } from '@/components/koren/Hero'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
-import { couverture, formatPrix, labelRayon, ordreRayon } from '@/utilities/koren'
+import { couverture, formatPrix, labelCategorie, ordreCategorie } from '@/utilities/koren'
 
 // Accueil mis en cache, régénéré à la demande (hooks admin sur livres/catégories/hero)
 // + filet quotidien via le cron Vercel de minuit (/api/revalidate). Pas de timer glissant.
@@ -102,11 +102,11 @@ export default async function Accueil() {
     select: { title: true, slug: true },
   })
   const ordered = cats
-    .map((c) => ({ title: labelRayon(c.slug as string, c.title as string), slug: c.slug as string }))
-    .sort((a, b) => ordreRayon(a.slug) - ordreRayon(b.slug))
+    .map((c) => ({ title: labelCategorie(c.slug as string, c.title as string), slug: c.slug as string }))
+    .sort((a, b) => ordreCategorie(a.slug) - ordreCategorie(b.slug))
 
-  // Livres par rayon (rails)
-  const rayons = (
+  // Livres par catégorie (rails)
+  const categories = (
     await Promise.all(
       ordered.map(async (r) => {
         const res = await payload.find({
@@ -142,13 +142,13 @@ export default async function Accueil() {
       {/* BLOC 1 — Diaporama d'accueil (composant client, autoplay) */}
       <Hero slides={heroSlides} intervalMs={heroInterval} />
 
-      {/* BLOC 2 — PUBLICATIONS : un carrousel (BookSwiper) par rayon */}
+      {/* BLOC 2 — PUBLICATIONS : un carrousel (BookSwiper) par catégorie */}
       <section className="border-y border-ligne bg-white py-12">
-        {rayons.map((r) => (
+        {categories.map((r) => (
           <div key={r.slug} className="first:mt-0 mt-7">
             <div className="mx-auto max-w-[1180px] px-5 pb-3.5 md:px-16">
               <Link
-                href={`/catalogue?rayon=${r.slug}`}
+                href={`/catalogue?categorie=${r.slug}`}
                 className="group flex items-baseline gap-3 border-b border-bordeaux pb-1.5"
               >
                 <h3 className="font-display text-[28px] font-bold leading-none tracking-[-0.01em] text-encre transition-colors group-hover:text-bordeaux">

@@ -29,7 +29,7 @@ export const Newsletter: React.FC = () => {
 
   if (status === 'done') {
     return (
-      <p className="max-w-[300px] font-serif text-[15px] leading-relaxed text-[#9c9079]">
+      <p className="max-w-[300px] font-serif text-[15px] leading-relaxed text-white/80">
         Merci — votre inscription est bien prise en compte.
       </p>
     )
@@ -43,7 +43,7 @@ export const Newsletter: React.FC = () => {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Votre adresse e-mail"
-        className="min-w-0 flex-1 rounded-l-[4px] border border-r-0 border-[#4a4030] bg-[#2C261E] px-3.5 py-3 font-serif text-sm text-[#E7DEC9] outline-none placeholder:text-[#6e644f]"
+        className="min-w-0 flex-1 rounded-l-[4px] border border-r-0 border-white/30 bg-white/10 px-3.5 py-3 font-serif text-sm text-white outline-none placeholder:text-white/60"
       />
       <button
         type="submit"

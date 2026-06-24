@@ -2,7 +2,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 
 import { renderTarifPdf } from '@/components/libraires/BonCommandePdf'
-import { articlesParRayon } from '@/utilities/tarif'
+import { articlesParCategorie } from '@/utilities/tarif'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -20,9 +20,9 @@ export async function GET(): Promise<Response> {
     sort: 'titre',
   })
 
-  const rayons = articlesParRayon(docs)
+  const categories = articlesParCategorie(docs)
   const dateStr = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' }).format(new Date())
-  const pdf = await renderTarifPdf(rayons, dateStr)
+  const pdf = await renderTarifPdf(categories, dateStr)
 
   return new Response(new Uint8Array(pdf), {
     headers: {

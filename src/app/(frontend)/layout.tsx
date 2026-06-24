@@ -4,7 +4,7 @@
 // │   1. <html> + polices (Cormorant / Source Serif / Plex Mono)               │
 // │   2. JSON-LD global (identité éditeur + recherche) injecté dans le <head>  │
 // │   3. <Providers> : Thème + Panier (contexte React partagé par tout le site)│
-// │   4. <Header />  → bandeau, logo, icônes, nav rayons   (src/Header)         │
+// │   4. <Header />  → bandeau, logo, icônes, nav catégories (src/Header)       │
 // │   5. <main>{children}</main> → le CONTENU de la page courante              │
 // │   6. <Footer />  → liens, newsletter, copyright        (src/Footer)         │
 // │ `children` = le rendu de la page appelée (page.tsx du dossier visité).     │
@@ -110,7 +110,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             }}
           />
 
-          <Header /> {/* En-tête : logo, recherche, panier, newsletter, nav rayons */}
+          <Header /> {/* En-tête : logo, recherche, panier, newsletter, nav catégories */}
           <main className="bg-white">{children}</main> {/* ← Corps : le contenu de la page courante (fond blanc) */}
           <Footer /> {/* Pied : liens, formulaire newsletter, mentions */}
         </Providers>
