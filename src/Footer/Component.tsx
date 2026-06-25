@@ -22,7 +22,7 @@ export async function Footer() {
     .sort((a, b) => ordreCategorie(a.slug) - ordreCategorie(b.slug))
 
   return (
-    <footer className="mt-auto bg-bordeaux text-white">
+    <footer className="mt-auto bg-bordeaux-profond text-white">
       <div className="mx-auto max-w-[1180px] px-5 pb-10 pt-14 md:px-16">
         <div className="grid grid-cols-1 gap-12 border-b border-white/20 pb-11 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
           {/* Newsletter */}

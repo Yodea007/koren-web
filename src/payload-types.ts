@@ -72,6 +72,7 @@ export interface Config {
     livres: Livre;
     lots: Lot;
     commandes: Commande;
+    'commandes-client': CommandesClient;
     auteurs: Auteur;
     media: Media;
     categories: Category;
@@ -103,6 +104,7 @@ export interface Config {
     livres: LivresSelect<false> | LivresSelect<true>;
     lots: LotsSelect<false> | LotsSelect<true>;
     commandes: CommandesSelect<false> | CommandesSelect<true>;
+    'commandes-client': CommandesClientSelect<false> | CommandesClientSelect<true>;
     auteurs: AuteursSelect<false> | AuteursSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
@@ -1055,6 +1057,51 @@ export interface Commande {
   createdAt: string;
 }
 /**
+ * Commandes clients payées en ligne (Stripe).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "commandes-client".
+ */
+export interface CommandesClient {
+  id: number;
+  /**
+   * Numéro de commande (généré au paiement).
+   */
+  reference?: string | null;
+  statut?: ('payee' | 'en_preparation' | 'expediee' | 'annulee') | null;
+  client?: {
+    nom?: string | null;
+    email?: string | null;
+    telephone?: string | null;
+  };
+  adresse?: {
+    ligne1?: string | null;
+    ligne2?: string | null;
+    codePostal?: string | null;
+    ville?: string | null;
+    pays?: string | null;
+  };
+  lignes?:
+    | {
+        ref?: string | null;
+        titre?: string | null;
+        isbn?: string | null;
+        prixTTC?: number | null;
+        qte?: number | null;
+        totalLigne?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  sousTotalTTC?: number | null;
+  port?: number | null;
+  totalTTC?: number | null;
+  tvaIncluse?: number | null;
+  stripeSessionId?: string | null;
+  stripePaymentIntent?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -1337,6 +1384,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'commandes';
         value: number | Commande;
+      } | null)
+    | ({
+        relationTo: 'commandes-client';
+        value: number | CommandesClient;
       } | null)
     | ({
         relationTo: 'auteurs';
@@ -1691,6 +1742,49 @@ export interface CommandesSelect<T extends boolean = true> {
         montantNet?: T;
       };
   pdf?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "commandes-client_select".
+ */
+export interface CommandesClientSelect<T extends boolean = true> {
+  reference?: T;
+  statut?: T;
+  client?:
+    | T
+    | {
+        nom?: T;
+        email?: T;
+        telephone?: T;
+      };
+  adresse?:
+    | T
+    | {
+        ligne1?: T;
+        ligne2?: T;
+        codePostal?: T;
+        ville?: T;
+        pays?: T;
+      };
+  lignes?:
+    | T
+    | {
+        ref?: T;
+        titre?: T;
+        isbn?: T;
+        prixTTC?: T;
+        qte?: T;
+        totalLigne?: T;
+        id?: T;
+      };
+  sousTotalTTC?: T;
+  port?: T;
+  totalTTC?: T;
+  tvaIncluse?: T;
+  stripeSessionId?: T;
+  stripePaymentIntent?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2369,6 +2463,7 @@ export interface TaskCreateCollectionExport {
       | 'livres'
       | 'lots'
       | 'commandes'
+      | 'commandes-client'
       | 'auteurs'
       | 'media'
       | 'categories'

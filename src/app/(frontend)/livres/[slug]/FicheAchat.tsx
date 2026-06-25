@@ -1,8 +1,10 @@
 'use client'
 
+import Link from 'next/link'
 import React, { useMemo, useState } from 'react'
 
 import { formatPrix, RELIURE_HEX, RELIURE_LABELS } from '@/utilities/koren'
+import { useCart } from '@/providers/Cart'
 
 type Declinaison = {
   nom: string
@@ -18,7 +20,15 @@ export const FicheAchat: React.FC<{
   declinaisons: Declinaison[]
   prixBase: number
   disponibleBase: boolean
-}> = ({ declinaisons, prixBase, disponibleBase }) => {
+  // Infos livre pour construire la ligne de panier (ref aligné sur articlesDeLivre)
+  livreId: number
+  slug: string
+  titre: string
+  isbnBase: string
+  imageUrl?: string
+}> = ({ declinaisons, prixBase, disponibleBase, livreId, slug, titre, isbnBase, imageUrl }) => {
+  const { add } = useCart()
+  const [added, setAdded] = useState(false)
   // Axe Volume : déclinaisons portant un numéro de tome (dédupliquées)
   const volumes = useMemo(() => {
     const seen = new Set<number>()
@@ -37,18 +47,30 @@ export const FicheAchat: React.FC<{
   const [selCouleur, setSelCouleur] = useState<string | null>(couleurs[0] ?? null)
   const [qty, setQty] = useState(1)
 
-  const matched = useMemo(
+  // Index de la déclinaison sélectionnée (= index dans livre.declinaisons → ref stable)
+  const matchedIndex = useMemo(
     () =>
-      declinaisons.find(
+      declinaisons.findIndex(
         (d) =>
           (volumes.length === 0 || d.tome === selTome) &&
           (couleurs.length === 0 || d.couleurReliure === selCouleur),
       ),
     [declinaisons, volumes.length, couleurs.length, selTome, selCouleur],
   )
+  const matched = matchedIndex >= 0 ? declinaisons[matchedIndex] : undefined
 
   const prix = matched?.prix ?? prixBase
   const disponible = matched ? matched.disponible !== false : disponibleBase
+
+  // ref identique à articlesDeLivre : `livre-{id}` sans déclinaison, `livre-{id}-{i}` sinon
+  const ref =
+    declinaisons.length > 0 ? `livre-${livreId}-${Math.max(0, matchedIndex)}` : `livre-${livreId}`
+  const ligneTitre = matched?.nom ? `${titre} — ${matched.nom}` : titre
+
+  const handleAdd = () => {
+    add({ ref, titre: ligneTitre, prixTTC: prix, slug, isbn: isbnBase, imageUrl }, qty)
+    setAdded(true)
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -122,11 +144,21 @@ export const FicheAchat: React.FC<{
         <button
           type="button"
           disabled={!disponible}
+          onClick={handleAdd}
           className="flex-1 rounded-[5px] bg-bordeaux px-6 py-3 font-mono text-xs uppercase tracking-[1.5px] text-[#f7efe0] transition-colors hover:bg-bordeaux-profond disabled:cursor-not-allowed disabled:opacity-50"
         >
           {disponible ? `Ajouter au panier — ${formatPrix(prix)}` : 'Indisponible'}
         </button>
       </div>
+
+      {added && (
+        <p className="-mt-2 font-serif text-sm text-encre-douce">
+          ✓ Ajouté au panier.{' '}
+          <Link href="/panier" className="text-bordeaux underline underline-offset-4">
+            Voir le panier
+          </Link>
+        </p>
+      )}
 
       <div className="flex flex-wrap gap-x-5 gap-y-1 font-serif text-sm text-encre-douce">
         <span>✓ Expédié sous 48 h</span>

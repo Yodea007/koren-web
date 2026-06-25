@@ -93,25 +93,29 @@ données structurées Organization + WebSite, en-têtes de sécurité, dorés WC
 **cartes + Apple/Google Pay** (PayPal ajoutable plus tard, via Stripe) · port **forfait + gratuit ≥ 60 €**.
 *(Axepta/BNP gardé en réserve si le volume justifie un jour de négocier les frais.)*
 
-**Déjà fait (fondations, commitées)** :
-- `utilities/commerce.ts` (TVA + port) · `providers/Cart` (panier) · `Header/CartCount` (compteur) · SDK `stripe` installé.
+**Décisions appliquées** : port **4,90 € · offert dès 60 €** (`commerce.ts`) · livraison **France + Monaco** seulement.
 
-**Reste à construire** (ordre conseillé) :
-1. Collection **`CommandesClient`** (slug ex. `commandes-client`, distincte des libraires) : n° commande, client,
-   lignes, montants HT/TVA/TTC, port, statut (payée/expédiée), adresse, `stripeSessionId`. → push schéma + `generate:types`.
-2. **Boutons « Ajouter au panier »** : `FicheAchat.tsx` (fiche produit) + cartes accueil/catalogue. Utiliser `useCart().add()`
-   avec le `ref` issu d'`articlesDeLivre`.
-3. Page **`/panier`** réelle : récap lignes, quantités, sous-total, port estimé (`fraisDePort`), bouton « Commander ».
-4. **`POST /api/checkout`** : recalcul **serveur** des prix (relire Payload, ne jamais croire le client) + port,
-   création `stripe.checkout.sessions.create` (mode payment, line_items, shipping_options, locale fr, success/cancel URL).
-5. **`POST /api/stripe/webhook`** : vérifier la signature (`STRIPE_WEBHOOK_SECRET`), sur `checkout.session.completed`
-   → créer la commande Payload + e-mails (client + maison) via `after()` (modèle : `api/bon-de-commande`). Runtime nodejs.
-6. Pages **`/commande/merci`** et **`/commande/annulee`**.
+**Construit (code complet ; build + typecheck OK)** :
+- `utilities/commerce.ts` (TVA + port) · `providers/Cart` · `Header/CartCount` · SDK `stripe`.
+- Collection **`CommandesClient`** (slug `commandes-client`) : réf, client, adresse, lignes, sous-total/port/total/TVA,
+  statut, `stripeSessionId`. Créée **uniquement** par le webhook (Local API) ; `create: () => false`. Schéma poussé + types OK.
+- `utilities/panier.ts` → **`resoudrePanier()`** : recalcul serveur prix/port/TVA depuis Payload (source de vérité),
+  partagé par checkout **et** webhook. `utilities/stripe.ts` → client Stripe (null si clé absente → 503 propre).
+- Boutons **« Ajouter au panier »** : `FicheAchat.tsx` (ref aligné sur `articlesDeLivre`) + `BookCard` via
+  `components/koren/AddToCartButton.tsx` (ajout direct si 1 édition, sinon « Choisir » → fiche).
+- Page **`/panier`** réelle (`panier/PanierClient.tsx`) : récap, quantités, port estimé, « Commander ».
+- **`POST /api/checkout`** : `resoudrePanier` + `stripe.checkout.sessions.create` (mode payment, locale fr,
+  shipping FR/MC, port en `shipping_options`, `ref` dans la metadata produit).
+- **`POST /api/stripe/webhook`** : vérif signature, `checkout.session.completed` → reconstitue le panier via
+  `listLineItems` (metadata `ref`), crée la commande (**idempotent** sur `stripeSessionId`), e-mails via `after()`.
+- Pages **`/commande/merci`** (vide le panier, récap session) et **`/commande/annulee`**.
 
-**À obtenir de l'utilisateur pour reprendre** :
-- Montant exact du **forfait de port** + seuil de gratuité (défaut posé : 4,90 € / 60 €) ; **France seule** ou aussi UE/monde ?
-- **Clés Stripe (mode Test)** : `STRIPE_SECRET_KEY` (`sk_test_…`) + `STRIPE_WEBHOOK_SECRET` (à la 1ʳᵉ écoute du webhook).
-  Les mettre en variables d'env Vercel + `.env` local (hors dépôt).
+**Reste à faire (côté utilisateur, puis test réel)** :
+- **Créer le compte Stripe** + clés **mode Test** : `STRIPE_SECRET_KEY` (`sk_test_…`) → `.env` local **et** env Vercel.
+- **Webhook** : endpoint `…/api/stripe/webhook`, évènement `checkout.session.completed` ; copier `STRIPE_WEBHOOK_SECRET`
+  (`whsec_…`) en env. En local : `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
+- (Optionnel) `COMMANDES_EMAIL` pour la copie maison (défaut `e.alhadef@gmail.com`). E-mails actifs si SMTP configuré.
+- ⚠️ **Légal avant d'encaisser** : CGV, mentions légales, confidentialité RGPD, retours (voir feuille de route).
 
 ---
 

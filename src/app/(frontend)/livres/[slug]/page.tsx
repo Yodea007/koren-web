@@ -136,6 +136,11 @@ export default async function FicheLivre({ params }: Args) {
             declinaisons={declinaisons}
             prixBase={livre.prix}
             disponibleBase={livre.disponible !== false}
+            livreId={livre.id}
+            slug={livre.slug as string}
+            titre={livre.titre}
+            isbnBase={livre.isbn ?? ''}
+            imageUrl={images[0]?.url ?? undefined}
           />
 
           {livre.extraitPdf && typeof livre.extraitPdf === 'object' && livre.extraitPdf.url && (

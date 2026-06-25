@@ -4,7 +4,9 @@ import React from 'react'
 import type { Livre } from '@/payload-types'
 
 import { Media } from '@/components/Media'
+import { AddToCartButton } from '@/components/koren/AddToCartButton'
 import { couverture, eyebrow, formatPrix, languePills } from '@/utilities/koren'
+import { articlesDeLivre } from '@/utilities/tarif'
 
 export const BookCard: React.FC<{ livre: Livre }> = ({ livre }) => {
   const href = `/livres/${livre.slug}`
@@ -12,6 +14,12 @@ export const BookCard: React.FC<{ livre: Livre }> = ({ livre }) => {
   const pills = languePills(livre)
   const eb = eyebrow(livre)
   const indisponible = livre.disponible === false
+
+  // Une seule édition vendable → ajout direct ; plusieurs → on renvoie à la fiche pour choisir.
+  const articles = articlesDeLivre(livre)
+  const articleUnique = articles.length === 1 ? articles[0] : null
+  const btnClass =
+    'rounded-[5px] border border-bordeaux px-3 py-1.5 font-mono text-[10px] uppercase tracking-[1.5px] text-bordeaux transition-colors hover:bg-bordeaux hover:text-[#f7efe0] disabled:cursor-not-allowed disabled:opacity-40'
 
   return (
     <article className="flex flex-col">
@@ -62,13 +70,24 @@ export const BookCard: React.FC<{ livre: Livre }> = ({ livre }) => {
 
         <div className="mt-auto flex items-center justify-between gap-2 pt-3">
           <span className="font-display text-2xl text-bordeaux">{formatPrix(livre.prix)}</span>
-          <button
-            type="button"
-            className="rounded-[5px] border border-bordeaux px-3 py-1.5 font-mono text-[10px] uppercase tracking-[1.5px] text-bordeaux transition-colors hover:bg-bordeaux hover:text-[#f7efe0] disabled:cursor-not-allowed disabled:opacity-40"
-            disabled={indisponible}
-          >
-            Ajouter
-          </button>
+          {articleUnique ? (
+            <AddToCartButton
+              disabled={indisponible}
+              className={btnClass}
+              line={{
+                ref: articleUnique.ref,
+                titre: articleUnique.titre,
+                prixTTC: articleUnique.prixTTC,
+                slug: livre.slug as string,
+                isbn: articleUnique.isbn,
+                imageUrl: cover?.url ?? undefined,
+              }}
+            />
+          ) : (
+            <Link href={href} className={btnClass}>
+              Choisir
+            </Link>
+          )}
         </div>
       </div>
     </article>

@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url'
 import { Auteurs } from './collections/Auteurs'
 import { Categories } from './collections/Categories'
 import { Commandes } from './collections/Commandes'
+import { CommandesClient } from './collections/CommandesClient'
 import { Livres } from './collections/Livres'
 import { Lots } from './collections/Lots'
 import { Media } from './collections/Media'
@@ -70,7 +71,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Posts, Livres, Lots, Commandes, Auteurs, Media, Categories, Users],
+  collections: [Pages, Posts, Livres, Lots, Commandes, CommandesClient, Auteurs, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
   // Envoi d'e-mail via SMTP Gmail (copie des commandes libraires). Actif seulement si SMTP_USER
   // et SMTP_PASS sont définis ; sinon Payload tourne sans e-mail et la route POST sauvegarde
