@@ -93,5 +93,12 @@ export const CommandesClient: CollectionConfig = {
       label: 'Stripe — Paiement',
       admin: { readOnly: true, position: 'sidebar' },
     },
+    {
+      name: 'pdf',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Récapitulatif PDF',
+      admin: { description: 'Reçu généré à la commande.' },
+    },
   ],
 }

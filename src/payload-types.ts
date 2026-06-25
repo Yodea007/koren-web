@@ -1098,6 +1098,10 @@ export interface CommandesClient {
   tvaIncluse?: number | null;
   stripeSessionId?: string | null;
   stripePaymentIntent?: string | null;
+  /**
+   * Reçu généré à la commande.
+   */
+  pdf?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -1785,6 +1789,7 @@ export interface CommandesClientSelect<T extends boolean = true> {
   tvaIncluse?: T;
   stripeSessionId?: T;
   stripePaymentIntent?: T;
+  pdf?: T;
   updatedAt?: T;
   createdAt?: T;
 }

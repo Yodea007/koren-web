@@ -107,7 +107,10 @@ données structurées Organization + WebSite, en-têtes de sécurité, dorés WC
 - **`POST /api/checkout`** : `resoudrePanier` + `stripe.checkout.sessions.create` (mode payment, locale fr,
   shipping FR/MC, port en `shipping_options`, `ref` dans la metadata produit).
 - **`POST /api/stripe/webhook`** : vérif signature, `checkout.session.completed` → reconstitue le panier via
-  `listLineItems` (metadata `ref`), crée la commande (**idempotent** sur `stripeSessionId`), e-mails via `after()`.
+  `listLineItems` (metadata `ref`), crée la commande (**idempotent** sur `stripeSessionId`), puis via `after()` :
+  génère un **reçu PDF** (`components/commande/RecapCommandePdf.tsx`), le stocke sur la commande (champ `pdf`)
+  et l'envoie en pièce jointe de l'e-mail (client en « À », `e.alhadef@gmail.com`/`COMMANDES_EMAIL` en **Cci**).
+  ⚠️ Reçu ≠ facture légale (pas de SIRET / TVA intracom) — à compléter avec les infos société.
 - Pages **`/commande/merci`** (vide le panier, récap session) et **`/commande/annulee`**.
 
 **Reste à faire (côté utilisateur, puis test réel)** :
