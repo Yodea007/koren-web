@@ -121,7 +121,6 @@ export async function POST(req: Request): Promise<Response> {
     if (!(process.env.SMTP_USER && process.env.SMTP_PASS)) return
     const maison = process.env.COMMANDES_EMAIL || 'e.alhadef@gmail.com'
     const clientEmail = cd?.email || undefined
-    const destinataires = [...new Set([maison, clientEmail].filter(Boolean))] as string[]
     const corps = [
       `Bonjour,`,
       ``,
@@ -142,7 +141,10 @@ export async function POST(req: Request): Promise<Response> {
 
     try {
       await payload.sendEmail({
-        to: destinataires,
+        // Le client reçoit sa confirmation ; la maison (e.alhadef@gmail.com) est en copie cachée.
+        // Sans e-mail client (cas rare), tout part vers la maison.
+        to: clientEmail || maison,
+        ...(clientEmail ? { bcc: maison } : {}),
         replyTo: maison,
         subject: `Commande Koren France — ${reference}`,
         text: corps,
