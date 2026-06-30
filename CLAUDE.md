@@ -125,10 +125,14 @@ données structurées Organization + WebSite, en-têtes de sécurité, dorés WC
 ## 📋 Feuille de route (TODO)
 
 1. **Finaliser le paiement Stripe** (chantier ci-dessus).
-2. **Pages statiques** via la collection `Pages` : « Notre histoire » ✓ existe — à ajouter (voir Légal ci-dessous + contact).
+2. **Pages statiques** via la collection `Pages` : « Notre histoire » ✓. Pages **provisoires créées** (contenu « à compléter » à
+   remplir dans l'admin) : `eliyahou-koren`, `nos-auteurs`, `livraison-et-retours`, `suivi-de-commande`, `contact`, `mentions-legales`.
+   ⚠️ Contenu légal réel (CGV, mentions, RGPD, retours) reste à rédiger avant d'encaisser.
 3. **Actualité** : enrichir/animer le blog (collection `Posts`).
 4. **Charte graphique** : unifier et embellir (typo, espacements, composants cohérents).
-5. **Accessibilité mobile** : menus (nav rayons sur smartphone), zones tactiles, focus, lecture écran.
+5. **Accessibilité mobile** : ✓ **menu hamburger** (`Header/MenuDrawer.tsx`, toutes tailles) = sections « Éditions Koren » + « Aide »
+   (liens dans `utilities/nav.ts`, partagés header + footer). La **barre de catégories** (`CategoriesNav`) reste inchangée sous le
+   bandeau. Reste : zones tactiles, focus, lecture écran.
 6. **Connecteur MCP (Claude ↔ site)** : exposer le site via un **serveur MCP** pour piloter le contenu/les données
    en conversation (ex. « ajoute ce livre », « commandes du jour », « publie cet article »). Pistes : envelopper
    l'API Payload (Local API / REST / GraphQL) dans un serveur MCP (vérifier s'il existe un MCP Payload communautaire) ;

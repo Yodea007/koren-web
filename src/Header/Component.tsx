@@ -6,6 +6,7 @@ import React, { Suspense } from 'react'
 import { labelCategorie, ordreCategorie } from '@/utilities/koren'
 import { CartCount } from './CartCount'
 import { CategoriesNav, CategoriesNavLinks } from './CategoriesNav'
+import { MenuDrawer } from './MenuDrawer'
 
 export async function Header() {
   const payload = await getPayload({ config: configPromise })
@@ -33,17 +34,21 @@ export async function Header() {
         </Link>
       </div>
 
-      {/* Bandeau bordeaux : logo · recherche · newsletter · compte · panier */}
-      <div className="bg-bordeaux flex items-center justify-between gap-6 px-5 md:px-11 py-2">
-        <Link href="/" className="shrink-0">
-          <img
-            src="/koren-logo.svg"
-            alt="Koren France"
-            width={922}
-            height={296}
-            className="h-14 w-auto block"
-          />
-        </Link>
+      {/* Bandeau bordeaux : menu · logo · recherche · newsletter · compte · panier */}
+      <div className="bg-bordeaux flex items-center justify-between gap-4 px-5 md:px-11 py-2">
+        <div className="flex items-center gap-3 md:gap-6">
+          {/* Menu hamburger (toutes tailles) : sections Éditions Koren + Aide */}
+          <MenuDrawer />
+          <Link href="/" className="shrink-0">
+            <img
+              src="/koren-logo.svg"
+              alt="Koren France"
+              width={922}
+              height={296}
+              className="h-14 w-auto block"
+            />
+          </Link>
+        </div>
         <div className="flex items-center gap-4 md:gap-6 text-[#f3e7cf]">
           <Link href="/search" aria-label="Rechercher" className="block transition-opacity hover:opacity-70">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" className="h-[23px] w-[23px]">
@@ -78,7 +83,7 @@ export async function Header() {
         </div>
       </div>
 
-      {/* Nav catégories */}
+      {/* Nav catégories (barre horizontale dédiée) */}
       <Suspense fallback={<CategoriesNavLinks categories={cats} activeSlug={null} />}>
         <CategoriesNav categories={cats} />
       </Suspense>

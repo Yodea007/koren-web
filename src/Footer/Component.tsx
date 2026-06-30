@@ -4,10 +4,8 @@ import { getPayload } from 'payload'
 import React from 'react'
 
 import { labelCategorie, ordreCategorie } from '@/utilities/koren'
+import { NAV_AIDE, NAV_EDITIONS } from '@/utilities/nav'
 import { Newsletter } from './Newsletter'
-
-const COL_MAISON = ['Histoire depuis 1962', 'Eliyahou Koren', 'Nos auteurs', 'Espace libraires']
-const COL_AIDE = ['Livraison & retours', 'Suivi de commande', 'Nous contacter', 'Mentions légales']
 
 export async function Footer() {
   const payload = await getPayload({ config: configPromise })
@@ -50,12 +48,14 @@ export async function Footer() {
             </div>
           </div>
 
-          {/* La maison */}
+          {/* Éditions Koren */}
           <div>
-            <div className="mb-4 font-mono text-[10px] uppercase tracking-[2px] text-white/70">La maison</div>
+            <div className="mb-4 font-mono text-[10px] uppercase tracking-[2px] text-white/70">Éditions Koren</div>
             <div className="flex flex-col gap-[11px] font-serif text-[15px] text-white/90">
-              {COL_MAISON.map((item) => (
-                <span key={item}>{item}</span>
+              {NAV_EDITIONS.map((l) => (
+                <Link key={l.href} href={l.href} className="transition-colors hover:text-white">
+                  {l.label}
+                </Link>
               ))}
             </div>
           </div>
@@ -64,11 +64,10 @@ export async function Footer() {
           <div>
             <div className="mb-4 font-mono text-[10px] uppercase tracking-[2px] text-white/70">Aide</div>
             <div className="flex flex-col gap-[11px] font-serif text-[15px] text-white/90">
-              <Link href="/libraires" className="transition-colors hover:text-white">
-                Espace libraires
-              </Link>
-              {COL_AIDE.map((item) => (
-                <span key={item}>{item}</span>
+              {NAV_AIDE.map((l) => (
+                <Link key={l.href} href={l.href} className="transition-colors hover:text-white">
+                  {l.label}
+                </Link>
               ))}
             </div>
           </div>
