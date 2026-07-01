@@ -36,19 +36,15 @@ export async function Header() {
 
       {/* Bandeau bordeaux : menu · logo · recherche · newsletter · compte · panier */}
       <div className="bg-bordeaux flex items-center justify-between gap-4 px-5 md:px-11 py-2">
-        <div className="flex items-center gap-3 md:gap-6">
-          {/* Menu hamburger (toutes tailles) : sections Éditions Koren + Aide */}
-          <MenuDrawer />
-          <Link href="/" className="shrink-0">
-            <img
-              src="/koren-logo.svg"
-              alt="Koren France"
-              width={922}
-              height={296}
-              className="h-14 w-auto block"
-            />
-          </Link>
-        </div>
+        <Link href="/" className="shrink-0">
+          <img
+            src="/koren-logo.svg"
+            alt="Koren France"
+            width={922}
+            height={296}
+            className="h-14 w-auto block"
+          />
+        </Link>
         <div className="flex items-center gap-4 md:gap-6 text-[#f3e7cf]">
           <Link href="/search" aria-label="Rechercher" className="block transition-opacity hover:opacity-70">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" className="h-[23px] w-[23px]">
@@ -83,10 +79,15 @@ export async function Header() {
         </div>
       </div>
 
-      {/* Nav catégories (barre horizontale dédiée) */}
-      <Suspense fallback={<CategoriesNavLinks categories={cats} activeSlug={null} />}>
-        <CategoriesNav categories={cats} />
-      </Suspense>
+      {/* Barre catégories : menu hamburger (tout à gauche) + catégories */}
+      <div className="flex items-stretch bg-secondary border-b border-[#dbccae]">
+        <MenuDrawer />
+        <div className="min-w-0 flex-1">
+          <Suspense fallback={<CategoriesNavLinks categories={cats} activeSlug={null} />}>
+            <CategoriesNav categories={cats} />
+          </Suspense>
+        </div>
+      </div>
     </header>
   )
 }

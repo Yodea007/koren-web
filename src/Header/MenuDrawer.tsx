@@ -52,14 +52,13 @@ export const MenuDrawer: React.FC = () => {
         aria-label="Ouvrir le menu"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 text-[#f3e7cf] transition-opacity hover:opacity-70"
+        className="flex shrink-0 items-center px-4 text-bordeaux transition-opacity hover:opacity-70"
       >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" className="h-[22px] w-[22px]">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" className="h-[26px] w-[26px]">
           <line x1="3" y1="6" x2="21" y2="6" />
           <line x1="3" y1="12" x2="21" y2="12" />
           <line x1="3" y1="18" x2="21" y2="18" />
         </svg>
-        <span className="hidden font-mono text-[11px] uppercase tracking-[1.5px] sm:inline">Menu</span>
       </button>
 
       {/* Overlay + panneau latéral (toujours monté → transition fluide) */}

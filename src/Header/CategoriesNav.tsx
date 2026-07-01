@@ -11,7 +11,7 @@ export const CategoriesNavLinks: React.FC<{
   activeSlug: string | null
   nouveauteActive?: boolean
 }> = ({ categories, activeSlug, nouveauteActive = false }) => (
-  <nav className="flex items-center justify-center gap-3.5 md:gap-[18px] py-3 px-4 bg-secondary border-b border-[#dbccae] font-mono text-[13px] font-semibold tracking-[1.5px] uppercase overflow-x-auto overflow-y-hidden">
+  <nav className="flex items-center justify-center gap-3.5 md:gap-[18px] py-3 px-4 font-mono text-[13px] font-semibold tracking-[1.5px] uppercase overflow-x-auto overflow-y-hidden">
     <Link
       href="/catalogue?nouveaute=1"
       className={

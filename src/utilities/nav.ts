@@ -2,6 +2,7 @@
 export type NavLink = { label: string; href: string }
 
 export const NAV_EDITIONS: NavLink[] = [
+  { label: 'Actualité', href: '/posts' },
   { label: 'Histoire depuis 1962', href: '/notre-histoire' },
   { label: 'Eliyahou Koren', href: '/eliyahou-koren' },
   { label: 'Nos auteurs', href: '/nos-auteurs' },
