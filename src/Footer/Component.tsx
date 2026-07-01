@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { getPayload } from 'payload'
 import React from 'react'
 
-import { labelCategorie, ordreCategorie } from '@/utilities/koren'
+import { labelCategorieCourt, ordreCategorie } from '@/utilities/koren'
 import { NAV_AIDE, NAV_EDITIONS } from '@/utilities/nav'
 import { Newsletter } from './Newsletter'
 
@@ -13,10 +13,10 @@ export async function Footer() {
     collection: 'categories',
     depth: 0,
     limit: 50,
-    select: { title: true, slug: true },
+    select: { title: true, titreCourt: true, slug: true },
   })
   const cats = categories
-    .map((c) => ({ title: labelCategorie(c.slug as string, c.title as string), slug: c.slug as string }))
+    .map((c) => ({ title: labelCategorieCourt(c), slug: c.slug as string }))
     .sort((a, b) => ordreCategorie(a.slug) - ordreCategorie(b.slug))
 
   return (

@@ -1,6 +1,6 @@
 import type { Category, Livre } from '@/payload-types'
 
-import { labelCategorie, ordreCategorie } from './koren'
+import { labelCategorieCourt, ordreCategorie } from './koren'
 
 /** Une ligne vendable du tarif : un livre, ou une déclinaison (édition) d'un livre. */
 export type Article = {
@@ -37,7 +37,7 @@ const premiereCategorie = (livre: Livre): Category | null => {
 export function articlesDeLivre(livre: Livre): Article[] {
   const cat = premiereCategorie(livre)
   const categorieSlug = cat?.slug ?? ''
-  const categorieLabel = labelCategorie(categorieSlug, cat?.title ?? 'Autres')
+  const categorieLabel = cat ? labelCategorieCourt(cat) : 'Autres'
   const base = {
     categorieSlug,
     categorieLabel,

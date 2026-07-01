@@ -25,7 +25,7 @@ import { Media } from '@/components/Media'
 import { BookSwiper } from '@/components/koren/BookSwiper'
 import { Hero, type HeroSlide } from '@/components/koren/Hero'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
-import { couverture, formatPrix, labelCategorie, ordreCategorie } from '@/utilities/koren'
+import { couverture, formatPrix, labelCategorieCourt, ordreCategorie } from '@/utilities/koren'
 
 // Accueil mis en cache, régénéré à la demande (hooks admin sur livres/catégories/hero)
 // + filet quotidien via le cron Vercel de minuit (/api/revalidate). Pas de timer glissant.
@@ -99,10 +99,10 @@ export default async function Accueil() {
     collection: 'categories',
     depth: 0,
     limit: 50,
-    select: { title: true, slug: true },
+    select: { title: true, titreCourt: true, slug: true },
   })
   const ordered = cats
-    .map((c) => ({ title: labelCategorie(c.slug as string, c.title as string), slug: c.slug as string }))
+    .map((c) => ({ title: labelCategorieCourt(c), slug: c.slug as string }))
     .sort((a, b) => ordreCategorie(a.slug) - ordreCategorie(b.slug))
 
   // Livres par catégorie (rails)

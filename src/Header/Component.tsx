@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { getPayload } from 'payload'
 import React, { Suspense } from 'react'
 
-import { labelCategorie, ordreCategorie } from '@/utilities/koren'
+import { labelCategorieCourt, ordreCategorie } from '@/utilities/koren'
 import { CartCount } from './CartCount'
 import { CategoriesNav, CategoriesNavLinks } from './CategoriesNav'
 import { MenuDrawer } from './MenuDrawer'
@@ -14,11 +14,11 @@ export async function Header() {
     collection: 'categories',
     depth: 0,
     limit: 50,
-    select: { title: true, slug: true },
+    select: { title: true, titreCourt: true, slug: true },
   })
 
   const cats = categories
-    .map((c) => ({ title: labelCategorie(c.slug as string, c.title as string), slug: c.slug as string }))
+    .map((c) => ({ title: labelCategorieCourt(c), slug: c.slug as string }))
     .sort((a, b) => ordreCategorie(a.slug) - ordreCategorie(b.slug))
 
   return (

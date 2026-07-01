@@ -25,6 +25,16 @@ export const Categories: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      admin: {
+        description: 'Titre développé — utilisé en titre de page (H1) et pour le SEO. Ex. « Bibles — Tanakh & Houmash ».',
+      },
+    },
+    {
+      name: 'titreCourt',
+      type: 'text',
+      admin: {
+        description: 'Libellé court pour les menus (header, footer, nav catégories). Optionnel : à défaut, le titre développé est utilisé. Ex. « Bibles & Tanakh ».',
+      },
     },
     slugField({
       position: undefined,

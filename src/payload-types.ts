@@ -416,7 +416,14 @@ export interface FolderInterface {
  */
 export interface Category {
   id: number;
+  /**
+   * Titre développé — utilisé en titre de page (H1) et pour le SEO. Ex. « Bibles — Tanakh & Houmash ».
+   */
   title: string;
+  /**
+   * Libellé court pour les menus (header, footer, nav catégories). Optionnel : à défaut, le titre développé est utilisé. Ex. « Bibles & Tanakh ».
+   */
+  titreCourt?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -1906,6 +1913,7 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface CategoriesSelect<T extends boolean = true> {
   title?: T;
+  titreCourt?: T;
   generateSlug?: T;
   slug?: T;
   parent?: T;
