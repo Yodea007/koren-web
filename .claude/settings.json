@@ -46,7 +46,8 @@
       "Bash(pkill:*)",
       "Bash(ps:*)",
       "Bash(kill:*)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git rm *)"
     ],
     "ask": [
       "Bash(rm:*)",
