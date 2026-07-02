@@ -130,11 +130,13 @@ export interface Config {
     header: Header;
     footer: Footer;
     hero: Hero;
+    menu: Menu;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     hero: HeroSelect<false> | HeroSelect<true>;
+    menu: MenuSelect<false> | MenuSelect<true>;
   };
   locale: null;
   widgets: {
@@ -2427,6 +2429,38 @@ export interface Hero {
   createdAt?: string | null;
 }
 /**
+ * Sections du menu (header + footer). Glisse pour réordonner.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu".
+ */
+export interface Menu {
+  id: number;
+  sections?:
+    | {
+        /**
+         * Ex. « Éditions Koren », « Aide ».
+         */
+        titre: string;
+        liens?:
+          | {
+              intitule: string;
+              typeLien?: ('page' | 'url') | null;
+              page?: (number | null) | Page;
+              /**
+               * Ex. /libraires, /posts, ou une URL externe.
+               */
+              url?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
@@ -2485,6 +2519,30 @@ export interface HeroSelect<T extends boolean = true> {
         titre?: T;
         lien?: T;
         lienUrl?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu_select".
+ */
+export interface MenuSelect<T extends boolean = true> {
+  sections?:
+    | T
+    | {
+        titre?: T;
+        liens?:
+          | T
+          | {
+              intitule?: T;
+              typeLien?: T;
+              page?: T;
+              url?: T;
+              id?: T;
+            };
         id?: T;
       };
   updatedAt?: T;

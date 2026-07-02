@@ -3,12 +3,12 @@
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
-import { NAV_AIDE, NAV_EDITIONS, type NavLink } from '@/utilities/nav'
+import type { MenuSection } from '@/utilities/menu'
 
-// Bouton ☰ (toutes tailles) ouvrant un panneau latéral avec les sections
-// secondaires : « Éditions Koren » + « Aide ». (Les catégories restent dans
-// la barre de navigation dédiée, sous le bandeau.)
-export const MenuDrawer: React.FC = () => {
+// Bouton ☰ (toutes tailles) ouvrant un panneau latéral avec les sections du menu
+// (éditables dans l'admin, global « Menu »). Les catégories restent dans la barre
+// de navigation dédiée, sous le bandeau.
+export const MenuDrawer: React.FC<{ sections: MenuSection[] }> = ({ sections }) => {
   const [open, setOpen] = useState(false)
 
   // Échap pour fermer + blocage du défilement du fond quand le menu est ouvert.
@@ -25,25 +25,6 @@ export const MenuDrawer: React.FC = () => {
   }, [open])
 
   const close = () => setOpen(false)
-
-  const Section: React.FC<{ titre: string; links: NavLink[] }> = ({ titre, links }) => (
-    <div className="border-t border-ligne px-6 py-5 first:border-t-0">
-      <div className="mb-3 font-mono text-[10px] uppercase tracking-[2px] text-or">{titre}</div>
-      <ul className="flex flex-col gap-2.5">
-        {links.map((l) => (
-          <li key={l.href}>
-            <Link
-              href={l.href}
-              onClick={close}
-              className="font-serif text-[15px] text-encre transition-colors hover:text-bordeaux"
-            >
-              {l.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
 
   return (
     <>
@@ -93,8 +74,24 @@ export const MenuDrawer: React.FC = () => {
             </button>
           </div>
 
-          <Section titre="Éditions Koren" links={NAV_EDITIONS} />
-          <Section titre="Aide" links={NAV_AIDE} />
+          {sections.map((s) => (
+            <div key={s.titre} className="border-t border-ligne px-6 py-5 first:border-t-0">
+              <div className="mb-3 font-mono text-[10px] uppercase tracking-[2px] text-or">{s.titre}</div>
+              <ul className="flex flex-col gap-2.5">
+                {s.liens.map((l) => (
+                  <li key={l.href + l.intitule}>
+                    <Link
+                      href={l.href}
+                      onClick={close}
+                      className="font-serif text-[15px] text-encre transition-colors hover:text-bordeaux"
+                    >
+                      {l.intitule}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
     </>

@@ -4,6 +4,7 @@ import { getPayload } from 'payload'
 import React, { Suspense } from 'react'
 
 import { labelCategorieCourt, ordreCategorie } from '@/utilities/koren'
+import { getMenu } from '@/utilities/menu'
 import { CartCount } from './CartCount'
 import { CategoriesNav, CategoriesNavLinks } from './CategoriesNav'
 import { MenuDrawer } from './MenuDrawer'
@@ -20,6 +21,8 @@ export async function Header() {
   const cats = categories
     .map((c) => ({ title: labelCategorieCourt(c), slug: c.slug as string }))
     .sort((a, b) => ordreCategorie(a.slug) - ordreCategorie(b.slug))
+
+  const menuSections = await getMenu()
 
   return (
     <header>
@@ -81,7 +84,7 @@ export async function Header() {
 
       {/* Barre catégories : menu hamburger (tout à gauche) + catégories */}
       <div className="flex items-stretch bg-secondary border-b border-[#dbccae]">
-        <MenuDrawer />
+        <MenuDrawer sections={menuSections} />
         <div className="min-w-0 flex-1">
           <Suspense fallback={<CategoriesNavLinks categories={cats} activeSlug={null} />}>
             <CategoriesNav categories={cats} />

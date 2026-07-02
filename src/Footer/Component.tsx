@@ -4,7 +4,7 @@ import { getPayload } from 'payload'
 import React from 'react'
 
 import { labelCategorieCourt, ordreCategorie } from '@/utilities/koren'
-import { NAV_AIDE, NAV_EDITIONS } from '@/utilities/nav'
+import { getMenu } from '@/utilities/menu'
 import { Newsletter } from './Newsletter'
 
 export async function Footer() {
@@ -18,6 +18,8 @@ export async function Footer() {
   const cats = categories
     .map((c) => ({ title: labelCategorieCourt(c), slug: c.slug as string }))
     .sort((a, b) => ordreCategorie(a.slug) - ordreCategorie(b.slug))
+
+  const menuSections = await getMenu()
 
   return (
     <footer className="mt-auto bg-bordeaux-profond text-white">
@@ -48,29 +50,23 @@ export async function Footer() {
             </div>
           </div>
 
-          {/* Éditions Koren */}
-          <div>
-            <div className="mb-4 font-mono text-[10px] uppercase tracking-[2px] text-white/70">Éditions Koren</div>
-            <div className="flex flex-col gap-[11px] font-serif text-[15px] text-white/90">
-              {NAV_EDITIONS.map((l) => (
-                <Link key={l.href} href={l.href} className="transition-colors hover:text-white">
-                  {l.label}
-                </Link>
-              ))}
+          {/* Sections du menu (global Menu : Éditions Koren, Aide…) */}
+          {menuSections.map((s) => (
+            <div key={s.titre}>
+              <div className="mb-4 font-mono text-[10px] uppercase tracking-[2px] text-white/70">{s.titre}</div>
+              <div className="flex flex-col gap-[11px] font-serif text-[15px] text-white/90">
+                {s.liens.map((l) => (
+                  <Link
+                    key={l.href + l.intitule}
+                    href={l.href}
+                    className="transition-colors hover:text-white"
+                  >
+                    {l.intitule}
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
-
-          {/* Aide */}
-          <div>
-            <div className="mb-4 font-mono text-[10px] uppercase tracking-[2px] text-white/70">Aide</div>
-            <div className="flex flex-col gap-[11px] font-serif text-[15px] text-white/90">
-              {NAV_AIDE.map((l) => (
-                <Link key={l.href} href={l.href} className="transition-colors hover:text-white">
-                  {l.label}
-                </Link>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
 
         <div className="flex flex-col gap-2 pt-[22px] font-mono text-[10.5px] uppercase tracking-[1px] text-white/70 md:flex-row md:items-center md:justify-between">
