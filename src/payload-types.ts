@@ -2429,31 +2429,26 @@ export interface Hero {
   createdAt?: string | null;
 }
 /**
- * Sections du menu (header + footer). Glisse pour réordonner.
+ * Liste des liens du menu (header + footer). Chaque lien a un « Groupe » (parent) qui le range. Glisse pour réordonner.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "menu".
  */
 export interface Menu {
   id: number;
-  sections?:
+  liens?:
     | {
+        intitule: string;
         /**
-         * Ex. « Éditions Koren », « Aide ».
+         * Ex. « Éditions Koren », « Aide ». Les liens du même groupe sont affichés ensemble, dans l’ordre.
          */
-        titre: string;
-        liens?:
-          | {
-              intitule: string;
-              typeLien?: ('page' | 'url') | null;
-              page?: (number | null) | Page;
-              /**
-               * Ex. /libraires, /posts, ou une URL externe.
-               */
-              url?: string | null;
-              id?: string | null;
-            }[]
-          | null;
+        groupe: string;
+        typeLien?: ('page' | 'url') | null;
+        page?: (number | null) | Page;
+        /**
+         * Ex. /libraires, /posts, ou une URL externe.
+         */
+        url?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -2530,19 +2525,14 @@ export interface HeroSelect<T extends boolean = true> {
  * via the `definition` "menu_select".
  */
 export interface MenuSelect<T extends boolean = true> {
-  sections?:
+  liens?:
     | T
     | {
-        titre?: T;
-        liens?:
-          | T
-          | {
-              intitule?: T;
-              typeLien?: T;
-              page?: T;
-              url?: T;
-              id?: T;
-            };
+        intitule?: T;
+        groupe?: T;
+        typeLien?: T;
+        page?: T;
+        url?: T;
         id?: T;
       };
   updatedAt?: T;
