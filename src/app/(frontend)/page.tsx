@@ -99,11 +99,11 @@ export default async function Accueil() {
     collection: 'categories',
     depth: 0,
     limit: 50,
-    select: { title: true, titreCourt: true, slug: true },
+    select: { title: true, titreCourt: true, slug: true, ordre: true },
   })
   const ordered = cats
+    .sort((a, b) => ordreCategorie(a) - ordreCategorie(b))
     .map((c) => ({ title: labelCategorieCourt(c), slug: c.slug as string }))
-    .sort((a, b) => ordreCategorie(a.slug) - ordreCategorie(b.slug))
 
   // Livres par catégorie (rails)
   const categories = (

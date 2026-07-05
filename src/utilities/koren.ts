@@ -58,8 +58,11 @@ export const CATEGORIE_ORDRE = [
   'jeunesse',
 ]
 
-export const ordreCategorie = (slug: string): number => {
-  const i = CATEGORIE_ORDRE.indexOf(slug)
+// Ordre d'affichage d'une catégorie : champ « Ordre » de l'admin en priorité,
+// sinon l'ancienne liste codée en dur ci-dessus, sinon en fin de liste.
+export const ordreCategorie = (cat: { slug?: string | null; ordre?: number | null }): number => {
+  if (typeof cat.ordre === 'number') return cat.ordre
+  const i = CATEGORIE_ORDRE.indexOf(cat.slug ?? '')
   return i === -1 ? 99 : i
 }
 

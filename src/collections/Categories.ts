@@ -15,7 +15,9 @@ export const Categories: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    defaultColumns: ['title', 'titreCourt', 'ordre'],
   },
+  defaultSort: 'ordre',
   hooks: {
     afterChange: [revalidateAccueil],
     afterDelete: [revalidateAccueilDelete],
@@ -34,6 +36,15 @@ export const Categories: CollectionConfig = {
       type: 'text',
       admin: {
         description: 'Libellé court pour les menus (header, footer, nav catégories). Optionnel : à défaut, le titre développé est utilisé. Ex. « Bibles & Tanakh ».',
+      },
+    },
+    {
+      name: 'ordre',
+      type: 'number',
+      label: 'Ordre',
+      admin: {
+        position: 'sidebar',
+        description: 'Position dans les menus, le footer et l’accueil (1 = première). Les catégories sans numéro passent en dernier.',
       },
     },
     slugField({

@@ -13,11 +13,11 @@ export async function Footer() {
     collection: 'categories',
     depth: 0,
     limit: 50,
-    select: { title: true, titreCourt: true, slug: true },
+    select: { title: true, titreCourt: true, slug: true, ordre: true },
   })
   const cats = categories
+    .sort((a, b) => ordreCategorie(a) - ordreCategorie(b))
     .map((c) => ({ title: labelCategorieCourt(c), slug: c.slug as string }))
-    .sort((a, b) => ordreCategorie(a.slug) - ordreCategorie(b.slug))
 
   const menuSections = await getMenu()
 

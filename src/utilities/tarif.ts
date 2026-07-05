@@ -15,12 +15,14 @@ export type Article = {
   parCarton: number | null
   categorieSlug: string
   categorieLabel: string
+  categorieOrdre: number | null
   disponible: boolean
 }
 
 export type CategorieArticles = {
   slug: string
   label: string
+  ordre: number | null
   articles: Article[]
 }
 
@@ -41,6 +43,7 @@ export function articlesDeLivre(livre: Livre): Article[] {
   const base = {
     categorieSlug,
     categorieLabel,
+    categorieOrdre: cat?.ordre ?? null,
     dimensions: livre.dimensions ?? null,
   }
 
@@ -79,11 +82,11 @@ export function articlesParCategorie(livres: Livre[]): CategorieArticles[] {
     for (const a of articlesDeLivre(livre)) {
       let groupe = map.get(a.categorieSlug)
       if (!groupe) {
-        groupe = { slug: a.categorieSlug, label: a.categorieLabel, articles: [] }
+        groupe = { slug: a.categorieSlug, label: a.categorieLabel, ordre: a.categorieOrdre, articles: [] }
         map.set(a.categorieSlug, groupe)
       }
       groupe.articles.push(a)
     }
   }
-  return [...map.values()].sort((x, y) => ordreCategorie(x.slug) - ordreCategorie(y.slug))
+  return [...map.values()].sort((x, y) => ordreCategorie(x) - ordreCategorie(y))
 }
