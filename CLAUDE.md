@@ -37,16 +37,20 @@ Pour pouvoir suivre l'acheminement **sans entrer dans le code** :
 |---|---|---|
 | `/` | `page.tsx` | Accueil : Hero + rails par rayon + sélection |
 | `/catalogue` | `catalogue/page.tsx` | Catalogue filtrable (`?rayon=`, `?nouveaute=1`), paginé, mis en cache (`unstable_cache`, tag `catalogue`) |
-| `/livres/[slug]` | `livres/[slug]/page.tsx` | Fiche produit (SEO/JSON-LD) + `FicheAchat.tsx` (choix édition/couleur, **futur bouton panier**) |
+| `/livres/[slug]` | `livres/[slug]/page.tsx` | Fiche produit (SEO/JSON-LD) + `FicheAchat.tsx` (choix édition/couleur + « Ajouter au panier ») |
 | `/[slug]` | `[slug]/page.tsx` | **Pages statiques** (collection `Pages`) : « Notre histoire », CGV, etc. |
 | `/posts`, `/posts/[slug]`, `/posts/page/[n]` | `posts/…` | Blog / actualité |
 | `/search` | `search/page.tsx` | Recherche (`?q=`) |
 | `/libraires` | `libraires/page.tsx` | Espace libraires : bon de commande en ligne + lien PDF tarif |
 | `/bon-de-commande.pdf` | `bon-de-commande.pdf/route.ts` | PDF tarif vierge, toujours à jour |
-| `/panier` | `panier/page.tsx` | **Placeholder** → deviendra le vrai panier |
+| `/panier` | `panier/page.tsx` + `PanierClient.tsx` | Panier réel : récap, quantités, port estimé, « Commander » |
+| `/commande/merci`, `/commande/annulee` | `commande/…` | Retour Stripe : merci (vide le panier + récap session) / annulée |
 | `/compte` | `compte/page.tsx` | **Placeholder** (comptes clients = plus tard) |
+| `/api/checkout` | `api/checkout/route.ts` | POST panier → session Stripe Checkout (recalcul serveur via `resoudrePanier`) |
+| `/api/stripe/webhook` | `api/stripe/webhook/route.ts` | `checkout.session.completed` → commande + reçu PDF + e-mail |
 | `/api/bon-de-commande` | `api/…/route.ts` | POST commande libraire → fiche Payload + e-mail + PDF |
 | `/api/revalidate` | `api/…/route.ts` | Revalidation (cron minuit + bouton admin). Auth Bearer `CRON_SECRET` ou session admin |
+| `/next/preview`, `/next/exit-preview` | `next/…` | Aperçu brouillons (live preview Payload) |
 | `(sitemaps)/*.xml` | `(sitemaps)/…` | Sitemaps livres / pages / posts |
 
 ---
@@ -55,15 +59,22 @@ Pour pouvoir suivre l'acheminement **sans entrer dans le code** :
 
 - **Livres** : catalogue. Onglets « Le livre » / « SEO ». Déclinaisons (éditions/ISBN). Colonnes admin de qualité
   (`État fiche`, `SEO`) + encadré récap (`components/admin/FicheChecklist`). Hooks de revalidation.
-- **Categories** (rayons), **Auteurs**, **Lots** (offres groupées), **Posts** (blog), **Pages** (pages statiques),
-  **Media** (compression auto à l'upload : ≤ 2000 px + WebP q80), **Users**, **Commandes** (= commandes **libraires**).
-- Globals : **Hero** (diaporama accueil), **Header**, **Footer**.
+- **Categories** (rayons ; titres éditables : `title` long + `titreCourt` pour les menus ; champ `ordre` = position
+  dans barre/footer/accueil, fallback `CATEGORIE_ORDRE` de `koren.ts` pour les fiches sans numéro), **Auteurs**, **Lots** (offres groupées),
+  **Posts** (blog), **Pages** (pages statiques ; blocs dont « Image + Texte » responsive, images dans le texte),
+  **Media** (compression auto à l'upload : ≤ 2000 px + WebP q80), **Users**, **Commandes** (= commandes **libraires**),
+  **CommandesClient** (= commandes **en ligne**, créées par le webhook Stripe uniquement).
+- Globals : **Hero** (diaporama accueil), **Menu** (liens de nav éditables en back-office : liste plate de liens avec
+  « groupe » parent en texte libre, lien = page du site ou URL ; consommé par header ☰, footer et `Header/MenuDrawer`
+  via `utilities/menu.ts`). Les anciens globals **Header/Footer** du template (navItems jamais affichés) ont été supprimés ;
+  les composants React `src/Header/Component.tsx` et `src/Footer/Component.tsx` restent, alimentés par Categories + Menu.
 
 ---
 
 ## Fonctions / utilitaires clés (`src/utilities`)
 
-- **`koren.ts`** : `formatPrix`, `couverture`, `labelRayon`/`ordreRayon` (les 6 rayons), libellés langue/rite/reliure.
+- **`koren.ts`** : `formatPrix`, `couverture`, `labelCategorieCourt`/`ordreCategorie` (les 6 rayons), libellés langue/rite/reliure.
+- **`menu.ts`** : `getMenu()` lit le global **Menu** (liens de nav) — remplace l'ancien `nav.ts` (supprimé).
 - **`tarif.ts`** : `articlesDeLivre(livre)` aplatit un livre en lignes vendables (une par déclinaison, fallback livre)
   avec un **`ref` stable** (`livre-{id}` ou `livre-{id}-{i}`) — **clé commune au panier et au bon de commande**.
 - **`commerce.ts`** : règles boutique — TVA livres 5,5 %, `fraisDePort()` (forfait + gratuité ≥ 60 €),
@@ -113,10 +124,13 @@ données structurées Organization + WebSite, en-têtes de sécurité, dorés WC
   ⚠️ Reçu ≠ facture légale (pas de SIRET / TVA intracom) — à compléter avec les infos société.
 - Pages **`/commande/merci`** (vide le panier, récap session) et **`/commande/annulee`**.
 
-**Reste à faire (côté utilisateur, puis test réel)** :
-- **Créer le compte Stripe** + clés **mode Test** : `STRIPE_SECRET_KEY` (`sk_test_…`) → `.env` local **et** env Vercel.
-- **Webhook** : endpoint `…/api/stripe/webhook`, évènement `checkout.session.completed` ; copier `STRIPE_WEBHOOK_SECRET`
-  (`whsec_…`) en env. En local : `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
+**Fait depuis** : compte Stripe créé, clés **mode Test** (`sk_test_…`, `pk_test_…`, `whsec_…`) en place dans le `.env` local.
+
+**Reste à faire** :
+- **Test réel de bout en bout** en mode Test (panier → Checkout → webhook → commande + reçu PDF + e-mail).
+  En local : `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
+- **Vercel** : reporter les clés en env de prod + créer l'endpoint webhook côté Stripe (évènement `checkout.session.completed`).
+- **Passage en mode Live** (clés `sk_live_…`) une fois le légal en place.
 - (Optionnel) `COMMANDES_EMAIL` pour la copie maison (défaut `e.alhadef@gmail.com`). E-mails actifs si SMTP configuré.
 - ⚠️ **Légal avant d'encaisser** : CGV, mentions légales, confidentialité RGPD, retours (voir feuille de route).
 
@@ -130,9 +144,9 @@ données structurées Organization + WebSite, en-têtes de sécurité, dorés WC
    ⚠️ Contenu légal réel (CGV, mentions, RGPD, retours) reste à rédiger avant d'encaisser.
 3. **Actualité** : enrichir/animer le blog (collection `Posts`).
 4. **Charte graphique** : unifier et embellir (typo, espacements, composants cohérents).
-5. **Accessibilité mobile** : ✓ **menu hamburger** (`Header/MenuDrawer.tsx`, toutes tailles) = sections « Éditions Koren » + « Aide »
-   (liens dans `utilities/nav.ts`, partagés header + footer). La **barre de catégories** (`CategoriesNav`) reste inchangée sous le
-   bandeau. Reste : zones tactiles, focus, lecture écran.
+5. **Accessibilité mobile** : ✓ **menu hamburger** (`Header/MenuDrawer.tsx`, toutes tailles), ouvert depuis la **barre de
+   catégories** (`CategoriesNav`, à gauche) ; liens pilotés par le global **Menu** (via `utilities/menu.ts`), partagés
+   header + footer. Reste : zones tactiles, focus, lecture écran.
 6. **Connecteur MCP (Claude ↔ site)** : exposer le site via un **serveur MCP** pour piloter le contenu/les données
    en conversation (ex. « ajoute ce livre », « commandes du jour », « publie cet article »). Pistes : envelopper
    l'API Payload (Local API / REST / GraphQL) dans un serveur MCP (vérifier s'il existe un MCP Payload communautaire) ;
@@ -161,11 +175,11 @@ Les groupes de la nav admin se pilotent par `admin.group: '<Nom>'` sur chaque co
 📄 Contenu           → Pages (Notre histoire, CGV, mentions…)
 ⭐ Mise en avant     → Hero (+ à créer : Bannières/Promos)
 🏪 Libraires         → Commandes libraires (+ à créer : Magasins, relié aux commandes)
-🛒 Ventes            → (à créer : Clients · Commandes en ligne — communes au paiement Stripe)
+🛒 Ventes            → CommandesClient (commandes en ligne ✓) (+ à créer : Clients)
 ✉️  Newsletter        → (abonnés via form-submissions ; ENVOI délégué à Brevo/Mailchimp, NE PAS recoder un ESP)
 🖼️  Médias           → Media
 👤 Administration    → Users
-⚙️  Paramètres        → Header · Footer (+ à créer : global « Réglages » : forfait port + seuil gratuité
+⚙️  Paramètres        → Menu (+ à créer : global « Réglages » : forfait port + seuil gratuité
                         aujourd'hui en dur dans commerce.ts, contact, réseaux ; + page d'aide liens API/DB)
 ```
 
@@ -173,7 +187,8 @@ Les groupes de la nav admin se pilotent par `admin.group: '<Nom>'` sur chaque co
 par défaut de Payload est jugée trop moche) → à refaire **proprement pendant l'étape charte graphique**
 (thème admin custom + regroupement), pas en l'état brut. Le schéma ci-dessus reste la cible.
 
-**Reste à créer** (pendant/après le paiement) : collections **Magasins**, **Clients**, **Commandes en ligne**,
+**Reste à créer** (pendant/après le paiement) : collections **Magasins**, **Clients**,
 **Bannières/Promos**, global **Réglages** ; enrichir **Auteurs** (vidéos/interviews) ; intégrer **Brevo** pour la newsletter.
+*(« Commandes en ligne » = collection `CommandesClient`, déjà créée avec le paiement Stripe.)*
 
 **Vigilance** : RGPD dès qu'on stocke des Clients (registre, droit à l'effacement) ; pages légales = prérequis vente.
