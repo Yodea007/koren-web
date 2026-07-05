@@ -15,8 +15,6 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
-import { Footer } from './Footer/config'
-import { Header } from './Header/config'
 import { Hero } from './Hero/config'
 import { Menu } from './Menu/config'
 import { plugins } from './plugins'
@@ -93,7 +91,7 @@ export default buildConfig({
           },
         })
       : undefined,
-  globals: [Header, Footer, Hero, Menu],
+  globals: [Hero, Menu],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

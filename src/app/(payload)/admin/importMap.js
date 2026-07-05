@@ -51,8 +51,6 @@ import { ExportSaveButton as ExportSaveButton_cdf7e044479f899a31f804427d568b36 }
 import { ImportPreview as ImportPreview_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
 import { ImportSaveButton as ImportSaveButton_cdf7e044479f899a31f804427d568b36 } from '@payloadcms/plugin-import-export/rsc'
 import { FolderTypeField as FolderTypeField_2b8867833a34864a02ddf429b0728a40 } from '@payloadcms/next/client'
-import { RowLabel as RowLabel_ec255a65fa6fa8d1faeb09cf35284224 } from '@/Header/RowLabel'
-import { RowLabel as RowLabel_1f6ff6ff633e3695d348f4f3c58f1466 } from '@/Footer/RowLabel'
 import { RowLabelLien as RowLabelLien_81db1502fe5a6335bae325a93de9ba6b } from '@/Menu/RowLabelLien'
 import { default as default_a9df43663c2863a78ae1106465336bec } from '@/components/RevalidateButton'
 import { default as default_1a7510af427896d367a49dbf838d2de6 } from '@/components/BeforeDashboard'
@@ -116,8 +114,6 @@ export const importMap = {
   "@payloadcms/plugin-import-export/rsc#ImportPreview": ImportPreview_cdf7e044479f899a31f804427d568b36,
   "@payloadcms/plugin-import-export/rsc#ImportSaveButton": ImportSaveButton_cdf7e044479f899a31f804427d568b36,
   "@payloadcms/next/client#FolderTypeField": FolderTypeField_2b8867833a34864a02ddf429b0728a40,
-  "@/Header/RowLabel#RowLabel": RowLabel_ec255a65fa6fa8d1faeb09cf35284224,
-  "@/Footer/RowLabel#RowLabel": RowLabel_1f6ff6ff633e3695d348f4f3c58f1466,
   "@/Menu/RowLabelLien#RowLabelLien": RowLabelLien_81db1502fe5a6335bae325a93de9ba6b,
   "@/components/RevalidateButton#default": default_a9df43663c2863a78ae1106465336bec,
   "@/components/BeforeDashboard#default": default_1a7510af427896d367a49dbf838d2de6,

@@ -47,7 +47,9 @@
       "Bash(ps:*)",
       "Bash(kill:*)",
       "Bash(git push *)",
-      "Bash(git rm *)"
+      "Bash(git rm *)",
+      "Bash(awk -F: '{print $NF}')",
+      "Bash(DUMP_OUT=\"/private/tmp/claude-501/-Users-laurentalhadef-editeur-livres-koren-web/dd8addcc-d0ed-4851-8b14-0d3019a62aa8/scratchpad/header-footer-dump.json\" node --env-file=.env --no-deprecation --import tsx/esm \"/private/tmp/claude-501/-Users-laurentalhadef-editeur-livres-koren-web/dd8addcc-d0ed-4851-8b14-0d3019a62aa8/scratchpad/dump-header-footer.ts\")"
     ],
     "ask": [
       "Bash(rm:*)",
