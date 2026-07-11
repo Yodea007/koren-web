@@ -6,11 +6,10 @@ import React, { useEffect, useState } from 'react'
 import type { MenuSection } from '@/utilities/menu'
 
 // Bouton ☰ ouvrant un panneau latéral avec les sections du menu (éditables dans l'admin,
-// global « Menu ») présentées en accordéons. Sur desktop (≥ lg), les mêmes sections
-// s'affichent en onglets déroulants dans la barre de catégories (MenuDeroulant).
+// global « Menu ») présentées en accordéons.
 // Deux emplacements selon la taille (prop `variante`) :
 // - « bandeau » : smartphone (< md), dans le bandeau bordeaux à côté du logo ;
-// - « barre »   : tablette (md–lg), à gauche de la barre de catégories (comme à l'origine).
+// - « barre »   : tablette et desktop (≥ md), à gauche de la barre de catégories.
 // Sur smartphone s'ajoutent : une section « Catégories » (Nouveautés + rayons) en tête —
 // la barre de catégories est masquée — et les liens Newsletter / Mon compte en pied,
 // retirés du bandeau pour ne garder que logo, ☰, recherche et panier.
@@ -66,7 +65,7 @@ export const MenuDrawer: React.FC<{
         className={
           variante === 'bandeau'
             ? 'flex shrink-0 items-center text-[#f3e7cf] transition-opacity hover:opacity-70 md:hidden'
-            : 'hidden shrink-0 items-center px-4 text-bordeaux transition-opacity hover:opacity-70 md:flex lg:hidden'
+            : 'hidden shrink-0 items-center px-4 text-bordeaux transition-opacity hover:opacity-70 md:flex'
         }
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" className="h-[26px] w-[26px]">
@@ -78,7 +77,7 @@ export const MenuDrawer: React.FC<{
 
       {/* Overlay + panneau latéral (toujours monté → transition fluide) */}
       <div
-        className={'fixed inset-0 z-[60] lg:hidden ' + (open ? '' : 'pointer-events-none')}
+        className={'fixed inset-0 z-[60] ' + (open ? '' : 'pointer-events-none')}
         aria-hidden={!open}
         role="dialog"
         aria-modal="true"

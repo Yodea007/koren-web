@@ -7,7 +7,6 @@ import { labelCategorieCourt, ordreCategorie } from '@/utilities/koren'
 import { getMenu } from '@/utilities/menu'
 import { CartCount } from './CartCount'
 import { CategoriesNav, CategoriesNavLinks } from './CategoriesNav'
-import { MenuDeroulant } from './MenuDeroulant'
 import { MenuDrawer } from './MenuDrawer'
 
 export async function Header() {
@@ -89,7 +88,7 @@ export async function Header() {
       </div>
 
       {/* Barre catégories (masquée sur smartphone : les catégories sont dans le tiroir ☰) :
-          ☰ (tablette) + catégories + onglets déroulants du menu (desktop) */}
+          ☰ (tout à gauche, tablette et desktop) + catégories */}
       <div className="hidden md:flex items-stretch bg-secondary border-b border-[#dbccae]">
         <MenuDrawer sections={menuSections} variante="barre" />
         <div className="min-w-0 flex-1">
@@ -97,7 +96,6 @@ export async function Header() {
             <CategoriesNav categories={cats} />
           </Suspense>
         </div>
-        <MenuDeroulant sections={menuSections} />
       </div>
     </header>
   )
