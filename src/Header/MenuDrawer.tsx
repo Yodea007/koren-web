@@ -5,17 +5,20 @@ import React, { useEffect, useState } from 'react'
 
 import type { MenuSection } from '@/utilities/menu'
 
-// Bouton ☰ (mobile/tablette, < lg, dans le bandeau bordeaux à côté du logo) ouvrant un
-// panneau latéral avec les sections du menu (éditables dans l'admin, global « Menu »)
-// présentées en accordéons. Sur desktop (≥ lg), les mêmes sections s'affichent en onglets
-// déroulants dans la barre de catégories (MenuDeroulant).
-// Sur smartphone (< md), s'ajoutent : une section « Catégories » (Nouveautés + rayons) en
-// tête — la barre de catégories est masquée — et les liens Newsletter / Mon compte en pied,
+// Bouton ☰ ouvrant un panneau latéral avec les sections du menu (éditables dans l'admin,
+// global « Menu ») présentées en accordéons. Sur desktop (≥ lg), les mêmes sections
+// s'affichent en onglets déroulants dans la barre de catégories (MenuDeroulant).
+// Deux emplacements selon la taille (prop `variante`) :
+// - « bandeau » : smartphone (< md), dans le bandeau bordeaux à côté du logo ;
+// - « barre »   : tablette (md–lg), à gauche de la barre de catégories (comme à l'origine).
+// Sur smartphone s'ajoutent : une section « Catégories » (Nouveautés + rayons) en tête —
+// la barre de catégories est masquée — et les liens Newsletter / Mon compte en pied,
 // retirés du bandeau pour ne garder que logo, ☰, recherche et panier.
 export const MenuDrawer: React.FC<{
   sections: MenuSection[]
   categories?: { title: string; slug: string }[]
-}> = ({ sections, categories = [] }) => {
+  variante?: 'bandeau' | 'barre'
+}> = ({ sections, categories = [], variante = 'bandeau' }) => {
   const [open, setOpen] = useState(false)
 
   // Section « Catégories » (smartphone uniquement) + sections du global « Menu ».
@@ -60,7 +63,11 @@ export const MenuDrawer: React.FC<{
         aria-label="Ouvrir le menu"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="flex shrink-0 items-center text-[#f3e7cf] transition-opacity hover:opacity-70 lg:hidden"
+        className={
+          variante === 'bandeau'
+            ? 'flex shrink-0 items-center text-[#f3e7cf] transition-opacity hover:opacity-70 md:hidden'
+            : 'hidden shrink-0 items-center px-4 text-bordeaux transition-opacity hover:opacity-70 md:flex lg:hidden'
+        }
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" className="h-[26px] w-[26px]">
           <line x1="3" y1="6" x2="21" y2="6" />

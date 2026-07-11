@@ -38,9 +38,9 @@ export async function Header() {
         </Link>
       </div>
 
-      {/* Bandeau bordeaux : ☰ (mobile/tablette) · logo · recherche · newsletter · compte · panier.
-          Sur smartphone (< md) : seulement ☰, logo, recherche, panier — newsletter et compte
-          passent dans le tiroir ☰. */}
+      {/* Bandeau bordeaux : logo · recherche · newsletter · compte · panier.
+          Sur smartphone (< md) : seulement ☰ (à côté du logo), logo, recherche, panier —
+          newsletter et compte passent dans le tiroir ☰. À partir de md : comme à l'origine. */}
       <div className="bg-bordeaux flex items-center justify-between gap-4 px-5 md:px-11 py-2">
         <div className="flex min-w-0 items-center gap-3">
           <MenuDrawer sections={menuSections} categories={cats} />
@@ -88,9 +88,10 @@ export async function Header() {
         </div>
       </div>
 
-      {/* Barre catégories (masquée sur smartphone : les catégories sont dans le tiroir ☰)
-          + onglets déroulants du menu (desktop) */}
+      {/* Barre catégories (masquée sur smartphone : les catégories sont dans le tiroir ☰) :
+          ☰ (tablette) + catégories + onglets déroulants du menu (desktop) */}
       <div className="hidden md:flex items-stretch bg-secondary border-b border-[#dbccae]">
+        <MenuDrawer sections={menuSections} variante="barre" />
         <div className="min-w-0 flex-1">
           <Suspense fallback={<CategoriesNavLinks categories={cats} activeSlug={null} />}>
             <CategoriesNav categories={cats} />
