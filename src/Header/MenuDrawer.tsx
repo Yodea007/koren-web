@@ -5,11 +5,36 @@ import React, { useEffect, useState } from 'react'
 
 import type { MenuSection } from '@/utilities/menu'
 
-// Bouton ☰ (toutes tailles) ouvrant un panneau latéral avec les sections du menu
-// (éditables dans l'admin, global « Menu »). Les catégories restent dans la barre
-// de navigation dédiée, sous le bandeau.
-export const MenuDrawer: React.FC<{ sections: MenuSection[] }> = ({ sections }) => {
+// Bouton ☰ (mobile/tablette, < lg) ouvrant un panneau latéral avec les sections du menu
+// (éditables dans l'admin, global « Menu ») présentées en accordéons. Sur desktop (≥ lg),
+// les mêmes sections s'affichent en onglets déroulants dans la barre (MenuDeroulant).
+// Sur smartphone (< md), une section « Catégories » (Nouveautés + rayons) s'ajoute en tête,
+// car la barre de catégories horizontale y est peu pratique.
+export const MenuDrawer: React.FC<{
+  sections: MenuSection[]
+  categories?: { title: string; slug: string }[]
+}> = ({ sections, categories = [] }) => {
   const [open, setOpen] = useState(false)
+
+  // Section « Catégories » (smartphone uniquement) + sections du global « Menu ».
+  const toutes: (MenuSection & { mobileOnly?: boolean })[] = [
+    ...(categories.length > 0
+      ? [
+          {
+            titre: 'Catégories',
+            mobileOnly: true,
+            liens: [
+              { intitule: 'Nouveautés', href: '/catalogue?nouveaute=1' },
+              ...categories.map((c) => ({ intitule: c.title, href: `/catalogue?categorie=${c.slug}` })),
+            ],
+          },
+        ]
+      : []),
+    ...sections,
+  ]
+
+  // Accordéon : une section dépliée à la fois, la première par défaut.
+  const [depliee, setDepliee] = useState<string | null>(toutes[0]?.titre ?? null)
 
   // Échap pour fermer + blocage du défilement du fond quand le menu est ouvert.
   useEffect(() => {
@@ -33,7 +58,7 @@ export const MenuDrawer: React.FC<{ sections: MenuSection[] }> = ({ sections }) 
         aria-label="Ouvrir le menu"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="flex shrink-0 items-center px-4 text-bordeaux transition-opacity hover:opacity-70"
+        className="flex shrink-0 items-center px-4 text-bordeaux transition-opacity hover:opacity-70 lg:hidden"
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" className="h-[26px] w-[26px]">
           <line x1="3" y1="6" x2="21" y2="6" />
@@ -44,7 +69,7 @@ export const MenuDrawer: React.FC<{ sections: MenuSection[] }> = ({ sections }) 
 
       {/* Overlay + panneau latéral (toujours monté → transition fluide) */}
       <div
-        className={'fixed inset-0 z-[60] ' + (open ? '' : 'pointer-events-none')}
+        className={'fixed inset-0 z-[60] lg:hidden ' + (open ? '' : 'pointer-events-none')}
         aria-hidden={!open}
         role="dialog"
         aria-modal="true"
@@ -74,24 +99,56 @@ export const MenuDrawer: React.FC<{ sections: MenuSection[] }> = ({ sections }) 
             </button>
           </div>
 
-          {sections.map((s) => (
-            <div key={s.titre} className="border-t border-ligne px-6 py-5 first:border-t-0">
-              <div className="mb-3 font-mono text-[10px] uppercase tracking-[2px] text-or">{s.titre}</div>
-              <ul className="flex flex-col gap-2.5">
-                {s.liens.map((l) => (
-                  <li key={l.href + l.intitule}>
-                    <Link
-                      href={l.href}
-                      onClick={close}
-                      className="font-serif text-[15px] text-encre transition-colors hover:text-bordeaux"
-                    >
-                      {l.intitule}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {toutes.map((s) => {
+            const isOpen = depliee === s.titre
+            return (
+              <div
+                key={s.titre}
+                className={
+                  'border-t border-ligne first:border-t-0' + (s.mobileOnly ? ' md:hidden' : '')
+                }
+              >
+                {/* Tête d'accordéon : nom du groupe + chevron */}
+                <button
+                  type="button"
+                  aria-expanded={isOpen}
+                  onClick={() => setDepliee(isOpen ? null : s.titre)}
+                  className={
+                    'flex w-full items-center justify-between px-6 py-4 font-mono text-[11px] font-semibold uppercase tracking-[2px] transition-colors ' +
+                    (isOpen ? 'text-bordeaux' : 'text-encre-douce hover:text-bordeaux')
+                  }
+                >
+                  {s.titre}
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className={'h-4 w-4 transition-transform duration-200 ' + (isOpen ? 'rotate-180 text-or' : '')}
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
+                {isOpen && (
+                  <ul className="flex flex-col gap-2.5 px-6 pb-5">
+                    {s.liens.map((l) => (
+                      <li key={l.href + l.intitule}>
+                        <Link
+                          href={l.href}
+                          onClick={close}
+                          className="block border-l-2 border-[#e3d5b8] pl-3 font-serif text-[15px] text-encre transition-colors hover:border-or hover:text-bordeaux"
+                        >
+                          {l.intitule}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )
+          })}
         </div>
       </div>
     </>
