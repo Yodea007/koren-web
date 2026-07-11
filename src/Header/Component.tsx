@@ -28,10 +28,10 @@ export async function Header() {
   return (
     <header>
       {/* Barre utilitaire */}
-      <div className="bg-encre text-[#d8cdb8] font-mono text-[10.5px] tracking-[1px] flex items-center justify-center gap-2 py-2 px-4 text-center">
-        <span>LIVRAISON OFFERTE DÈS 60 €</span>
+      <div className="bg-encre text-[#d8cdb8] font-mono text-[10.5px] tracking-[1px] flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 py-2 px-4 text-center">
+        <span className="whitespace-nowrap">LIVRAISON OFFERTE DÈS 60 €</span>
         <span className="opacity-40">·</span>
-        <span className="text-[#e7c56b]">EXPÉDITION SOUS 48 H</span>
+        <span className="whitespace-nowrap text-[#e7c56b]">EXPÉDITION SOUS 48 H</span>
         <span className="opacity-40 hidden sm:inline">·</span>
         <Link href="/libraires" className="hidden sm:inline hover:text-[#e7c56b]">
           COMMANDE LIBRAIRE

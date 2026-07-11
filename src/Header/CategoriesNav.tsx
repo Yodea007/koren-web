@@ -11,7 +11,11 @@ export const CategoriesNavLinks: React.FC<{
   activeSlug: string | null
   nouveauteActive?: boolean
 }> = ({ categories, activeSlug, nouveauteActive = false }) => (
-  <nav className="flex items-center justify-center gap-3.5 md:gap-[18px] py-3 px-4 font-mono text-[13px] font-semibold tracking-[1.5px] uppercase overflow-x-auto overflow-y-hidden">
+  // Conteneur défilant + contenu en `w-max mx-auto` : centré quand il tient,
+  // défilement complet depuis le début quand il déborde (mobile) — un simple
+  // `justify-center` rendrait le début de la liste inaccessible.
+  <nav className="overflow-x-auto overflow-y-hidden font-mono text-[13px] font-semibold tracking-[1.5px] uppercase">
+    <div className="mx-auto flex w-max items-center gap-3.5 md:gap-[18px] py-3 px-4">
     <Link
       href="/catalogue?nouveaute=1"
       className={
@@ -43,6 +47,7 @@ export const CategoriesNavLinks: React.FC<{
         </React.Fragment>
       )
     })}
+    </div>
   </nav>
 )
 
