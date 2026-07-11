@@ -5,11 +5,13 @@ import React, { useEffect, useState } from 'react'
 
 import type { MenuSection } from '@/utilities/menu'
 
-// Bouton ☰ (mobile/tablette, < lg) ouvrant un panneau latéral avec les sections du menu
-// (éditables dans l'admin, global « Menu ») présentées en accordéons. Sur desktop (≥ lg),
-// les mêmes sections s'affichent en onglets déroulants dans la barre (MenuDeroulant).
-// Sur smartphone (< md), une section « Catégories » (Nouveautés + rayons) s'ajoute en tête,
-// car la barre de catégories horizontale y est peu pratique.
+// Bouton ☰ (mobile/tablette, < lg, dans le bandeau bordeaux à côté du logo) ouvrant un
+// panneau latéral avec les sections du menu (éditables dans l'admin, global « Menu »)
+// présentées en accordéons. Sur desktop (≥ lg), les mêmes sections s'affichent en onglets
+// déroulants dans la barre de catégories (MenuDeroulant).
+// Sur smartphone (< md), s'ajoutent : une section « Catégories » (Nouveautés + rayons) en
+// tête — la barre de catégories est masquée — et les liens Newsletter / Mon compte en pied,
+// retirés du bandeau pour ne garder que logo, ☰, recherche et panier.
 export const MenuDrawer: React.FC<{
   sections: MenuSection[]
   categories?: { title: string; slug: string }[]
@@ -58,7 +60,7 @@ export const MenuDrawer: React.FC<{
         aria-label="Ouvrir le menu"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="flex shrink-0 items-center px-4 text-bordeaux transition-opacity hover:opacity-70 lg:hidden"
+        className="flex shrink-0 items-center text-[#f3e7cf] transition-opacity hover:opacity-70 lg:hidden"
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" className="h-[26px] w-[26px]">
           <line x1="3" y1="6" x2="21" y2="6" />
@@ -149,6 +151,32 @@ export const MenuDrawer: React.FC<{
               </div>
             )
           })}
+
+          {/* Liens directs (smartphone uniquement) : newsletter + compte, retirés du bandeau */}
+          <div className="border-t border-ligne md:hidden">
+            <Link
+              href="/#newsletter"
+              onClick={close}
+              className="flex items-center gap-3 px-6 py-4 font-mono text-[11px] font-semibold uppercase tracking-[2px] text-encre-douce transition-colors hover:text-bordeaux"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="M3 7l9 6 9-6" />
+              </svg>
+              Newsletter
+            </Link>
+            <Link
+              href="/compte"
+              onClick={close}
+              className="flex items-center gap-3 border-t border-ligne px-6 py-4 font-mono text-[11px] font-semibold uppercase tracking-[2px] text-encre-douce transition-colors hover:text-bordeaux"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                <circle cx="12" cy="8" r="3.5" />
+                <path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" />
+              </svg>
+              Mon compte
+            </Link>
+          </div>
         </div>
       </div>
     </>

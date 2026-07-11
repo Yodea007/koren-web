@@ -38,17 +38,22 @@ export async function Header() {
         </Link>
       </div>
 
-      {/* Bandeau bordeaux : menu · logo · recherche · newsletter · compte · panier */}
+      {/* Bandeau bordeaux : ☰ (mobile/tablette) · logo · recherche · newsletter · compte · panier.
+          Sur smartphone (< md) : seulement ☰, logo, recherche, panier — newsletter et compte
+          passent dans le tiroir ☰. */}
       <div className="bg-bordeaux flex items-center justify-between gap-4 px-5 md:px-11 py-2">
-        <Link href="/" className="shrink-0">
-          <img
-            src="/koren-logo.svg"
-            alt="Koren France"
-            width={922}
-            height={296}
-            className="h-14 w-auto block"
-          />
-        </Link>
+        <div className="flex min-w-0 items-center gap-3">
+          <MenuDrawer sections={menuSections} categories={cats} />
+          <Link href="/" className="shrink-0">
+            <img
+              src="/koren-logo.svg"
+              alt="Koren France"
+              width={922}
+              height={296}
+              className="h-14 w-auto block"
+            />
+          </Link>
+        </div>
         <div className="flex items-center gap-4 md:gap-6 text-[#f3e7cf]">
           <Link href="/search" aria-label="Rechercher" className="block transition-opacity hover:opacity-70">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" className="h-[23px] w-[23px]">
@@ -59,7 +64,7 @@ export async function Header() {
           <Link
             href="/#newsletter"
             aria-label="Newsletter"
-            className="flex items-center gap-2 rounded-full border border-[#e7c56b] bg-[#e7c56b] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[1.5px] text-bordeaux transition-colors hover:bg-[#f0d586]"
+            className="hidden md:flex items-center gap-2 rounded-full border border-[#e7c56b] bg-[#e7c56b] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[1.5px] text-bordeaux transition-colors hover:bg-[#f0d586]"
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
               <rect x="3" y="5" width="18" height="14" rx="2" />
@@ -67,7 +72,7 @@ export async function Header() {
             </svg>
             <span className="hidden sm:inline">Newsletter</span>
           </Link>
-          <Link href="/compte" aria-label="Mon compte" className="block transition-opacity hover:opacity-70">
+          <Link href="/compte" aria-label="Mon compte" className="hidden md:block transition-opacity hover:opacity-70">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-[23px] w-[23px]">
               <circle cx="12" cy="8" r="3.5" />
               <path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" />
@@ -83,9 +88,9 @@ export async function Header() {
         </div>
       </div>
 
-      {/* Barre catégories : ☰ (mobile ; inclut les catégories sur smartphone) + catégories + onglets déroulants du menu (desktop) */}
-      <div className="flex items-stretch bg-secondary border-b border-[#dbccae]">
-        <MenuDrawer sections={menuSections} categories={cats} />
+      {/* Barre catégories (masquée sur smartphone : les catégories sont dans le tiroir ☰)
+          + onglets déroulants du menu (desktop) */}
+      <div className="hidden md:flex items-stretch bg-secondary border-b border-[#dbccae]">
         <div className="min-w-0 flex-1">
           <Suspense fallback={<CategoriesNavLinks categories={cats} activeSlug={null} />}>
             <CategoriesNav categories={cats} />
