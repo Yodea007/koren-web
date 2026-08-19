@@ -137,8 +137,10 @@ et `NEXT_PUBLIC_SERVER_URL` **déjà posées sur Vercel** (Preview + Production)
   commande créée avec lignes/port/TVA corrects + reçu PDF attaché + idempotence vérifiée (renvoi → `duplicate`).
   E-mail non testé en local (pas de SMTP dans le `.env`) — actif en prod (SMTP sur Vercel).
   Commande de test supprimée de la base après vérification.
-- **Vercel** : il ne manque QUE `STRIPE_WEBHOOK_SECRET` → créer l'endpoint webhook côté Stripe
-  (évènement `checkout.session.completed`) et reporter son `whsec_…`.
+- ✅ **Vercel/Stripe prod : tout est en place** (vérifié août 2026) : `STRIPE_WEBHOOK_SECRET` posé,
+  endpoint webhook actif côté Stripe (`checkout.session.completed` → koren-web.vercel.app), le webhook prod
+  répond 400 « signature manquante » à une requête non signée (= configuré). Le circuit tourne en **mode Test** :
+  une commande réelle avec la carte 4242 4242 4242 4242 est possible sur le site en ligne.
 - **Passage en mode Live** (clés `sk_live_…`) une fois le légal en place.
 - ⚠️ **Légal avant d'encaisser** : CGV, mentions légales, confidentialité RGPD, retours (voir feuille de route).
 
