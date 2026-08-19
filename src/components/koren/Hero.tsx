@@ -56,7 +56,7 @@ export const Hero: React.FC<{ slides: HeroSlide[]; intervalMs?: number }> = ({
                 {/* Bouton optionnel, positionné en % (champs X/Y de l'admin) */}
                 {s.bouton && (
                   <span
-                    className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-[3px] bg-bordeaux px-4 py-2 font-mono text-[10px] uppercase tracking-[1.5px] text-papier shadow-md transition-colors hover:bg-bordeaux-profond sm:px-5 sm:py-2.5 sm:text-[11px]"
+                    className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-[3px] border border-white/50 bg-white/10 px-4 py-2 font-mono text-[10px] uppercase tracking-[1.5px] text-white backdrop-blur-md transition-colors [text-shadow:0_1px_2px_rgba(0,0,0,0.35)] hover:border-white/80 hover:bg-white/25 sm:px-5 sm:py-2.5 sm:text-[11px]"
                     style={{ left: `${s.boutonX ?? 50}%`, top: `${s.boutonY ?? 75}%` }}
                   >
                     {s.bouton}
