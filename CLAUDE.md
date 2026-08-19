@@ -132,8 +132,11 @@ Vérifié (août 2026, `vercel env ls`) : `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRI
 et `NEXT_PUBLIC_SERVER_URL` **déjà posées sur Vercel** (Preview + Production).
 
 **Reste à faire** :
-- **Test réel de bout en bout** en mode Test (panier → Checkout → webhook → commande + reçu PDF + e-mail).
-  En local : `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
+- ✅ **Test de bout en bout validé** (août 2026, mode Test, sans navigateur) : panier réel → `POST /api/checkout`
+  (session Stripe créée) → évènement `checkout.session.completed` forgé et signé avec le `whsec_` local →
+  commande créée avec lignes/port/TVA corrects + reçu PDF attaché + idempotence vérifiée (renvoi → `duplicate`).
+  E-mail non testé en local (pas de SMTP dans le `.env`) — actif en prod (SMTP sur Vercel).
+  Commande de test supprimée de la base après vérification.
 - **Vercel** : il ne manque QUE `STRIPE_WEBHOOK_SECRET` → créer l'endpoint webhook côté Stripe
   (évènement `checkout.session.completed`) et reporter son `whsec_…`.
 - **Passage en mode Live** (clés `sk_live_…`) une fois le légal en place.
