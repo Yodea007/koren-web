@@ -90,6 +90,12 @@ export default async function Accueil() {
     } else if (s.lienUrl) {
       slide.href = s.lienUrl
     }
+    // Bouton optionnel posé sur la diapo (position en % définie dans l'admin)
+    if (s.bouton && slide.href) {
+      slide.bouton = s.bouton
+      slide.boutonX = s.boutonX ?? 50
+      slide.boutonY = s.boutonY ?? 75
+    }
     heroSlides.push(slide)
   }
   const heroInterval = (heroData?.intervalle ?? 5) * 1000

@@ -4,7 +4,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
-export type HeroSlide = { src: string; alt: string; href?: string }
+export type HeroSlide = {
+  src: string
+  alt: string
+  href?: string
+  /** Texte du bouton posé sur la diapo ; absent = diapo simplement cliquable */
+  bouton?: string
+  boutonX?: number
+  boutonY?: number
+}
 
 export const Hero: React.FC<{ slides: HeroSlide[]; intervalMs?: number }> = ({
   slides,
@@ -45,6 +53,15 @@ export const Hero: React.FC<{ slides: HeroSlide[]; intervalMs?: number }> = ({
             {s.href ? (
               <Link href={s.href} className="block h-full w-full">
                 {img}
+                {/* Bouton optionnel, positionné en % (champs X/Y de l'admin) */}
+                {s.bouton && (
+                  <span
+                    className="absolute -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-[3px] bg-bordeaux px-4 py-2 font-mono text-[10px] uppercase tracking-[1.5px] text-papier shadow-md transition-colors hover:bg-bordeaux-profond sm:px-5 sm:py-2.5 sm:text-[11px]"
+                    style={{ left: `${s.boutonX ?? 50}%`, top: `${s.boutonY ?? 75}%` }}
+                  >
+                    {s.bouton}
+                  </span>
+                )}
               </Link>
             ) : (
               img

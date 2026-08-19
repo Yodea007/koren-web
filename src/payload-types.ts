@@ -2365,6 +2365,18 @@ export interface Hero {
          * Utilisée si aucun document n’est choisi ci-dessus. Ex. /catalogue
          */
         lienUrl?: string | null;
+        /**
+         * Si rempli, un bouton s’affiche sur la diapositive (il pointe vers le lien ci-dessus). Ex. « Découvrir »
+         */
+        bouton?: string | null;
+        /**
+         * 0 = bord gauche · 50 = centre · 100 = bord droit
+         */
+        boutonX?: number | null;
+        /**
+         * 0 = haut · 100 = bas
+         */
+        boutonY?: number | null;
         id?: string | null;
       }[]
     | null;
@@ -2411,6 +2423,9 @@ export interface HeroSelect<T extends boolean = true> {
         titre?: T;
         lien?: T;
         lienUrl?: T;
+        bouton?: T;
+        boutonX?: T;
+        boutonY?: T;
         id?: T;
       };
   updatedAt?: T;

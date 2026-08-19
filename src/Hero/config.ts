@@ -63,6 +63,41 @@ export const Hero: GlobalConfig = {
             description: 'Utilisée si aucun document n’est choisi ci-dessus. Ex. /catalogue',
           },
         },
+        {
+          name: 'bouton',
+          type: 'text',
+          label: 'Texte du bouton',
+          admin: {
+            description:
+              'Si rempli, un bouton s’affiche sur la diapositive (il pointe vers le lien ci-dessus). Ex. « Découvrir »',
+          },
+        },
+        {
+          type: 'row',
+          admin: {
+            condition: (_, siblingData) => Boolean(siblingData?.bouton),
+          },
+          fields: [
+            {
+              name: 'boutonX',
+              type: 'number',
+              label: 'Position X (%)',
+              min: 0,
+              max: 100,
+              defaultValue: 50,
+              admin: { description: '0 = bord gauche · 50 = centre · 100 = bord droit', width: '50%' },
+            },
+            {
+              name: 'boutonY',
+              type: 'number',
+              label: 'Position Y (%)',
+              min: 0,
+              max: 100,
+              defaultValue: 75,
+              admin: { description: '0 = haut · 100 = bas', width: '50%' },
+            },
+          ],
+        },
       ],
     },
   ],
