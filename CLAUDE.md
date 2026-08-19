@@ -164,7 +164,11 @@ et `NEXT_PUBLIC_SERVER_URL` **déjà posées sur Vercel** (Preview + Production)
    groupe « MCP » → API Keys, clé « Claude (conversation) » liée au 1ᵉʳ admin ; recréation :
    `npx payload run scripts/creer-cle-mcp.ts`, la clé locale est dans `.env` → `MCP_KOREN_API_KEY`).
    ⚠️ Pièges appris : le plugin **camelise** les slugs dans les groupes de capacités de la clé
-   (`commandes-client` → `commandesClient`) ; l'argument `where` des tools est une **chaîne JSON**, pas un objet.
+   (`commandes-client` → `commandesClient`) ; l'argument `where` des tools est une **chaîne JSON**, pas un objet ;
+   l'**upload de fichiers n'est pas supporté** par MCP (photos → via l'admin ; `findMedia` permet ensuite de lier).
+   **Clients branchés** : Claude Code (serveur `koren`, scope local) et Claude Desktop
+   (`claude_desktop_config.json` → `mcp-remote` vers la prod, header via env `AUTH_HEADER`).
+   Mobile/claude.ai : connecteur personnalisé avec en-tête `Authorization` (bêta « Request headers » en déploiement).
 
 **Ajouts recommandés (vus en plus de ta liste)** :
 - ⚖️ **Légal — OBLIGATOIRE avant d'encaisser** : **CGV**, **mentions légales**, **politique de confidentialité (RGPD)**,
