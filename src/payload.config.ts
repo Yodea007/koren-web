@@ -35,6 +35,8 @@ export default buildConfig({
       beforeDashboard: ['@/components/BeforeDashboard'],
       // Bouton « Rafraîchir le site » sous le tableau de bord.
       afterDashboard: ['@/components/RevalidateButton'],
+      // Lien vers les statistiques de visite (dashboard Vercel Analytics).
+      afterNavLinks: ['@/components/admin/LienStatistiques'],
     },
     importMap: {
       baseDir: path.resolve(dirname),
