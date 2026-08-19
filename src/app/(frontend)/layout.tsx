@@ -92,10 +92,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     >
       <head>
         <InitTheme />
-        {/* ?v=2 : force les navigateurs à recharger l'icône (l'ancienne reste sinon en cache) */}
-        <link href="/favicon.ico?v=2" rel="icon" sizes="32x32" />
-        <link href="/favicon.svg?v=2" rel="icon" type="image/svg+xml" />
-        <link href="/apple-icon.png?v=2" rel="apple-touch-icon" sizes="180x180" />
+        {/* ?v=3 : force les navigateurs à recharger l'icône (l'ancienne reste sinon en cache) */}
+        <link href="/favicon.ico?v=3" rel="icon" sizes="32x32" />
+        <link href="/favicon.svg?v=3" rel="icon" type="image/svg+xml" />
+        <link href="/apple-icon.png?v=3" rel="apple-touch-icon" sizes="180x180" />
         <link href="/manifest.webmanifest" rel="manifest" />
         <script
           type="application/ld+json"
