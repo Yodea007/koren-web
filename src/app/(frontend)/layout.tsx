@@ -36,6 +36,8 @@ const plexMono = IBM_Plex_Mono({
   display: 'swap',
 })
 
+import { Analytics } from '@vercel/analytics/next'
+
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
 import { Header } from '@/Header/Component'
@@ -117,6 +119,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <main className="bg-white">{children}</main> {/* ← Corps : le contenu de la page courante (fond blanc) */}
           <Footer /> {/* Pied : liens, formulaire newsletter, mentions */}
         </Providers>
+        {/* Mesure d'audience Vercel — sans cookies, aucune donnée personnelle (pas de bandeau requis) */}
+        <Analytics />
       </body>
     </html>
   )
