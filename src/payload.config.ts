@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url'
 
 import { Auteurs } from './collections/Auteurs'
 import { Categories } from './collections/Categories'
-import { Commandes } from './collections/Commandes'
+import { Commandes } from './libraires/Commandes'
 import { CommandesClient } from './collections/CommandesClient'
 import { Livres } from './collections/Livres'
 import { Lots } from './collections/Lots'

@@ -41,14 +41,14 @@ Pour pouvoir suivre l'acheminement **sans entrer dans le code** :
 | `/[slug]` | `[slug]/page.tsx` | **Pages statiques** (collection `Pages`) : « Notre histoire », CGV, etc. |
 | `/posts`, `/posts/[slug]`, `/posts/page/[n]` | `posts/…` | Blog / actualité |
 | `/search` | `search/page.tsx` | Recherche (`?q=`) |
-| `/libraires` | `libraires/page.tsx` | Espace libraires : bon de commande en ligne + lien PDF tarif |
-| `/bon-de-commande.pdf` | `bon-de-commande.pdf/route.ts` | PDF tarif vierge, toujours à jour |
+| `/libraires` | `libraires/page.tsx` (stub → `src/libraires/`) | Espace libraires : bon de commande en ligne + lien PDF tarif |
+| `/bon-de-commande.pdf` | `bon-de-commande.pdf/route.ts` (stub → `src/libraires/`) | PDF tarif vierge, toujours à jour |
 | `/panier` | `panier/page.tsx` + `PanierClient.tsx` | Panier réel : récap, quantités, port estimé, « Commander » |
 | `/commande/merci`, `/commande/annulee` | `commande/…` | Retour Stripe : merci (vide le panier + récap session) / annulée |
 | `/compte` | `compte/page.tsx` | **Placeholder** (comptes clients = plus tard) |
 | `/api/checkout` | `api/checkout/route.ts` | POST panier → session Stripe Checkout (recalcul serveur via `resoudrePanier`) |
 | `/api/stripe/webhook` | `api/stripe/webhook/route.ts` | `checkout.session.completed` → commande + reçu PDF + e-mail |
-| `/api/bon-de-commande` | `api/…/route.ts` | POST commande libraire → fiche Payload + e-mail + PDF |
+| `/api/bon-de-commande` | `api/…/route.ts` (stub → `src/libraires/`) | POST commande libraire → fiche Payload + e-mail + PDF |
 | `/api/revalidate` | `api/…/route.ts` | Revalidation (cron minuit + bouton admin). Auth Bearer `CRON_SECRET` ou session admin |
 | `/next/preview`, `/next/exit-preview` | `next/…` | Aperçu brouillons (live preview Payload) |
 | `(sitemaps)/*.xml` | `(sitemaps)/…` | Sitemaps livres / pages / posts |
@@ -62,8 +62,11 @@ Pour pouvoir suivre l'acheminement **sans entrer dans le code** :
 - **Categories** (rayons ; titres éditables : `title` long + `titreCourt` pour les menus ; champ `ordre` = position
   dans barre/footer/accueil, fallback `CATEGORIE_ORDRE` de `koren.ts` pour les fiches sans numéro), **Auteurs**, **Lots** (offres groupées),
   **Posts** (blog), **Pages** (pages statiques ; blocs dont « Image + Texte » responsive, images dans le texte),
-  **Media** (compression auto à l'upload : ≤ 2000 px + WebP q80), **Users**, **Commandes** (= commandes **libraires**),
-  **CommandesClient** (= commandes **en ligne**, créées par le webhook Stripe uniquement).
+  **Media** (compression auto à l'upload : ≤ 2000 px + WebP q80), **Users**, **Commandes** (= commandes **libraires**,
+  définie dans `src/libraires/Commandes.ts`), **CommandesClient** (= commandes **en ligne**, créées par le webhook Stripe uniquement).
+- **Module `src/libraires/`** : tout l'espace libraires en un seul endroit, façon plugin — page, formulaire,
+  gabarits PDF, collection `Commandes`, handlers d'API. Les routes sous `src/app/` sont des stubs d'une ligne.
+  Voir `src/libraires/README.md`.
 - Globals : **Hero** (diaporama accueil), **Menu** (liens de nav éditables en back-office : liste plate de liens avec
   « groupe » parent en texte libre, lien = page du site ou URL ; consommé par header ☰, footer et `Header/MenuDrawer`
   via `utilities/menu.ts`). Les anciens globals **Header/Footer** du template (navItems jamais affichés) ont été supprimés ;
