@@ -128,13 +128,15 @@ données structurées Organization + WebSite, en-têtes de sécurité, dorés WC
 - Pages **`/commande/merci`** (vide le panier, récap session) et **`/commande/annulee`**.
 
 **Fait depuis** : compte Stripe créé, clés **mode Test** (`sk_test_…`, `pk_test_…`, `whsec_…`) en place dans le `.env` local.
+Vérifié (août 2026, `vercel env ls`) : `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, SMTP, `COMMANDES_EMAIL`
+et `NEXT_PUBLIC_SERVER_URL` **déjà posées sur Vercel** (Preview + Production).
 
 **Reste à faire** :
 - **Test réel de bout en bout** en mode Test (panier → Checkout → webhook → commande + reçu PDF + e-mail).
   En local : `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
-- **Vercel** : reporter les clés en env de prod + créer l'endpoint webhook côté Stripe (évènement `checkout.session.completed`).
+- **Vercel** : il ne manque QUE `STRIPE_WEBHOOK_SECRET` → créer l'endpoint webhook côté Stripe
+  (évènement `checkout.session.completed`) et reporter son `whsec_…`.
 - **Passage en mode Live** (clés `sk_live_…`) une fois le légal en place.
-- (Optionnel) `COMMANDES_EMAIL` pour la copie maison (défaut `e.alhadef@gmail.com`). E-mails actifs si SMTP configuré.
 - ⚠️ **Légal avant d'encaisser** : CGV, mentions légales, confidentialité RGPD, retours (voir feuille de route).
 
 ---
