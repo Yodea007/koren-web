@@ -1,7 +1,9 @@
+// VERCEL_PROJECT_PRODUCTION_URL est un domaine nu (sans protocole) : on préfixe.
 const SITE_URL =
   process.env.NEXT_PUBLIC_SERVER_URL ||
-  process.env.VERCEL_PROJECT_PRODUCTION_URL ||
-  'https://example.com'
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : 'https://example.com')
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {

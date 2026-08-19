@@ -10,7 +10,7 @@
 // │ `children` = le rendu de la page appelée (page.tsx du dossier visité).     │
 // └──────────────────────────────────────────────────────────────────────────┘
 
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 
 import { cn } from '@/utilities/ui'
 import { Cormorant, IBM_Plex_Mono, Source_Serif_4 } from 'next/font/google'
@@ -94,6 +94,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <InitTheme />
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+        <link href="/apple-icon.png" rel="apple-touch-icon" sizes="180x180" />
+        <link href="/manifest.webmanifest" rel="manifest" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -125,4 +127,9 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
   },
+}
+
+// Teinte la barre d'URL des navigateurs mobiles aux couleurs de la maison
+export const viewport: Viewport = {
+  themeColor: '#93142e',
 }

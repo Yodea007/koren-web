@@ -1,0 +1,14 @@
+{
+  "name": "Koren France",
+  "short_name": "Koren",
+  "description": "Librairie en ligne de la maison d'édition Koren France — bibles, livres de prières, Talmud, essais et jeunesse.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#faf7f0",
+  "theme_color": "#93142e",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

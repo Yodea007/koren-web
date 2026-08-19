@@ -7,7 +7,7 @@ const defaultOpenGraph: Metadata['openGraph'] = {
     'Les éditions Koren · Maggid · The Toby Press en français : Tanakh, Siddourim, Talmud, essais et littérature.',
   images: [
     {
-      url: `${getServerSideURL()}/website-template-OG.webp`,
+      url: `${getServerSideURL()}/og-koren.png`,
     },
   ],
   siteName: 'Koren France',
