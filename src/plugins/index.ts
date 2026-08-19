@@ -125,7 +125,12 @@ export const plugins: Plugin[] = [
         enabled: { find: true },
       },
       pages: {
-        description: 'Pages statiques du site (lecture seule).',
+        description: 'Pages statiques du site (Notre histoire, CGV, mentions…).',
+        enabled: { find: true, create: true, update: true },
+      },
+      media: {
+        description:
+          'Images et fichiers déjà uploadés (lecture seule — l’upload se fait dans l’admin, mais on peut chercher une image par nom/alt pour la lier à un livre, une page ou un article).',
         enabled: { find: true },
       },
       lots: {

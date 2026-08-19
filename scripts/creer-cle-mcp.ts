@@ -32,7 +32,8 @@ await payload.create({
     auteurs: { find: true, create: true, update: true },
     posts: { find: true, create: true, update: true },
     categories: { find: true },
-    pages: { find: true },
+    pages: { find: true, create: true, update: true },
+    media: { find: true },
     lots: { find: true },
     commandesClient: { find: true }, // ⚠️ le plugin camelise les slugs (commandes-client → commandesClient)
     commandes: { find: true },

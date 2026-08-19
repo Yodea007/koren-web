@@ -1383,6 +1383,20 @@ export interface PayloadMcpApiKey {
      * Allow clients to find pages.
      */
     find?: boolean | null;
+    /**
+     * Allow clients to create pages.
+     */
+    create?: boolean | null;
+    /**
+     * Allow clients to update pages.
+     */
+    update?: boolean | null;
+  };
+  media?: {
+    /**
+     * Allow clients to find media.
+     */
+    find?: boolean | null;
   };
   lots?: {
     /**
@@ -2413,6 +2427,13 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
         find?: T;
       };
   pages?:
+    | T
+    | {
+        find?: T;
+        create?: T;
+        update?: T;
+      };
+  media?:
     | T
     | {
         find?: T;
