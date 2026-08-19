@@ -92,9 +92,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     >
       <head>
         <InitTheme />
-        <link href="/favicon.ico" rel="icon" sizes="32x32" />
-        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
-        <link href="/apple-icon.png" rel="apple-touch-icon" sizes="180x180" />
+        {/* ?v=2 : force les navigateurs à recharger l'icône (l'ancienne reste sinon en cache) */}
+        <link href="/favicon.ico?v=2" rel="icon" sizes="32x32" />
+        <link href="/favicon.svg?v=2" rel="icon" type="image/svg+xml" />
+        <link href="/apple-icon.png?v=2" rel="apple-touch-icon" sizes="180x180" />
         <link href="/manifest.webmanifest" rel="manifest" />
         <script
           type="application/ld+json"
@@ -123,6 +124,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
+  title: { default: 'Éditions Koren – Bibles, prières et pensée juive', template: '%s' },
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',

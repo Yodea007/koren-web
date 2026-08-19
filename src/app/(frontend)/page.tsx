@@ -232,7 +232,7 @@ export default async function Accueil() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: 'Koren France · Bibles, prières et pensée juive',
+    title: 'Éditions Koren – Bibles, prières et pensée juive',
     description:
       'Les éditions Koren · Maggid · The Toby Press en français : Tanakh, Siddourim, Talmud, essais et littérature.',
   }
