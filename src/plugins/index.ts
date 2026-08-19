@@ -1,4 +1,5 @@
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
+import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import { importExportPlugin } from '@payloadcms/plugin-import-export'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
@@ -101,6 +102,45 @@ export const plugins: Plugin[] = [
     enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
     collections: { media: true },
     token: process.env.BLOB_READ_WRITE_TOKEN,
+  }),
+  // Serveur MCP (Claude ↔ site) : pilotage du contenu en conversation via /api/mcp.
+  // Auth par clé API (admin → MCP → API Keys, liée à un utilisateur ; les accès Payload s'appliquent).
+  // Périmètre volontairement prudent : PAS de suppression, commandes en lecture seule.
+  mcpPlugin({
+    collections: {
+      livres: {
+        description: 'Catalogue des livres en vente (titre, auteurs, prix, déclinaisons, SEO).',
+        enabled: { find: true, create: true, update: true },
+      },
+      auteurs: {
+        description: 'Auteurs de la maison, référencés par les livres.',
+        enabled: { find: true, create: true, update: true },
+      },
+      posts: {
+        description: 'Articles du blog / actualités.',
+        enabled: { find: true, create: true, update: true },
+      },
+      categories: {
+        description: 'Rayons du catalogue (lecture seule).',
+        enabled: { find: true },
+      },
+      pages: {
+        description: 'Pages statiques du site (lecture seule).',
+        enabled: { find: true },
+      },
+      lots: {
+        description: 'Offres groupées (lecture seule).',
+        enabled: { find: true },
+      },
+      'commandes-client': {
+        description: 'Commandes en ligne payées via Stripe (lecture seule).',
+        enabled: { find: true },
+      },
+      commandes: {
+        description: 'Commandes des libraires (lecture seule).',
+        enabled: { find: true },
+      },
+    },
   }),
   // Import / export CSV depuis l'admin (gestion du catalogue par des non-programmeurs).
   // Mode synchrone (disableJobsQueue) : pas besoin de worker/cron, le catalogue est petit.

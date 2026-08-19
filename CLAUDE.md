@@ -157,10 +157,14 @@ et `NEXT_PUBLIC_SERVER_URL` **déjà posées sur Vercel** (Preview + Production)
 5. **Accessibilité mobile** : ✓ **menu hamburger** (`Header/MenuDrawer.tsx`, toutes tailles), ouvert depuis la **barre de
    catégories** (`CategoriesNav`, à gauche) ; liens pilotés par le global **Menu** (via `utilities/menu.ts`), partagés
    header + footer. Reste : zones tactiles, focus, lecture écran.
-6. **Connecteur MCP (Claude ↔ site)** : exposer le site via un **serveur MCP** pour piloter le contenu/les données
-   en conversation (ex. « ajoute ce livre », « commandes du jour », « publie cet article »). Pistes : envelopper
-   l'API Payload (Local API / REST / GraphQL) dans un serveur MCP (vérifier s'il existe un MCP Payload communautaire) ;
-   cadrer l'**auth** (clé API en lecture seule vs écriture) et le périmètre exposé. À concevoir après le paiement.
+6. ✅ **Connecteur MCP (Claude ↔ site)** — fait (août 2026) avec le plugin officiel `@payloadcms/plugin-mcp`
+   (version épinglée = version de Payload). Serveur exposé sur **`/api/mcp`** (local ET prod, aucune infra en plus).
+   Périmètre (`src/plugins/index.ts`) : livres/auteurs/posts en find+create+update ; categories/pages/lots/
+   commandes/commandes-client en **lecture seule** ; **aucune suppression**. Auth par clé API (admin →
+   groupe « MCP » → API Keys, clé « Claude (conversation) » liée au 1ᵉʳ admin ; recréation :
+   `npx payload run scripts/creer-cle-mcp.ts`, la clé locale est dans `.env` → `MCP_KOREN_API_KEY`).
+   ⚠️ Pièges appris : le plugin **camelise** les slugs dans les groupes de capacités de la clé
+   (`commandes-client` → `commandesClient`) ; l'argument `where` des tools est une **chaîne JSON**, pas un objet.
 
 **Ajouts recommandés (vus en plus de ta liste)** :
 - ⚖️ **Légal — OBLIGATOIRE avant d'encaisser** : **CGV**, **mentions légales**, **politique de confidentialité (RGPD)**,
