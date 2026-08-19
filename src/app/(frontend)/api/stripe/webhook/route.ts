@@ -73,7 +73,7 @@ export async function POST(req: Request): Promise<Response> {
     console.error('Webhook : échec listLineItems', err)
   }
 
-  const { lignes, nbArticles, sousTotalTTC, port, totalTTC, tvaIncluse } = await resoudrePanier(items)
+  const { lignes, sousTotalTTC, port, totalTTC, tvaIncluse } = await resoudrePanier(items)
 
   // Coordonnées client + adresse de livraison (champs Stripe au nommage mouvant → casts souples).
   const cd = session.customer_details
