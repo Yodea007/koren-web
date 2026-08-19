@@ -95,6 +95,7 @@ export default async function Accueil() {
       slide.bouton = s.bouton
       slide.boutonX = s.boutonX ?? 50
       slide.boutonY = s.boutonY ?? 75
+      if (s.boutonCouleur) slide.boutonCouleur = s.boutonCouleur
     }
     heroSlides.push(slide)
   }

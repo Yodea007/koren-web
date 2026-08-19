@@ -2369,6 +2369,7 @@ export interface Hero {
          * Si rempli, un bouton s’affiche sur la diapositive (il pointe vers le lien ci-dessus). Ex. « Découvrir »
          */
         bouton?: string | null;
+        boutonCouleur?: string | null;
         /**
          * 0 = bord gauche · 50 = centre · 100 = bord droit
          */
@@ -2424,6 +2425,7 @@ export interface HeroSelect<T extends boolean = true> {
         lien?: T;
         lienUrl?: T;
         bouton?: T;
+        boutonCouleur?: T;
         boutonX?: T;
         boutonY?: T;
         id?: T;

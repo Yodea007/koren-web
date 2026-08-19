@@ -73,6 +73,15 @@ export const Hero: GlobalConfig = {
           },
         },
         {
+          name: 'boutonCouleur',
+          type: 'text',
+          label: 'Couleur du bouton',
+          admin: {
+            condition: (_, siblingData) => Boolean(siblingData?.bouton),
+            components: { Field: '@/components/admin/ChampCouleur' },
+          },
+        },
+        {
           type: 'row',
           admin: {
             condition: (_, siblingData) => Boolean(siblingData?.bouton),
