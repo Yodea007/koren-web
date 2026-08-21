@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 
 import React from 'react'
 
+import { getReglagesLivraison } from '@/utilities/reglages'
 import { PanierClient } from './PanierClient'
 
 export const metadata: Metadata = {
@@ -10,9 +11,11 @@ export const metadata: Metadata = {
 }
 
 // ┌──────────────────────────────────────────────────────────────────┐
-// │ PANIER (/panier). Coquille serveur (métadonnées) + <PanierClient>  │
-// │ qui lit le panier (localStorage) et lance le paiement Stripe.      │
+// │ PANIER (/panier). Coquille serveur (métadonnées + réglages port)   │
+// │ + <PanierClient> qui lit le panier (localStorage) et lance Stripe. │
 // └──────────────────────────────────────────────────────────────────┘
-export default function Panier() {
-  return <PanierClient />
+export default async function Panier() {
+  // Forfait + seuil de gratuité pilotés par le global « Réglages » (admin)
+  const livraison = await getReglagesLivraison()
+  return <PanierClient livraison={livraison} />
 }

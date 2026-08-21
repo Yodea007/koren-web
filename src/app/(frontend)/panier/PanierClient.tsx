@@ -3,18 +3,19 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
 
-import { fraisDePort, PORT_GRATUIT_DES } from '@/utilities/commerce'
+import { fraisDePort } from '@/utilities/commerce'
 import { formatPrix } from '@/utilities/koren'
 import { useCart } from '@/providers/Cart'
+import type { ReglagesLivraison } from '@/utilities/reglages'
 
-export const PanierClient: React.FC = () => {
+export const PanierClient: React.FC<{ livraison: ReglagesLivraison }> = ({ livraison }) => {
   const { lines, setQte, remove, sousTotal, ready } = useCart()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const port = fraisDePort(sousTotal)
+  const port = fraisDePort(sousTotal, livraison)
   const total = sousTotal + port
-  const resteAvantGratuit = Math.max(0, PORT_GRATUIT_DES - sousTotal)
+  const resteAvantGratuit = Math.max(0, livraison.gratuitDes - sousTotal)
 
   const commander = async () => {
     setError('')

@@ -11,7 +11,7 @@ import type { MenuSection } from '@/utilities/menu'
 // - « bandeau » : smartphone (< md), dans le bandeau bordeaux à côté du logo ;
 // - « barre »   : tablette et desktop (≥ md), à gauche de la barre de catégories.
 // Sur smartphone s'ajoutent : une section « Catégories » (Nouveautés + rayons) en tête —
-// la barre de catégories est masquée — et les liens Newsletter / Mon compte en pied,
+// la barre de catégories est masquée — et les liens Newsletter / Commande libraire en pied,
 // retirés du bandeau pour ne garder que logo, ☰, recherche et panier.
 export const MenuDrawer: React.FC<{
   sections: MenuSection[]
@@ -172,15 +172,18 @@ export const MenuDrawer: React.FC<{
               Newsletter
             </Link>
             <Link
-              href="/compte"
+              href="/libraires"
               onClick={close}
               className="flex items-center gap-3 border-t border-ligne px-6 py-4 font-mono text-[11px] font-semibold uppercase tracking-[2px] text-encre-douce transition-colors hover:text-bordeaux"
             >
+              {/* Devanture de librairie (même icône que le header desktop) */}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-                <circle cx="12" cy="8" r="3.5" />
-                <path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" />
+                <path d="M4.5 9.5 5.6 4.5h12.8l1.1 5" />
+                <path d="M3.5 9.5h17" />
+                <path d="M5 9.5V20h14V9.5" />
+                <path d="M9.5 20v-5.5h5V20" />
               </svg>
-              Mon compte
+              Commande libraire
             </Link>
           </div>
         </div>

@@ -132,10 +132,12 @@ export interface Config {
   globals: {
     hero: Hero;
     menu: Menu;
+    reglages: Reglage;
   };
   globalsSelect: {
     hero: HeroSelect<false> | HeroSelect<true>;
     menu: MenuSelect<false> | MenuSelect<true>;
+    reglages: ReglagesSelect<false> | ReglagesSelect<true>;
   };
   locale: null;
   widgets: {
@@ -2627,6 +2629,25 @@ export interface Menu {
   createdAt?: string | null;
 }
 /**
+ * Paramètres de la boutique : frais de port et seuil de livraison offerte.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reglages".
+ */
+export interface Reglage {
+  id: number;
+  /**
+   * Appliqué sous le seuil de livraison offerte.
+   */
+  portForfait?: number | null;
+  /**
+   * Seuil (TTC) au-delà duquel le port est offert. Pilote le texte du header ET le calcul réel du panier/paiement.
+   */
+  portGratuitDes?: number | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "hero_select".
  */
@@ -2664,6 +2685,17 @@ export interface MenuSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reglages_select".
+ */
+export interface ReglagesSelect<T extends boolean = true> {
+  portForfait?: T;
+  portGratuitDes?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

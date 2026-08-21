@@ -5,6 +5,7 @@ import React, { Suspense } from 'react'
 
 import { labelCategorieCourt, ordreCategorie } from '@/utilities/koren'
 import { getMenu } from '@/utilities/menu'
+import { getReglagesLivraison } from '@/utilities/reglages'
 import { CartCount } from './CartCount'
 import { CategoriesNav, CategoriesNavLinks } from './CategoriesNav'
 import { MenuDrawer } from './MenuDrawer'
@@ -24,20 +25,12 @@ export async function Header() {
 
   const menuSections = await getMenu()
 
+  // Seuil de livraison offerte (global « Réglages », modifiable dans l'admin)
+  const { gratuitDes } = await getReglagesLivraison()
+
   return (
     <header>
-      {/* Barre utilitaire */}
-      <div className="bg-encre text-[#d8cdb8] font-mono text-[10.5px] tracking-[1px] flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 py-2 px-4 text-center">
-        <span className="whitespace-nowrap">LIVRAISON OFFERTE DÈS 60 €</span>
-        <span className="opacity-40">·</span>
-        <span className="whitespace-nowrap text-[#e7c56b]">EXPÉDITION SOUS 48 H</span>
-        <span className="opacity-40 hidden sm:inline">·</span>
-        <Link href="/libraires" className="hidden sm:inline hover:text-[#e7c56b]">
-          COMMANDE LIBRAIRE
-        </Link>
-      </div>
-
-      {/* Bandeau bordeaux : logo · recherche · newsletter · compte · panier.
+      {/* Bandeau bordeaux : logo · recherche · newsletter · libraires · panier.
           Sur smartphone (< md) : seulement ☰ (à côté du logo), logo, recherche, panier —
           newsletter et compte passent dans le tiroir ☰. À partir de md : comme à l'origine. */}
       <div className="bg-bordeaux flex items-center justify-between gap-4 px-5 md:px-11 py-2">
@@ -71,19 +64,29 @@ export async function Header() {
             </svg>
             <span className="hidden sm:inline">Newsletter</span>
           </Link>
-          <Link href="/compte" aria-label="Mon compte" className="hidden md:block transition-opacity hover:opacity-70">
+          {/* Espace libraires (remplace l'ancienne icône « Mon compte » — /compte reste accessible par URL) */}
+          <Link href="/libraires" aria-label="Commande libraire" className="hidden md:block transition-opacity hover:opacity-70">
+            {/* Devanture de librairie */}
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-[23px] w-[23px]">
-              <circle cx="12" cy="8" r="3.5" />
-              <path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" />
+              <path d="M4.5 9.5 5.6 4.5h12.8l1.1 5" />
+              <path d="M3.5 9.5h17" />
+              <path d="M5 9.5V20h14V9.5" />
+              <path d="M9.5 20v-5.5h5V20" />
             </svg>
           </Link>
-          <Link href="/panier" aria-label="Mon panier" className="relative block transition-opacity hover:opacity-70">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-[23px] w-[23px]">
-              <path d="M6 8h12l-1 11.5a1 1 0 0 1-1 .9H8a1 1 0 0 1-1-.9L6 8z" />
-              <path d="M9 8V6.5a3 3 0 0 1 6 0V8" />
-            </svg>
-            <CartCount />
-          </Link>
+          <div className="flex flex-col items-center">
+            <Link href="/panier" aria-label="Mon panier" className="relative block transition-opacity hover:opacity-70">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-[23px] w-[23px]">
+                <path d="M6 8h12l-1 11.5a1 1 0 0 1-1 .9H8a1 1 0 0 1-1-.9L6 8z" />
+                <path d="M9 8V6.5a3 3 0 0 1 6 0V8" />
+              </svg>
+              <CartCount />
+            </Link>
+            {/* Seuil piloté par le global « Réglages » (admin → Réglages) */}
+            <span className="hidden md:block whitespace-nowrap font-mono text-[9px] tracking-[0.5px] text-[#d8cdb8]">
+              Livraison offerte dès {gratuitDes} €
+            </span>
+          </div>
         </div>
       </div>
 

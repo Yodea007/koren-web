@@ -2,6 +2,7 @@ import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 
 import { centimes, fraisDePort, tvaIncluse as partTVA } from '@/utilities/commerce'
+import { getReglagesLivraison } from '@/utilities/reglages'
 import { articlesDeLivre, type Article } from '@/utilities/tarif'
 
 export type ItemPanier = { ref: string; qte: number }
@@ -54,7 +55,8 @@ export async function resoudrePanier(items: ItemPanier[]): Promise<PanierResolu>
     lignes.push({ ref: a.ref, titre: a.titre, isbn: a.isbn, prixTTC: a.prixTTC, qte, totalLigne })
   }
 
-  const port = fraisDePort(sousTotalTTC)
+  const { forfait, gratuitDes } = await getReglagesLivraison()
+  const port = fraisDePort(sousTotalTTC, { forfait, gratuitDes })
   const totalTTC = centimes(sousTotalTTC + port)
   const tva = centimes(partTVA(totalTTC))
 

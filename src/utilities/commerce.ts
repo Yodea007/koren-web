@@ -1,21 +1,26 @@
-// Règles commerciales de la boutique en ligne — un seul endroit à éditer.
+// Règles commerciales de la boutique en ligne.
 //
-// ⚠️ À CONFIRMER avec le client : montant du forfait de port et seuil de gratuité.
-// Valeurs par défaut posées (standard pour l'envoi de livres en France).
+// Forfait de port et seuil de gratuité sont pilotés depuis l'admin (global
+// « Réglages », lu par utilities/reglages.ts). Les constantes ci-dessous ne
+// servent que de REPLI si le global n'est pas renseigné.
 
 /** Taux de TVA des livres en France (réduit). Les prix affichés sont TTC. */
 export const TVA_LIVRE = 0.055
 
-/** Forfait de frais de port (en euros), appliqué sous le seuil de gratuité. */
+/** Repli : forfait de frais de port (en euros), appliqué sous le seuil de gratuité. */
 export const PORT_FORFAIT = 4.9
 
-/** Au-dessus de ce montant d'articles (TTC), le port est offert. */
-export const PORT_GRATUIT_DES = 60
+/** Repli : au-dessus de ce montant d'articles (TTC), le port est offert. */
+export const PORT_GRATUIT_DES = 75
 
-/** Frais de port pour un sous-total d'articles donné (TTC, en euros). */
-export function fraisDePort(sousTotalTTC: number): number {
-  if (sousTotalTTC >= PORT_GRATUIT_DES) return 0
-  return PORT_FORFAIT
+/** Frais de port pour un sous-total donné (TTC, en euros). Les valeurs du global
+ *  « Réglages » sont passées via `opts` ; sans elles, replis ci-dessus. */
+export function fraisDePort(
+  sousTotalTTC: number,
+  opts?: { forfait?: number; gratuitDes?: number },
+): number {
+  if (sousTotalTTC >= (opts?.gratuitDes ?? PORT_GRATUIT_DES)) return 0
+  return opts?.forfait ?? PORT_FORFAIT
 }
 
 /** Part de TVA contenue dans un montant TTC (livres, 5,5 %). */

@@ -17,6 +17,7 @@ import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
 import { Hero } from './Hero/config'
 import { Menu } from './Menu/config'
+import { Reglages } from './Reglages/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -93,7 +94,7 @@ export default buildConfig({
           },
         })
       : undefined,
-  globals: [Hero, Menu],
+  globals: [Hero, Menu, Reglages],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

@@ -80,7 +80,8 @@ Pour pouvoir suivre l'acheminement **sans entrer dans le code** :
 - **`menu.ts`** : `getMenu()` lit le global **Menu** (liens de nav) — remplace l'ancien `nav.ts` (supprimé).
 - **`tarif.ts`** : `articlesDeLivre(livre)` aplatit un livre en lignes vendables (une par déclinaison, fallback livre)
   avec un **`ref` stable** (`livre-{id}` ou `livre-{id}-{i}`) — **clé commune au panier et au bon de commande**.
-- **`commerce.ts`** : règles boutique — TVA livres 5,5 %, `fraisDePort()` (forfait + gratuité ≥ 60 €),
+- **`commerce.ts`** : règles boutique — TVA livres 5,5 %, `fraisDePort()` (forfait + seuil de gratuité **pilotés
+  par le global « Réglages »** via `utilities/reglages.ts` ; constantes de repli 4,90 € / 75 €),
   `tvaIncluse()`/`montantHT()`, conversions centimes Stripe. **Constantes à confirmer en tête de fichier.**
 - **`providers/Cart`** : contexte panier (localStorage) — `add/setQte/remove/clear`, `count`, `sousTotal`. `useCart()`.
 - **`hooks/revalidateLivre.ts`**, **`revalidateAccueil.ts`** : régénèrent accueil/fiche/catalogue/sitemap sur édition admin.
@@ -107,7 +108,8 @@ données structurées Organization + WebSite, en-têtes de sécurité, dorés WC
 **cartes + Apple/Google Pay** (PayPal ajoutable plus tard, via Stripe) · port **forfait + gratuit ≥ 60 €**.
 *(Axepta/BNP gardé en réserve si le volume justifie un jour de négocier les frais.)*
 
-**Décisions appliquées** : port **4,90 € · offert dès 60 €** (`commerce.ts`) · livraison **France + Monaco** seulement.
+**Décisions appliquées** : port **4,90 € · offert dès 75 €** — modifiables dans l'admin (global **Réglages**,
+  affiché sous l'icône panier du header ET utilisé par le calcul panier/Stripe) · livraison **France + Monaco** seulement.
 
 **Construit (code complet ; build + typecheck OK)** :
 - `utilities/commerce.ts` (TVA + port) · `providers/Cart` · `Header/CartCount` · SDK `stripe`.
@@ -197,8 +199,7 @@ Les groupes de la nav admin se pilotent par `admin.group: '<Nom>'` sur chaque co
 ✉️  Newsletter        → (abonnés via form-submissions ; ENVOI délégué à Brevo/Mailchimp, NE PAS recoder un ESP)
 🖼️  Médias           → Media
 👤 Administration    → Users
-⚙️  Paramètres        → Menu (+ à créer : global « Réglages » : forfait port + seuil gratuité
-                        aujourd'hui en dur dans commerce.ts, contact, réseaux ; + page d'aide liens API/DB)
+⚙️  Paramètres        → Menu · Réglages ✓ (forfait port + seuil gratuité ; + à enrichir : contact, réseaux)
 ```
 
 **Statut** : structure **validée mais NON appliquée**. Un essai d'`admin.group` a été annulé (la nav groupée
