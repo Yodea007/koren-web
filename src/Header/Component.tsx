@@ -46,6 +46,8 @@ export async function Header() {
             />
           </Link>
         </div>
+        {/* Colonne de droite : rangée d'icônes + sous-ligne livraison alignée à droite */}
+        <div className="flex flex-col items-end gap-0.5">
         <div className="flex items-center gap-4 md:gap-6 text-[#f3e7cf]">
           <Link href="/search" aria-label="Rechercher" className="block transition-opacity hover:opacity-70">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" className="h-[23px] w-[23px]">
@@ -74,19 +76,18 @@ export async function Header() {
               <path d="M9.5 20v-5.5h5V20" />
             </svg>
           </Link>
-          <div className="flex flex-col items-center">
-            <Link href="/panier" aria-label="Mon panier" className="relative block transition-opacity hover:opacity-70">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-[23px] w-[23px]">
-                <path d="M6 8h12l-1 11.5a1 1 0 0 1-1 .9H8a1 1 0 0 1-1-.9L6 8z" />
-                <path d="M9 8V6.5a3 3 0 0 1 6 0V8" />
-              </svg>
-              <CartCount />
-            </Link>
-            {/* Seuil piloté par le global « Réglages » (admin → Réglages) */}
-            <span className="hidden md:block whitespace-nowrap font-mono text-[9px] tracking-[0.5px] text-[#d8cdb8]">
-              Livraison offerte dès {gratuitDes} €
-            </span>
-          </div>
+          <Link href="/panier" aria-label="Mon panier" className="relative block transition-opacity hover:opacity-70">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="h-[23px] w-[23px]">
+              <path d="M6 8h12l-1 11.5a1 1 0 0 1-1 .9H8a1 1 0 0 1-1-.9L6 8z" />
+              <path d="M9 8V6.5a3 3 0 0 1 6 0V8" />
+            </svg>
+            <CartCount />
+          </Link>
+        </div>
+        {/* Sous-ligne : seuil piloté par le global « Réglages » (admin → Réglages) */}
+        <span className="hidden md:block whitespace-nowrap font-mono text-[9px] tracking-[0.5px] text-[#d8cdb8]">
+          Livraison offerte dès {gratuitDes} €
+        </span>
         </div>
       </div>
 
