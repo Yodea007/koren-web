@@ -8,6 +8,7 @@ import React, { cache } from 'react'
 
 import type { Auteur, Lot, Media as MediaType } from '@/payload-types'
 
+import { Media } from '@/components/Media'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import RichText from '@/components/RichText'
 import { BookCard } from '@/components/koren/BookCard'
@@ -119,12 +120,42 @@ export default async function FicheLivre({ params }: Args) {
             <h1 className="font-display text-4xl font-medium leading-tight text-encre md:text-5xl">
               {livre.titre}
             </h1>
-            {(auteurs.length > 0 || livre.accroche) && (
-              <p className="mt-2 font-serif text-lg italic text-encre-douce">
-                {auteurs.map((a) => a.nom).join(', ')}
-                {auteurs.length > 0 && livre.accroche ? ' · ' : ''}
-                {livre.accroche}
-              </p>
+            {/* Auteur(s) : médaillon photo (ou initiales) + nom, lien vers la bio /nos-auteurs/[slug] */}
+            {auteurs.length > 0 && (
+              <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
+                {auteurs.map((a) => {
+                  const photoAuteur = typeof a.photo === 'object' && a.photo ? a.photo : null
+                  return (
+                    <Link
+                      key={a.id}
+                      href={`/nos-auteurs/${a.slug}`}
+                      className="group flex items-center gap-2.5"
+                    >
+                      <span className="relative block h-9 w-9 shrink-0 overflow-hidden rounded-full border border-ligne bg-lin">
+                        {photoAuteur ? (
+                          <Media resource={photoAuteur} fill imgClassName="object-cover" size="36px" />
+                        ) : (
+                          <span className="flex h-full w-full items-center justify-center font-display text-[13px] font-semibold text-encre-pale">
+                            {a.nom
+                              .split(/\s+/)
+                              .map((m) => m[0])
+                              .filter(Boolean)
+                              .slice(0, 2)
+                              .join('')
+                              .toUpperCase()}
+                          </span>
+                        )}
+                      </span>
+                      <span className="font-serif text-lg italic text-encre-douce underline-offset-4 transition-colors group-hover:text-bordeaux group-hover:underline">
+                        {a.nom}
+                      </span>
+                    </Link>
+                  )
+                })}
+              </div>
+            )}
+            {livre.accroche && (
+              <p className="mt-2 font-serif text-lg italic text-encre-douce">{livre.accroche}</p>
             )}
           </div>
 
