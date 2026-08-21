@@ -5,9 +5,10 @@
 // │        • hero (diaporama éditable)   • catégories                            │
 // │        • livres par catégorie (rails)  • sélection de la maison              │
 // │   B. Rendu des BLOCS dans l'ordre d'affichage :                             │
-// │        1. <Hero>              — diaporama plein écran (client, autoplay)     │
-// │        2. section « rails »   — un <BookSwiper> par catégorie                │
-// │        3. section « sélection » — grille de 4 livres curés                  │
+// │        1. <Hero>              — diaporama plein écran (desktop/tablette ≥ md)│
+// │        1bis. liste des rayons — gros titres cliquables (smartphone < md)     │
+// │        2. section « rails »   — un <BookSwiper> par catégorie (≥ md)         │
+// │        3. section « sélection » — grille de 4 livres curés (toutes tailles) │
 // │ Composants clés : <Cover> (couverture + badges), <Hero>, <BookSwiper>.      │
 // │ Helpers : auteurNoms(), couverture()/formatPrix() (utilities/koren).        │
 // └──────────────────────────────────────────────────────────────────────────┘
@@ -146,11 +147,39 @@ export default async function Accueil() {
   // ===== B. RENDU (blocs dans l'ordre d'affichage) =====
   return (
     <div>
-      {/* BLOC 1 — Diaporama d'accueil (composant client, autoplay) */}
-      <Hero slides={heroSlides} intervalMs={heroInterval} />
+      {/* BLOC 1 — Diaporama d'accueil (composant client, autoplay). Desktop/tablette
+          uniquement : sur smartphone il est remplacé par la liste des rayons (BLOC 1bis). */}
+      <div className="hidden md:block">
+        <Hero slides={heroSlides} intervalMs={heroInterval} />
+      </div>
 
-      {/* BLOC 2 — PUBLICATIONS : un carrousel (BookSwiper) par catégorie */}
-      <section className="border-y border-ligne bg-white py-12">
+      {/* BLOC 1bis — SMARTPHONE : les rayons en gros caractères (mêmes liens que la
+          barre de navigation), à la place du Hero et des carrousels — aucun swipe. */}
+      <nav className="md:hidden bg-white" aria-label="Rayons">
+        <ul>
+          {[{ title: 'Nouveautés', href: '/catalogue?nouveaute=1' }].concat(
+            ordered.map((r) => ({ title: r.title, href: `/catalogue?categorie=${r.slug}` })),
+          ).map((r) => (
+            <li key={r.href}>
+              <Link
+                href={r.href}
+                className="flex items-baseline justify-between gap-4 border-b border-ligne px-5 py-5 transition-colors active:text-bordeaux"
+              >
+                <span className="font-display text-[30px] font-bold leading-none tracking-[-0.01em] text-encre">
+                  {r.title}
+                </span>
+                <span aria-hidden className="font-display text-[22px] leading-none text-or">
+                  ›
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {/* BLOC 2 — PUBLICATIONS : un carrousel (BookSwiper) par catégorie. Desktop/tablette
+          uniquement (sur smartphone, les rayons du BLOC 1bis y mènent directement). */}
+      <section className="hidden md:block border-y border-ligne bg-white py-12">
         {categories.map((r) => (
           <div key={r.slug} className="first:mt-0 mt-7">
             <div className="mx-auto max-w-[1180px] px-5 pb-3.5 md:px-16">
