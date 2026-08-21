@@ -187,6 +187,48 @@ export default async function FicheLivre({ params }: Args) {
               Feuilleter un extrait
             </a>
           )}
+
+          {/* Caractéristiques : ISBN (par édition s'il y a des déclinaisons), pages, poids */}
+          {(livre.isbn ||
+            livre.pages ||
+            livre.poids ||
+            (livre.declinaisons ?? []).some((d) => d.isbn || d.poids)) && (
+            <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 border-t border-ligne pt-4 font-mono text-[11px] tracking-[0.5px] text-encre-douce">
+              {livre.isbn && (
+                <>
+                  <dt className="uppercase text-encre-pale">ISBN</dt>
+                  <dd>{livre.isbn}</dd>
+                </>
+              )}
+              {(livre.declinaisons ?? [])
+                .filter((d) => d.isbn)
+                .map((d) => (
+                  <React.Fragment key={d.id ?? d.isbn}>
+                    <dt className="uppercase text-encre-pale">ISBN — {d.nom}</dt>
+                    <dd>{d.isbn}</dd>
+                  </React.Fragment>
+                ))}
+              {livre.pages && (
+                <>
+                  <dt className="uppercase text-encre-pale">Pages</dt>
+                  <dd>{livre.pages}</dd>
+                </>
+              )}
+              {(livre.poids || (livre.declinaisons ?? []).some((d) => d.poids)) && (
+                <>
+                  <dt className="uppercase text-encre-pale">Poids</dt>
+                  <dd>
+                    {livre.poids
+                      ? `${livre.poids} g`
+                      : (livre.declinaisons ?? [])
+                          .filter((d) => d.poids)
+                          .map((d) => `${d.nom} : ${d.poids} g`)
+                          .join(' · ')}
+                  </dd>
+                </>
+              )}
+            </dl>
+          )}
         </div>
       </div>
 
