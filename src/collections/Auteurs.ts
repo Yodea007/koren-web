@@ -1,5 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
+import { revalidatePath } from 'next/cache'
+
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from 'payload'
@@ -20,6 +22,21 @@ export const Auteurs: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'nom',
+  },
+  hooks: {
+    // Régénère la liste /nos-auteurs et toutes les fiches auteur à chaque édition
+    afterChange: [
+      ({ doc, req: { context } }) => {
+        if (!context.disableRevalidate) revalidatePath('/nos-auteurs', 'layout')
+        return doc
+      },
+    ],
+    afterDelete: [
+      ({ doc, req: { context } }) => {
+        if (!context.disableRevalidate) revalidatePath('/nos-auteurs', 'layout')
+        return doc
+      },
+    ],
   },
   fields: [
     {
