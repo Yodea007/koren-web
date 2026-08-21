@@ -49,6 +49,7 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
   return {
     title: `${auteur.nom} · Koren France`,
     description: `${auteur.nom} : biographie et ouvrages parus aux éditions Koren France.`,
+    alternates: { canonical: `/nos-auteurs/${auteur.slug}` },
   }
 }
 

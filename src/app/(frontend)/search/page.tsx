@@ -83,6 +83,9 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Payload Website Template Search`,
+    title: 'Recherche · Koren France',
+    alternates: { canonical: '/search' },
+    // Pages de résultats : pas d'indexation (contenu dupliqué du catalogue)
+    robots: { index: false, follow: true },
   }
 }

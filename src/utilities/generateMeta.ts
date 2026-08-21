@@ -21,8 +21,10 @@ const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
 
 export const generateMeta = async (args: {
   doc: Partial<Page> | Partial<Post> | null
+  /** Chemin canonique de la page (ex. `/notre-histoire`, `/posts/mon-article`) */
+  url?: string
 }): Promise<Metadata> => {
-  const { doc } = args
+  const { doc, url } = args
 
   const ogImage = getImageURL(doc?.meta?.image)
 
@@ -43,5 +45,6 @@ export const generateMeta = async (args: {
       url: Array.isArray(doc?.slug) ? doc?.slug.join('/') : '/',
     }),
     title,
+    ...(url ? { alternates: { canonical: url } } : {}),
   }
 }

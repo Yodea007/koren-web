@@ -145,5 +145,5 @@ export default async function CataloguePage({ searchParams }: Args) {
 }
 
 export function generateMetadata(): Metadata {
-  return { title: 'Catalogue · Koren France' }
+  return { title: 'Catalogue · Koren France', alternates: { canonical: '/catalogue' } }
 }

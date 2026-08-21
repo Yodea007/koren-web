@@ -158,6 +158,8 @@ export default async function Accueil() {
   // ===== B. RENDU (blocs dans l'ordre d'affichage) =====
   return (
     <div>
+      {/* h1 unique de l'accueil (lecteurs d'écran + SEO — le visuel est porté par le Hero) */}
+      <h1 className="sr-only">Éditions Koren – Bibles, prières et pensée juive</h1>
       {/* BLOC 1 — Diaporama d'accueil (composant client, autoplay), toutes tailles.
           Sur smartphone il s'affiche entier (ratio 7:2, plus de rognage). */}
       <Hero slides={heroSlides} intervalMs={heroInterval} />
@@ -272,5 +274,6 @@ export function generateMetadata(): Metadata {
     title: 'Éditions Koren – Bibles, prières et pensée juive',
     description:
       'Les éditions Koren · Maggid · The Toby Press en français : Tanakh, Siddourim, Talmud, essais et littérature.',
+    alternates: { canonical: '/' },
   }
 }

@@ -24,7 +24,8 @@ export const dynamic = 'force-static'
 export const metadata: Metadata = {
   title: 'Nos auteurs · Koren France',
   description:
-    'Les auteurs des éditions Koren, Maggid et The Toby Press : Jonathan Sacks, Adin Steinsaltz, Naomi Ragen, Haïm Sabato…',
+    'Les auteurs des éditions Koren, Maggid et The Toby Press : Jonathan Sacks, Adin Steinsaltz, Naomi Ragen…',
+  alternates: { canonical: '/nos-auteurs' },
 }
 
 // Initiales pour le médaillon des auteurs sans photo

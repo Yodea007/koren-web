@@ -65,7 +65,8 @@ export default async function Page({ params: paramsPromise }: Args) {
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
   const { pageNumber } = await paramsPromise
   return {
-    title: `Payload Website Template Posts Page ${pageNumber || ''}`,
+    title: `Actualités — page ${pageNumber || 1} · Koren France`,
+    alternates: { canonical: `/posts/page/${pageNumber || 1}` },
   }
 }
 
