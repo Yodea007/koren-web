@@ -193,10 +193,10 @@ export default async function FicheLivre({ params }: Args) {
             livre.pages ||
             livre.poids ||
             (livre.declinaisons ?? []).some((d) => d.isbn || d.poids)) && (
-            <dl className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 border-t border-ligne pt-4 font-mono text-[11px] tracking-[0.5px] text-encre-douce">
+            <dl className="grid grid-cols-[auto_1fr] items-baseline gap-x-8 gap-y-2 border-t border-ligne pt-4 text-[15px] text-encre-douce">
               {livre.isbn && (
                 <>
-                  <dt className="uppercase text-encre-pale">ISBN</dt>
+                  <dt className="font-mono text-[12px] uppercase tracking-[1px] text-encre-pale">ISBN</dt>
                   <dd>{livre.isbn}</dd>
                 </>
               )}
@@ -204,19 +204,19 @@ export default async function FicheLivre({ params }: Args) {
                 .filter((d) => d.isbn)
                 .map((d) => (
                   <React.Fragment key={d.id ?? d.isbn}>
-                    <dt className="uppercase text-encre-pale">ISBN — {d.nom}</dt>
+                    <dt className="font-mono text-[12px] uppercase tracking-[1px] text-encre-pale">ISBN — {d.nom}</dt>
                     <dd>{d.isbn}</dd>
                   </React.Fragment>
                 ))}
               {livre.pages && (
                 <>
-                  <dt className="uppercase text-encre-pale">Pages</dt>
+                  <dt className="font-mono text-[12px] uppercase tracking-[1px] text-encre-pale">Pages</dt>
                   <dd>{livre.pages}</dd>
                 </>
               )}
               {(livre.poids || (livre.declinaisons ?? []).some((d) => d.poids)) && (
                 <>
-                  <dt className="uppercase text-encre-pale">Poids</dt>
+                  <dt className="font-mono text-[12px] uppercase tracking-[1px] text-encre-pale">Poids</dt>
                   <dd>
                     {livre.poids
                       ? `${livre.poids} g`
