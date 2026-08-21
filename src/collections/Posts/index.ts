@@ -26,6 +26,7 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from 'payload'
+import { slugifier } from '@/utilities/slugifier'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
@@ -214,7 +215,10 @@ export const Posts: CollectionConfig<'posts'> = {
         },
       ],
     },
-    slugField(),
+    slugField({
+      // Translittère les accents (é→e, œ→oe) au lieu de les supprimer
+      slugify: ({ valueToSlugify }) => slugifier(valueToSlugify ?? ''),
+    }),
   ],
   hooks: {
     afterChange: [revalidatePost],

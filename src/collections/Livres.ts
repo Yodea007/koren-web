@@ -13,6 +13,7 @@ import {
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from 'payload'
+import { slugifier } from '@/utilities/slugifier'
 import {
   MetaDescriptionField,
   MetaImageField,
@@ -436,6 +437,8 @@ export const Livres: CollectionConfig = {
     slugField({
       position: undefined,
       useAsSlug: 'titre',
+      // Translittère les accents (é→e, œ→oe) au lieu de les supprimer
+      slugify: ({ valueToSlugify }) => slugifier(valueToSlugify ?? ''),
     }),
   ],
 }

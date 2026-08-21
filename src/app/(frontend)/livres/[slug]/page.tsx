@@ -8,6 +8,7 @@ import React, { cache } from 'react'
 
 import type { Auteur, Lot, Media as MediaType } from '@/payload-types'
 
+import { PayloadRedirects } from '@/components/PayloadRedirects'
 import RichText from '@/components/RichText'
 import { BookCard } from '@/components/koren/BookCard'
 import { formatPrix, languePills, RITE_LABELS } from '@/utilities/koren'
@@ -43,7 +44,9 @@ export default async function FicheLivre({ params }: Args) {
   const decodedSlug = decodeURIComponent(slug)
   const livre = await queryLivreBySlug(decodedSlug)
 
-  if (!livre) notFound()
+  // Livre introuvable : on tente une redirection (collection Redirects — ex. anciens
+  // slugs sans accents réparés en août 2026) avant de rendre un 404.
+  if (!livre) return <PayloadRedirects url={`/livres/${decodedSlug}`} />
 
   const images = (livre.images ?? []).filter((i): i is MediaType => typeof i === 'object')
   const auteurs = (livre.auteurs ?? []).filter((a): a is Auteur => typeof a === 'object')
