@@ -129,7 +129,18 @@ export default async function Accueil() {
     )
   ).filter((r) => r.books.length > 0)
 
-  // Sélection de la maison (curée en admin ; sinon repli sur les plus récents)
+  // Nombre de nouveautés (pour la ligne « Nouveautés » de la liste des rayons mobile)
+  const nbNouveautes = (
+    await payload.find({
+      collection: 'livres',
+      where: { nouveaute: { equals: true } },
+      limit: 1,
+      depth: 0,
+      select: { id: true },
+    })
+  ).totalDocs
+
+  // Mise en avant (sélection curée en admin ; sinon repli sur les plus récents)
   let selection = (
     await payload.find({
       collection: 'livres',
@@ -147,29 +158,31 @@ export default async function Accueil() {
   // ===== B. RENDU (blocs dans l'ordre d'affichage) =====
   return (
     <div>
-      {/* BLOC 1 — Diaporama d'accueil (composant client, autoplay). Desktop/tablette
-          uniquement : sur smartphone il est remplacé par la liste des rayons (BLOC 1bis). */}
-      <div className="hidden md:block">
-        <Hero slides={heroSlides} intervalMs={heroInterval} />
-      </div>
+      {/* BLOC 1 — Diaporama d'accueil (composant client, autoplay), toutes tailles.
+          Sur smartphone il s'affiche entier (ratio 7:2, plus de rognage). */}
+      <Hero slides={heroSlides} intervalMs={heroInterval} />
 
-      {/* BLOC 1bis — SMARTPHONE : les rayons en gros caractères (mêmes liens que la
-          barre de navigation), à la place du Hero et des carrousels — aucun swipe. */}
+      {/* BLOC 1bis — SMARTPHONE : les rayons (mêmes liens que la barre de navigation)
+          avec leur nombre de références, à la place des carrousels — aucun swipe. */}
       <nav className="md:hidden bg-white" aria-label="Rayons">
         <ul>
-          {[{ title: 'Nouveautés', href: '/catalogue?nouveaute=1' }].concat(
-            ordered.map((r) => ({ title: r.title, href: `/catalogue?categorie=${r.slug}` })),
+          {[{ title: 'Nouveautés', href: '/catalogue?nouveaute=1', count: nbNouveautes }].concat(
+            categories.map((r) => ({
+              title: r.title,
+              href: `/catalogue?categorie=${r.slug}`,
+              count: r.count,
+            })),
           ).map((r) => (
             <li key={r.href}>
               <Link
                 href={r.href}
-                className="flex items-baseline justify-between gap-4 border-b border-ligne px-5 py-5 transition-colors active:text-bordeaux"
+                className="flex items-baseline justify-between gap-4 border-b border-ligne px-5 py-4 transition-colors active:text-bordeaux"
               >
-                <span className="font-display text-[30px] font-bold leading-none tracking-[-0.01em] text-encre">
+                <span className="font-display text-[21px] font-bold leading-tight tracking-[-0.01em] text-encre">
                   {r.title}
                 </span>
-                <span aria-hidden className="font-display text-[22px] leading-none text-or">
-                  ›
+                <span className="whitespace-nowrap font-mono text-[12px] font-semibold uppercase tracking-[1.5px] text-bordeaux">
+                  {r.count} {r.count > 1 ? 'titres' : 'titre'}
                 </span>
               </Link>
             </li>
@@ -218,12 +231,7 @@ export default async function Accueil() {
         <section className="px-5 py-14 md:px-16">
           <div className="mx-auto max-w-[1180px]">
             <div className="mb-10 text-center">
-              <div className="font-mono text-[11px] uppercase tracking-[2.5px] text-or">
-                Choisis par nos libraires
-              </div>
-              <h2 className="mt-2.5 font-display text-[38px] font-medium text-encre">
-                Mise en avant
-              </h2>
+              <h2 className="font-display text-[38px] font-medium text-encre">Mise en avant</h2>
             </div>
             <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
               {selection.map((b) => (

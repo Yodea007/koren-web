@@ -40,7 +40,9 @@ export const Hero: React.FC<{ slides: HeroSlide[]; intervalMs?: number }> = ({
   if (slides.length === 0) return null
 
   return (
-    <section className="relative w-full overflow-hidden bg-lin aspect-[2/1] sm:aspect-[7/2]">
+    // Même ratio que les visuels (7:2) à toutes les tailles : l'image s'affiche
+    // entière, jamais rognée sur les côtés (le cadre 2:1 mobile coupait 43 %).
+    <section className="relative w-full overflow-hidden bg-lin aspect-[7/2]">
       {slides.map((s, i) => {
         const img = (
           <Image
