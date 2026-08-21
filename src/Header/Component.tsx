@@ -30,7 +30,8 @@ export async function Header() {
 
   return (
     <header>
-      {/* Bandeau bordeaux : logo · recherche · newsletter · libraires · panier.
+      {/* Bandeau bordeaux : logo · recherche · libraires · panier.
+          (Newsletter : uniquement dans le footer et le tiroir ☰ mobile.)
           Sur smartphone (< md) : seulement ☰ (à côté du logo), logo, recherche, panier —
           newsletter et compte passent dans le tiroir ☰. À partir de md : comme à l'origine. */}
       <div className="bg-bordeaux flex items-center justify-between gap-4 px-5 md:px-11 py-2">
@@ -54,17 +55,6 @@ export async function Header() {
               <circle cx="11" cy="11" r="7" />
               <line x1="16.5" y1="16.5" x2="21" y2="21" />
             </svg>
-          </Link>
-          <Link
-            href="/#newsletter"
-            aria-label="Newsletter"
-            className="hidden md:flex items-center gap-2 rounded-full border border-[#e7c56b] bg-[#e7c56b] px-3.5 py-1.5 font-mono text-[11px] uppercase tracking-[1.5px] text-bordeaux transition-colors hover:bg-[#f0d586]"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-              <rect x="3" y="5" width="18" height="14" rx="2" />
-              <path d="M3 7l9 6 9-6" />
-            </svg>
-            <span className="hidden sm:inline">Newsletter</span>
           </Link>
           {/* Espace libraires (remplace l'ancienne icône « Mon compte » — /compte reste accessible par URL) */}
           <Link href="/libraires" aria-label="Commande libraire" className="hidden md:block transition-opacity hover:opacity-70">
