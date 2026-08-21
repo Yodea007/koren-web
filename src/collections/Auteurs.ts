@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from 'payload'
+import { slugifier } from '@/utilities/slugifier'
 import { editeurAvecOutils } from './Livres'
 
 export const Auteurs: CollectionConfig = {
@@ -39,6 +40,8 @@ export const Auteurs: CollectionConfig = {
     slugField({
       position: undefined,
       useAsSlug: 'nom',
+      // Translittère les accents (é→e, œ→oe) au lieu de les supprimer
+      slugify: ({ valueToSlugify }) => slugifier(valueToSlugify ?? ''),
     }),
   ],
 }
