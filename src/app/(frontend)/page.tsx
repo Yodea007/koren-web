@@ -136,7 +136,7 @@ export default async function Accueil() {
       where: { nouveaute: { equals: true } },
       limit: 1,
       depth: 0,
-      select: { id: true },
+      select: { titre: true },
     })
   ).totalDocs
 
