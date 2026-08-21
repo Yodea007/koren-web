@@ -3,7 +3,7 @@
 // │ Acheminement (lire la fonction Accueil() plus bas) :                        │
 // │   A. Récupération des données via Payload (getPayload + payload.find) :     │
 // │        • hero (diaporama éditable)   • catégories                            │
-// │        • livres par catégorie (rails)  • sélection de la maison              │
+// │        • livres par catégorie (rails)  • mise en avant (sélection)               │
 // │   B. Rendu des BLOCS dans l'ordre d'affichage :                             │
 // │        1. <Hero>              — diaporama plein écran (desktop/tablette ≥ md)│
 // │        1bis. liste des rayons — gros titres cliquables (smartphone < md)     │
@@ -213,7 +213,7 @@ export default async function Accueil() {
         ))}
       </section>
 
-      {/* BLOC 3 — LA SÉLECTION DE LA MAISON : grille de 4 livres curés */}
+      {/* BLOC 3 — MISE EN AVANT : grille de 4 livres curés par les libraires */}
       {selection.length > 0 && (
         <section className="px-5 py-14 md:px-16">
           <div className="mx-auto max-w-[1180px]">
@@ -222,7 +222,7 @@ export default async function Accueil() {
                 Choisis par nos libraires
               </div>
               <h2 className="mt-2.5 font-display text-[38px] font-medium text-encre">
-                La sélection de la maison
+                Mise en avant
               </h2>
             </div>
             <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
