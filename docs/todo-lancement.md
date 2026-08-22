@@ -76,8 +76,25 @@ Note : bandeau cookies **abandonné** (Stripe hébergé + analytics Vercel sans 
 | 25 | Titre du Magerman Prestige | Confusion avec le Maalot | Emmanuelle | 🟡 |
 | 26 | Prix du coffret enfants | 4 × 10 € = 40 €, aucune remise — à confirmer | Emmanuelle | 🟡 |
 
-## 5. Idées validées, reportées
+## 5. Développement — Surveillance Dilicom/FEL (« killer feature »)
 
-- **Remise automatique libraires** : taux dans le global Réglages, appliqué au formulaire + PDF. Attend l'arbitrage du taux.
-- **Surveillance Dilicom/FEL** (« killer feature ») : contrôle quotidien du statut FEL de chaque ISBN + alerte e-mail quand le FEL contredit le site (des mois de ventes déjà perdus sur un mauvais statut). Prérequis : accès « FEL à la demande » à demander au distributeur — voir la fiche mémoire du projet.
+**Pourquoi** : un mauvais statut au FEL (« épuisé », « manquant ») rend le livre invisible ou
+non commandable dans les logiciels de tous les libraires de France — des mois de ventes ont
+déjà été perdus ainsi, sans que l'éditeur s'en aperçoive. Le site peut afficher « disponible »
+pendant que le circuit pro dit le contraire.
+
+**Cible** : contrôle quotidien (cron minuit existant) du statut FEL de chaque ISBN → statut +
+date de contrôle affichés sur la fiche livre dans l'admin → **e-mail d'alerte** (SMTP en place)
+dès qu'un statut se dégrade ou contredit le site (site : disponible / FEL : épuisé).
+
+| # | Étape | Détail | Qui | Prio |
+|---|---|---|---|---|
+| 1 | Obtenir l'accès « FEL à la demande » | Web service Dilicom (GLN + clé) — demander au distributeur ou à Dilicom, en précisant « consultation FEL par web service ». Koren ne s'auto-distribue pas : la demande passe par le circuit du distributeur | Emmanuelle | 🔴 |
+| 2 | Plomberie | Champs `felStatut`/`felDate` sur Livres (ajout non destructif), encart admin (à côté de la checklist), logique de comparaison site/FEL, e-mail d'alerte, source de données interchangeable | Code | 🟠 (faisable avant la clé) |
+| 3 | Branchement du web service | Dès réception des identifiants — appel quotidien par ISBN, stockage, alertes actives | Code | 🔴 dès la clé reçue |
+| 4 | (Option) prototype sur source publique | placedeslibraires.fr en attendant la clé — fragile, provisoire uniquement | Code | 🟡 |
+
+## 6. Idées validées, reportées
+
+- **Remise automatique libraires** : taux dans le global Réglages, appliqué au formulaire + PDF. Attend l'arbitrage du taux (unique ? par magasin ? dégressif ?).
 - **Connecteur MCP sur iPhone** : en attente de la bêta « Request headers » de claude.ai sur le compte.
