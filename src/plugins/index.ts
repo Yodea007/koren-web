@@ -171,6 +171,11 @@ export const plugins: Plugin[] = [
         export: { format: 'csv', disableJobsQueue: true },
         import: { disableJobsQueue: true },
       },
+      {
+        // Abonnés newsletter : export CSV pour l'envoi via Brevo/Mailchimp (pas d'import)
+        slug: 'form-submissions',
+        export: { format: 'csv', disableJobsQueue: true },
+      },
     ],
   }),
 ]
