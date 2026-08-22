@@ -1,0 +1,40 @@
+/* Charte Koren pour l'admin Payload — purement cosmétique.
+   Palette alignée sur le site : bordeaux #93142e · papier #faf7f0 · or #8a6d1f. */
+
+:root {
+  --koren-bordeaux: #93142e;
+  --koren-bordeaux-profond: #6e1726;
+  --koren-or: #8a6d1f;
+}
+
+/* Boutons principaux (Enregistrer, Publier…) en bordeaux */
+.btn--style-primary {
+  background: var(--koren-bordeaux);
+  &:hover,
+  &:focus-visible {
+    background: var(--koren-bordeaux-profond);
+  }
+}
+
+/* Titres des groupes de la nav : petites capitales espacées, dorées — la grammaire du site */
+.nav-group__toggle {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--koren-or);
+}
+
+/* Lien actif et survols de la nav en bordeaux */
+.nav__link:hover,
+.nav__link--active,
+.nav__link.active {
+  color: var(--koren-bordeaux);
+}
+
+/* Cartes du tableau de bord : titres de groupes assortis */
+.dashboard__label {
+  color: var(--koren-or);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}

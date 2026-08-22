@@ -18,6 +18,7 @@ export const CommandesClient: CollectionConfig = {
     delete: authenticated,
   },
   admin: {
+    group: '🛒 Ventes',
     useAsTitle: 'reference',
     defaultColumns: ['reference', 'statut', 'totalTTC', 'createdAt'],
     description: 'Commandes clients payées en ligne (Stripe).',

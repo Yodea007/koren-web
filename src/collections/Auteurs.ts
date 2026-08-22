@@ -21,6 +21,7 @@ export const Auteurs: CollectionConfig = {
     update: authenticated,
   },
   admin: {
+    group: '📚 Édition',
     useAsTitle: 'nom',
   },
   hooks: {

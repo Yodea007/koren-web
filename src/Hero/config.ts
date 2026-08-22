@@ -9,6 +9,7 @@ export const Hero: GlobalConfig = {
     read: () => true,
   },
   admin: {
+    group: '📚 Édition',
     description: 'Le bandeau en haut de la page d’accueil (diaporama).',
   },
   hooks: {

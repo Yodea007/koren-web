@@ -18,6 +18,7 @@ export const Lots: CollectionConfig = {
     update: authenticated,
   },
   admin: {
+    group: '📚 Édition',
     useAsTitle: 'titre',
     defaultColumns: ['titre', 'modePrix', 'disponible', 'updatedAt'],
     description:

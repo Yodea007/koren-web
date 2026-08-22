@@ -12,6 +12,7 @@ export const Menu: GlobalConfig = {
     read: () => true,
   },
   admin: {
+    group: '⚙️ Paramètres',
     description:
       'Liste des liens du menu (header + footer). Chaque lien a un « Groupe » (parent) qui le range. Glisse pour réordonner.',
   },

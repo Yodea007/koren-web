@@ -48,7 +48,9 @@ export const Posts: CollectionConfig<'posts'> = {
       description: true,
     },
   },
+  labels: { singular: 'Article', plural: 'Articles' },
   admin: {
+    group: '📚 Édition',
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) =>

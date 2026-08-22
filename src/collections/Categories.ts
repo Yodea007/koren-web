@@ -13,7 +13,9 @@ export const Categories: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
+  labels: { singular: 'Catégorie', plural: 'Catégories' },
   admin: {
+    group: '📚 Édition',
     useAsTitle: 'title',
     defaultColumns: ['title', 'titreCourt', 'ordre'],
   },

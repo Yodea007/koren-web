@@ -10,6 +10,7 @@ export const Reglages: GlobalConfig = {
     read: () => true,
   },
   admin: {
+    group: '⚙️ Paramètres',
     description: 'Paramètres de la boutique : frais de port et seuil de livraison offerte.',
   },
   hooks: {

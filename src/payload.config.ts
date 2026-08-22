@@ -38,6 +38,11 @@ export default buildConfig({
       afterDashboard: ['@/components/RevalidateButton'],
       // Lien vers les statistiques de visite (dashboard Vercel Analytics).
       afterNavLinks: ['@/components/admin/LienStatistiques'],
+      // Logo Koren (connexion) et icône d'en-tête, à la place de ceux de Payload.
+      graphics: {
+        Logo: '@/components/admin/LogoKoren',
+        Icon: '@/components/admin/IconeKoren',
+      },
     },
     importMap: {
       baseDir: path.resolve(dirname),
@@ -73,7 +78,9 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Posts, Livres, Lots, Commandes, CommandesClient, Auteurs, Media, Categories, Users],
+  // L'ordre détermine l'ordre des groupes dans la nav admin :
+  // Édition → Ventes → (Newsletter, plugins) → Médias → (Paramètres) → Administration
+  collections: [Livres, Auteurs, Categories, Lots, Posts, Pages, CommandesClient, Commandes, Media, Users],
   cors: [getServerSideURL()].filter(Boolean),
   // Envoi d'e-mail via SMTP Gmail (copie des commandes libraires). Actif seulement si SMTP_USER
   // et SMTP_PASS sont définis ; sinon Payload tourne sans e-mail et la route POST sauvegarde

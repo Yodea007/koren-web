@@ -34,6 +34,8 @@ export const plugins: Plugin[] = [
   redirectsPlugin({
     collections: ['pages', 'posts'],
     overrides: {
+      labels: { singular: 'Redirection', plural: 'Redirections' },
+      admin: { group: '⚙️ Paramètres' },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
@@ -65,7 +67,13 @@ export const plugins: Plugin[] = [
     fields: {
       payment: false,
     },
+    formSubmissionOverrides: {
+      labels: { singular: 'Inscription newsletter', plural: 'Inscriptions newsletter' },
+      admin: { group: '✉️ Newsletter' },
+    },
     formOverrides: {
+      labels: { singular: 'Formulaire', plural: 'Formulaires' },
+      admin: { group: '✉️ Newsletter' },
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {
           if ('name' in field && field.name === 'confirmationMessage') {
@@ -91,6 +99,8 @@ export const plugins: Plugin[] = [
     collections: ['posts'],
     beforeSync: beforeSyncWithSearch,
     searchOverrides: {
+      labels: { singular: 'Index de recherche', plural: 'Index de recherche' },
+      admin: { group: '🧰 Technique' },
       fields: ({ defaultFields }) => {
         return [...defaultFields, ...searchFields]
       },
@@ -177,5 +187,10 @@ export const plugins: Plugin[] = [
         export: { format: 'csv', disableJobsQueue: true },
       },
     ],
+    // La collection technique « Exports » (fichiers générés) rangée dans le groupe expert
+    overrideExportCollection: ({ collection }) => ({
+      ...collection,
+      admin: { ...collection.admin, group: '🧰 Technique' },
+    }),
   }),
 ]

@@ -68,15 +68,15 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    pages: Page;
-    posts: Post;
     livres: Livre;
-    lots: Lot;
-    commandes: Commande;
-    'commandes-client': CommandesClient;
     auteurs: Auteur;
-    media: Media;
     categories: Category;
+    lots: Lot;
+    posts: Post;
+    pages: Page;
+    'commandes-client': CommandesClient;
+    commandes: Commande;
+    media: Media;
     users: User;
     redirects: Redirect;
     forms: Form;
@@ -101,15 +101,15 @@ export interface Config {
     };
   };
   collectionsSelect: {
-    pages: PagesSelect<false> | PagesSelect<true>;
-    posts: PostsSelect<false> | PostsSelect<true>;
     livres: LivresSelect<false> | LivresSelect<true>;
-    lots: LotsSelect<false> | LotsSelect<true>;
-    commandes: CommandesSelect<false> | CommandesSelect<true>;
-    'commandes-client': CommandesClientSelect<false> | CommandesClientSelect<true>;
     auteurs: AuteursSelect<false> | AuteursSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    lots: LotsSelect<false> | LotsSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
+    'commandes-client': CommandesClientSelect<false> | CommandesClientSelect<true>;
+    commandes: CommandesSelect<false> | CommandesSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -195,82 +195,16 @@ export interface PayloadMcpApiKeyAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
+ * via the `definition` "livres".
  */
-export interface Page {
+export interface Livre {
   id: number;
-  title: string;
-  hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
-    richText?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    links?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?:
-              | ({
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null)
-              | ({
-                  relationTo: 'posts';
-                  value: number | Post;
-                } | null);
-            url?: string | null;
-            label: string;
-            /**
-             * Choose how the link should be rendered.
-             */
-            appearance?: ('default' | 'outline') | null;
-          };
-          id?: string | null;
-        }[]
-      | null;
-    media?: (number | null) | Media;
-  };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ImageTexteBlock | ArchiveBlock | FormBlock)[];
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
-  };
-  publishedAt?: string | null;
+  titre: string;
   /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   * Sous-titre court affiché sous le titre (hero, fiche). Ex. « une lecture de la Torah ».
    */
-  generateSlug?: boolean | null;
-  slug: string;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts".
- */
-export interface Post {
-  id: number;
-  title: string;
-  heroImage?: (number | null) | Media;
-  content: {
+  accroche?: string | null;
+  description?: {
     root: {
       type: string;
       children: {
@@ -284,9 +218,62 @@ export interface Post {
       version: number;
     };
     [k: string]: unknown;
-  };
-  relatedPosts?: (number | Post)[] | null;
-  categories?: (number | Category)[] | null;
+  } | null;
+  /**
+   * Prix public en euros. Une déclinaison peut le remplacer par le sien.
+   */
+  prix: number;
+  /**
+   * Pour un livre sans déclinaisons. Sinon, renseigner l’ISBN de chaque déclinaison.
+   */
+  isbn?: string | null;
+  /**
+   * Éditions du même livre : couleur, langue, tradition… Chacune a son ISBN.
+   */
+  declinaisons?:
+    | {
+        nom: string;
+        /**
+         * Numéro de tome/volume. Rempli → un sélecteur « Volume » apparaît sur la fiche.
+         */
+        tome?: number | null;
+        /**
+         * À renseigner si le rite varie d’une édition à l’autre.
+         */
+        rite?: ('sefarade' | 'ashkenaze' | 'commun') | null;
+        /**
+         * Laisser vide pour utiliser les langues du livre.
+         */
+        langues?: ('he' | 'fr' | 'en' | 'de' | 'arc')[] | null;
+        /**
+         * Rempli → un sélecteur de couleur (pastilles) apparaît sur la fiche.
+         */
+        couleurReliure?: ('bordeaux' | 'marine' | 'vert') | null;
+        isbn?: string | null;
+        /**
+         * Laisser vide pour utiliser le prix du livre.
+         */
+        prix?: number | null;
+        /**
+         * En grammes. Laisser vide pour utiliser le poids du livre.
+         */
+        poids?: number | null;
+        /**
+         * Laisser vide pour utiliser la valeur du livre.
+         */
+        parCarton?: number | null;
+        disponible?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * La première image est la couverture.
+   */
+  images?: (number | Media)[] | null;
+  auteurs?: (number | Auteur)[] | null;
+  extraitPdf?: (number | null) | Media;
+  communiquePresse?: (number | null) | Media;
+  youtube?: string | null;
   meta?: {
     title?: string | null;
     /**
@@ -295,14 +282,48 @@ export interface Post {
     image?: (number | null) | Media;
     description?: string | null;
   };
-  publishedAt?: string | null;
-  authors?: (number | User)[] | null;
-  populatedAuthors?:
-    | {
-        id?: string | null;
-        name?: string | null;
-      }[]
-    | null;
+  categories?: (number | Category)[] | null;
+  /**
+   * Mis en avant en hero sur la page d’accueil.
+   */
+  nouveaute?: boolean | null;
+  /**
+   * Affiché dans « La sélection de la maison » sur l’accueil.
+   */
+  selection?: boolean | null;
+  disponible?: boolean | null;
+  dimensions?: string | null;
+  /**
+   * En grammes — servira au calcul des frais de port.
+   */
+  poids?: number | null;
+  /**
+   * Quantité de cet ouvrage par carton (tarif libraires).
+   */
+  parCarton?: number | null;
+  couverture?: ('rigide' | 'souple') | null;
+  pages?: number | null;
+  /**
+   * Langues du livre (défaut). Une déclinaison peut les remplacer.
+   */
+  langues?: ('he' | 'fr' | 'en' | 'de' | 'arc')[] | null;
+  /**
+   * Rite du livre (défaut). Une déclinaison peut le remplacer.
+   */
+  rite?: ('sefarade' | 'ashkenaze' | 'commun') | null;
+  /**
+   * Ex. « 17 vol. », « coffret 4 livres »
+   */
+  conditionnement?: string | null;
+  lots?: {
+    docs?: (number | Lot)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  /**
+   * Identifiant d’origine sur Shopify (importé).
+   */
+  shopifyHandle?: string | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -310,7 +331,6 @@ export interface Post {
   slug: string;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -433,6 +453,37 @@ export interface FolderInterface {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "auteurs".
+ */
+export interface Auteur {
+  id: number;
+  nom: string;
+  biographie?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  photo?: (number | null) | Media;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
@@ -467,6 +518,97 @@ export interface Category {
   createdAt: string;
 }
 /**
+ * Offres groupées de plusieurs livres. Chaque livre concerné affichera le lot sur sa fiche.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lots".
+ */
+export interface Lot {
+  id: number;
+  titre: string;
+  livres: (number | Livre)[];
+  modePrix: 'remise' | 'fixe';
+  remisePourcent?: number | null;
+  prix?: number | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Facultatif — sinon le site montrera les couvertures des livres du lot.
+   */
+  image?: (number | null) | Media;
+  disponible?: boolean | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  heroImage?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  relatedPosts?: (number | Post)[] | null;
+  categories?: (number | Category)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  authors?: (number | User)[] | null;
+  populatedAuthors?:
+    | {
+        id?: string | null;
+        name?: string | null;
+      }[]
+    | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -491,6 +633,75 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  hero: {
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    richText?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    links?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'posts';
+                  value: number | Post;
+                } | null);
+            url?: string | null;
+            label: string;
+            /**
+             * Choose how the link should be rendered.
+             */
+            appearance?: ('default' | 'outline') | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+    media?: (number | null) | Media;
+  };
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ImageTexteBlock | ArchiveBlock | FormBlock)[];
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -862,260 +1073,6 @@ export interface Form {
   createdAt: string;
 }
 /**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "livres".
- */
-export interface Livre {
-  id: number;
-  titre: string;
-  /**
-   * Sous-titre court affiché sous le titre (hero, fiche). Ex. « une lecture de la Torah ».
-   */
-  accroche?: string | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * Prix public en euros. Une déclinaison peut le remplacer par le sien.
-   */
-  prix: number;
-  /**
-   * Pour un livre sans déclinaisons. Sinon, renseigner l’ISBN de chaque déclinaison.
-   */
-  isbn?: string | null;
-  /**
-   * Éditions du même livre : couleur, langue, tradition… Chacune a son ISBN.
-   */
-  declinaisons?:
-    | {
-        nom: string;
-        /**
-         * Numéro de tome/volume. Rempli → un sélecteur « Volume » apparaît sur la fiche.
-         */
-        tome?: number | null;
-        /**
-         * À renseigner si le rite varie d’une édition à l’autre.
-         */
-        rite?: ('sefarade' | 'ashkenaze' | 'commun') | null;
-        /**
-         * Laisser vide pour utiliser les langues du livre.
-         */
-        langues?: ('he' | 'fr' | 'en' | 'de' | 'arc')[] | null;
-        /**
-         * Rempli → un sélecteur de couleur (pastilles) apparaît sur la fiche.
-         */
-        couleurReliure?: ('bordeaux' | 'marine' | 'vert') | null;
-        isbn?: string | null;
-        /**
-         * Laisser vide pour utiliser le prix du livre.
-         */
-        prix?: number | null;
-        /**
-         * En grammes. Laisser vide pour utiliser le poids du livre.
-         */
-        poids?: number | null;
-        /**
-         * Laisser vide pour utiliser la valeur du livre.
-         */
-        parCarton?: number | null;
-        disponible?: boolean | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * La première image est la couverture.
-   */
-  images?: (number | Media)[] | null;
-  auteurs?: (number | Auteur)[] | null;
-  extraitPdf?: (number | null) | Media;
-  communiquePresse?: (number | null) | Media;
-  youtube?: string | null;
-  meta?: {
-    title?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-    description?: string | null;
-  };
-  categories?: (number | Category)[] | null;
-  /**
-   * Mis en avant en hero sur la page d’accueil.
-   */
-  nouveaute?: boolean | null;
-  /**
-   * Affiché dans « La sélection de la maison » sur l’accueil.
-   */
-  selection?: boolean | null;
-  disponible?: boolean | null;
-  dimensions?: string | null;
-  /**
-   * En grammes — servira au calcul des frais de port.
-   */
-  poids?: number | null;
-  /**
-   * Quantité de cet ouvrage par carton (tarif libraires).
-   */
-  parCarton?: number | null;
-  couverture?: ('rigide' | 'souple') | null;
-  pages?: number | null;
-  /**
-   * Langues du livre (défaut). Une déclinaison peut les remplacer.
-   */
-  langues?: ('he' | 'fr' | 'en' | 'de' | 'arc')[] | null;
-  /**
-   * Rite du livre (défaut). Une déclinaison peut le remplacer.
-   */
-  rite?: ('sefarade' | 'ashkenaze' | 'commun') | null;
-  /**
-   * Ex. « 17 vol. », « coffret 4 livres »
-   */
-  conditionnement?: string | null;
-  lots?: {
-    docs?: (number | Lot)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  /**
-   * Identifiant d’origine sur Shopify (importé).
-   */
-  shopifyHandle?: string | null;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "auteurs".
- */
-export interface Auteur {
-  id: number;
-  nom: string;
-  biographie?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  photo?: (number | null) | Media;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Offres groupées de plusieurs livres. Chaque livre concerné affichera le lot sur sa fiche.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "lots".
- */
-export interface Lot {
-  id: number;
-  titre: string;
-  livres: (number | Livre)[];
-  modePrix: 'remise' | 'fixe';
-  remisePourcent?: number | null;
-  prix?: number | null;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * Facultatif — sinon le site montrera les couvertures des livres du lot.
-   */
-  image?: (number | null) | Media;
-  disponible?: boolean | null;
-  /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
-   */
-  generateSlug?: boolean | null;
-  slug: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * Bons de commande validés en ligne par les libraires.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "commandes".
- */
-export interface Commande {
-  id: number;
-  /**
-   * Généré automatiquement (magasin + date).
-   */
-  reference?: string | null;
-  statut?: ('nouvelle' | 'traitee') | null;
-  libraire: {
-    magasin: string;
-    nom?: string | null;
-    email: string;
-    telephone?: string | null;
-    adresse?: string | null;
-  };
-  remisePourcent?: number | null;
-  lignes?:
-    | {
-        titre?: string | null;
-        isbn?: string | null;
-        prixTTC?: number | null;
-        qte?: number | null;
-        totalLigne?: number | null;
-        id?: string | null;
-      }[]
-    | null;
-  totaux?: {
-    nbArticles?: number | null;
-    montantBrut?: number | null;
-    montantNet?: number | null;
-  };
-  /**
-   * Copie générée à la validation.
-   */
-  pdf?: (number | null) | Media;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * Commandes clients payées en ligne (Stripe).
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1159,6 +1116,49 @@ export interface CommandesClient {
   stripePaymentIntent?: string | null;
   /**
    * Reçu généré à la commande.
+   */
+  pdf?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Bons de commande validés en ligne par les libraires.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "commandes".
+ */
+export interface Commande {
+  id: number;
+  /**
+   * Généré automatiquement (magasin + date).
+   */
+  reference?: string | null;
+  statut?: ('nouvelle' | 'traitee') | null;
+  libraire: {
+    magasin: string;
+    nom?: string | null;
+    email: string;
+    telephone?: string | null;
+    adresse?: string | null;
+  };
+  remisePourcent?: number | null;
+  lignes?:
+    | {
+        titre?: string | null;
+        isbn?: string | null;
+        prixTTC?: number | null;
+        qte?: number | null;
+        totalLigne?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  totaux?: {
+    nbArticles?: number | null;
+    montantBrut?: number | null;
+    montantNet?: number | null;
+  };
+  /**
+   * Copie générée à la validation.
    */
   pdf?: (number | null) | Media;
   updatedAt: string;
@@ -1542,40 +1542,40 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'pages';
-        value: number | Page;
-      } | null)
-    | ({
-        relationTo: 'posts';
-        value: number | Post;
-      } | null)
-    | ({
         relationTo: 'livres';
         value: number | Livre;
-      } | null)
-    | ({
-        relationTo: 'lots';
-        value: number | Lot;
-      } | null)
-    | ({
-        relationTo: 'commandes';
-        value: number | Commande;
-      } | null)
-    | ({
-        relationTo: 'commandes-client';
-        value: number | CommandesClient;
       } | null)
     | ({
         relationTo: 'auteurs';
         value: number | Auteur;
       } | null)
     | ({
-        relationTo: 'media';
-        value: number | Media;
-      } | null)
-    | ({
         relationTo: 'categories';
         value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'lots';
+        value: number | Lot;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'commandes-client';
+        value: number | CommandesClient;
+      } | null)
+    | ({
+        relationTo: 'commandes';
+        value: number | Commande;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: number | Media;
       } | null)
     | ({
         relationTo: 'users';
@@ -1656,6 +1656,146 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "livres_select".
+ */
+export interface LivresSelect<T extends boolean = true> {
+  titre?: T;
+  accroche?: T;
+  description?: T;
+  prix?: T;
+  isbn?: T;
+  declinaisons?:
+    | T
+    | {
+        nom?: T;
+        tome?: T;
+        rite?: T;
+        langues?: T;
+        couleurReliure?: T;
+        isbn?: T;
+        prix?: T;
+        poids?: T;
+        parCarton?: T;
+        disponible?: T;
+        id?: T;
+      };
+  images?: T;
+  auteurs?: T;
+  extraitPdf?: T;
+  communiquePresse?: T;
+  youtube?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  categories?: T;
+  nouveaute?: T;
+  selection?: T;
+  disponible?: T;
+  dimensions?: T;
+  poids?: T;
+  parCarton?: T;
+  couverture?: T;
+  pages?: T;
+  langues?: T;
+  rite?: T;
+  conditionnement?: T;
+  lots?: T;
+  shopifyHandle?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "auteurs_select".
+ */
+export interface AuteursSelect<T extends boolean = true> {
+  nom?: T;
+  biographie?: T;
+  photo?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  title?: T;
+  titreCourt?: T;
+  ordre?: T;
+  generateSlug?: T;
+  slug?: T;
+  parent?: T;
+  breadcrumbs?:
+    | T
+    | {
+        doc?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lots_select".
+ */
+export interface LotsSelect<T extends boolean = true> {
+  titre?: T;
+  livres?: T;
+  modePrix?: T;
+  remisePourcent?: T;
+  prix?: T;
+  description?: T;
+  image?: T;
+  disponible?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  heroImage?: T;
+  content?: T;
+  relatedPosts?: T;
+  categories?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  authors?: T;
+  populatedAuthors?:
+    | T
+    | {
+        id?: T;
+        name?: T;
+      };
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1807,149 +1947,6 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "posts_select".
- */
-export interface PostsSelect<T extends boolean = true> {
-  title?: T;
-  heroImage?: T;
-  content?: T;
-  relatedPosts?: T;
-  categories?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        image?: T;
-        description?: T;
-      };
-  publishedAt?: T;
-  authors?: T;
-  populatedAuthors?:
-    | T
-    | {
-        id?: T;
-        name?: T;
-      };
-  generateSlug?: T;
-  slug?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  _status?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "livres_select".
- */
-export interface LivresSelect<T extends boolean = true> {
-  titre?: T;
-  accroche?: T;
-  description?: T;
-  prix?: T;
-  isbn?: T;
-  declinaisons?:
-    | T
-    | {
-        nom?: T;
-        tome?: T;
-        rite?: T;
-        langues?: T;
-        couleurReliure?: T;
-        isbn?: T;
-        prix?: T;
-        poids?: T;
-        parCarton?: T;
-        disponible?: T;
-        id?: T;
-      };
-  images?: T;
-  auteurs?: T;
-  extraitPdf?: T;
-  communiquePresse?: T;
-  youtube?: T;
-  meta?:
-    | T
-    | {
-        title?: T;
-        image?: T;
-        description?: T;
-      };
-  categories?: T;
-  nouveaute?: T;
-  selection?: T;
-  disponible?: T;
-  dimensions?: T;
-  poids?: T;
-  parCarton?: T;
-  couverture?: T;
-  pages?: T;
-  langues?: T;
-  rite?: T;
-  conditionnement?: T;
-  lots?: T;
-  shopifyHandle?: T;
-  generateSlug?: T;
-  slug?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "lots_select".
- */
-export interface LotsSelect<T extends boolean = true> {
-  titre?: T;
-  livres?: T;
-  modePrix?: T;
-  remisePourcent?: T;
-  prix?: T;
-  description?: T;
-  image?: T;
-  disponible?: T;
-  generateSlug?: T;
-  slug?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "commandes_select".
- */
-export interface CommandesSelect<T extends boolean = true> {
-  reference?: T;
-  statut?: T;
-  libraire?:
-    | T
-    | {
-        magasin?: T;
-        nom?: T;
-        email?: T;
-        telephone?: T;
-        adresse?: T;
-      };
-  remisePourcent?: T;
-  lignes?:
-    | T
-    | {
-        titre?: T;
-        isbn?: T;
-        prixTTC?: T;
-        qte?: T;
-        totalLigne?: T;
-        id?: T;
-      };
-  totaux?:
-    | T
-    | {
-        nbArticles?: T;
-        montantBrut?: T;
-        montantNet?: T;
-      };
-  pdf?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "commandes-client_select".
  */
 export interface CommandesClientSelect<T extends boolean = true> {
@@ -1994,14 +1991,39 @@ export interface CommandesClientSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "auteurs_select".
+ * via the `definition` "commandes_select".
  */
-export interface AuteursSelect<T extends boolean = true> {
-  nom?: T;
-  biographie?: T;
-  photo?: T;
-  generateSlug?: T;
-  slug?: T;
+export interface CommandesSelect<T extends boolean = true> {
+  reference?: T;
+  statut?: T;
+  libraire?:
+    | T
+    | {
+        magasin?: T;
+        nom?: T;
+        email?: T;
+        telephone?: T;
+        adresse?: T;
+      };
+  remisePourcent?: T;
+  lignes?:
+    | T
+    | {
+        titre?: T;
+        isbn?: T;
+        prixTTC?: T;
+        qte?: T;
+        totalLigne?: T;
+        id?: T;
+      };
+  totaux?:
+    | T
+    | {
+        nbArticles?: T;
+        montantBrut?: T;
+        montantNet?: T;
+      };
+  pdf?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2098,28 +2120,6 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories_select".
- */
-export interface CategoriesSelect<T extends boolean = true> {
-  title?: T;
-  titreCourt?: T;
-  ordre?: T;
-  generateSlug?: T;
-  slug?: T;
-  parent?: T;
-  breadcrumbs?:
-    | T
-    | {
-        doc?: T;
-        url?: T;
-        label?: T;
-        id?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2720,15 +2720,15 @@ export interface TaskCreateCollectionExport {
     name: string;
     batchSize?: number | null;
     collectionSlug:
-      | 'pages'
-      | 'posts'
       | 'livres'
-      | 'lots'
-      | 'commandes'
-      | 'commandes-client'
       | 'auteurs'
-      | 'media'
       | 'categories'
+      | 'lots'
+      | 'posts'
+      | 'pages'
+      | 'commandes-client'
+      | 'commandes'
+      | 'media'
       | 'users'
       | 'redirects'
       | 'forms'
@@ -2786,12 +2786,12 @@ export interface TaskSchedulePublish {
     locale?: string | null;
     doc?:
       | ({
-          relationTo: 'pages';
-          value: number | Page;
-        } | null)
-      | ({
           relationTo: 'posts';
           value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
         } | null);
     global?: string | null;
     user?: (number | null) | User;
