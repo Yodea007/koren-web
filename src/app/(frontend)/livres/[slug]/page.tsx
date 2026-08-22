@@ -71,12 +71,12 @@ export default async function FicheLivre({ params }: Args) {
   const lots = (livre.lots?.docs ?? []).filter((l): l is Lot => typeof l === 'object')
   const memeAuteur = auteurs[0] ? await queryMemeAuteur(auteurs[0].id, livre.id) : []
 
-  // Données structurées Product (Google rich results / Shopping)
+  // Données structurées Product+Book (Google rich results / Shopping)
   const pageUrl = `${getServerSideURL()}/livres/${livre.slug}`
   const descriptionSeo = livre.meta?.description || livre.accroche || undefined
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Product',
+    '@type': ['Product', 'Book'],
     name: livre.titre,
     ...(imageAbsolue(images[0]) ? { image: [imageAbsolue(images[0])] } : {}),
     ...(descriptionSeo ? { description: descriptionSeo } : {}),
@@ -84,6 +84,9 @@ export default async function FicheLivre({ params }: Args) {
     ...(auteurs.length > 0
       ? { author: auteurs.map((a) => ({ '@type': 'Person', name: a.nom })) }
       : {}),
+    ...(livre.pages ? { numberOfPages: livre.pages } : {}),
+    ...(livre.langues?.length ? { inLanguage: livre.langues } : {}),
+    publisher: { '@type': 'Organization', name: 'Koren France' },
     brand: { '@type': 'Brand', name: 'Koren' },
     offers: {
       '@type': 'Offer',
@@ -97,11 +100,43 @@ export default async function FicheLivre({ params }: Args) {
     },
   }
 
+  // Fil d'Ariane (BreadcrumbList) : Accueil → rayon → livre
+  const categorie = (livre.categories ?? []).find((c) => typeof c === 'object') as
+    | { title?: string; titreCourt?: string | null; slug?: string }
+    | undefined
+  const jsonLdAriane = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: getServerSideURL() },
+      ...(categorie?.slug
+        ? [
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: categorie.titreCourt || categorie.title || 'Catalogue',
+              item: `${getServerSideURL()}/catalogue?categorie=${categorie.slug}`,
+            },
+          ]
+        : []),
+      {
+        '@type': 'ListItem',
+        position: categorie?.slug ? 3 : 2,
+        name: livre.titre,
+        item: pageUrl,
+      },
+    ],
+  }
+
   return (
     <div className="mx-auto max-w-[1180px] px-5 py-12 md:px-[34px] md:py-16">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdAriane) }}
       />
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,40%)_minmax(0,1fr)] lg:gap-16">
         {/* Galerie */}
