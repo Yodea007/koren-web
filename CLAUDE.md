@@ -183,31 +183,25 @@ et `NEXT_PUBLIC_SERVER_URL` **déjà posées sur Vercel** (Preview + Production)
 
 ---
 
-## 🗂️ Organisation de l'admin (nav visée)
+## 🗂️ Organisation de l'admin — ✅ APPLIQUÉE (août 2026)
 
-Les groupes de la nav admin se pilotent par `admin.group: '<Nom>'` sur chaque collection/global
-(pur cosmétique, aucune migration). Nav cible validée avec le client :
+Nav groupée par `admin.group` (collections + globals + overrides de plugins dans `src/plugins/index.ts`),
+habillage dans `src/app/(payload)/custom.scss` (boutons bordeaux, titres de groupes or, petites capitales),
+logo Koren à la connexion (`components/admin/LogoKoren` + `IconeKoren`, via `admin.components.graphics`).
+L'ordre des groupes = ordre du tableau `collections` de payload.config.ts.
 
 ```
-📚 Catalogue        → Livres · Categories · Lots
-✍️  Auteurs          → Auteurs (+ à enrichir : vidéos, actualités, interviews)
-📰 Actualités        → Posts (blog)
-📄 Contenu           → Pages (Notre histoire, CGV, mentions…)
-⭐ Mise en avant     → Hero (+ à créer : Bannières/Promos)
-🏪 Libraires         → Commandes libraires (+ à créer : Magasins, relié aux commandes)
-🛒 Ventes            → CommandesClient (commandes en ligne ✓) (+ à créer : Clients)
-✉️  Newsletter        → (abonnés via form-submissions ; ENVOI délégué à Brevo/Mailchimp, NE PAS recoder un ESP)
-🖼️  Médias           → Media
-👤 Administration    → Users
-⚙️  Paramètres        → Menu · Réglages ✓ (forfait port + seuil gratuité ; + à enrichir : contact, réseaux)
+📚 Édition          → Livres · Auteurs · Catégories · Lots · Articles (posts) · Pages · Hero
+🛒 Ventes           → Commandes en ligne · Commandes libraires
+✉️ Newsletter        → Inscriptions (form-submissions) · Formulaires
+🖼️ Médias            → Media
+⚙️ Paramètres        → Réglages · Menu · Redirections
+👤 Administration    → Utilisateurs
+🧰 Technique         → Index de recherche · Exports   (le « mode expert », accessible mais discret)
+MCP                  → Clés API (groupe imposé par le plugin)
 ```
 
-**Statut** : structure **validée mais NON appliquée**. Un essai d'`admin.group` a été annulé (la nav groupée
-par défaut de Payload est jugée trop moche) → à refaire **proprement pendant l'étape charte graphique**
-(thème admin custom + regroupement), pas en l'état brut. Le schéma ci-dessus reste la cible.
-
-**Reste à créer** (pendant/après le paiement) : collections **Magasins**, **Clients**,
-**Bannières/Promos**, global **Réglages** ; enrichir **Auteurs** (vidéos/interviews) ; intégrer **Brevo** pour la newsletter.
-*(« Commandes en ligne » = collection `CommandesClient`, déjà créée avec le paiement Stripe.)*
+**Reste à créer un jour** : collections **Magasins**, **Clients**, **Bannières/Promos** ;
+enrichir **Auteurs** (vidéos/interviews) ; champs réseaux sociaux dans **Réglages** ; **Brevo** pour l'envoi newsletter.
 
 **Vigilance** : RGPD dès qu'on stocke des Clients (registre, droit à l'effacement) ; pages légales = prérequis vente.
