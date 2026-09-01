@@ -25,7 +25,7 @@ const evaluate = (meta: Meta): Issue[] => {
   else if (d > DESC_MAX) issues.push({ msg: `Description trop longue (${d})`, severity: 'warn' })
   else if (d < DESC_MIN) issues.push({ msg: `Description trop courte (${d})`, severity: 'warn' })
 
-  if (!meta.image) issues.push({ msg: 'Image de partage manquante', severity: 'warn' })
+  // Image de partage : carte générée automatiquement (visuel/[format]) — plus de vérification ici
 
   return issues
 }

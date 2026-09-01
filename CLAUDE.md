@@ -171,6 +171,26 @@ et `NEXT_PUBLIC_SERVER_URL` **déjà posées sur Vercel** (Preview + Production)
    **Clients branchés** : Claude Code (serveur `koren`, scope local) et Claude Desktop
    (`claude_desktop_config.json` → `mcp-remote` vers la prod, header via env `AUTH_HEADER`).
    Mobile/claude.ai : connecteur personnalisé avec en-tête `Authorization` (bêta « Request headers » en déploiement).
+7. **📣 Diffusion réseaux sociaux** (plan validé sept. 2026, en 3 briques) :
+   1. ✅ **Visuels générés automatiquement** (sept. 2026) : route `/livres/[slug]/visuel/{og|carre|story}`
+      (ImageResponse `next/og`, charte bordeaux/or, police Cormorant en TTF dans `src/fonts/`) — `og` 1200×630
+      branché dans `generateMetadata` (og:image + balises Twitter ; la carte générée remplace **toujours**
+      `meta.image`, les avertissements « Image de partage manquante » ont été retirés de la checklist et de la
+      colonne SEO), `carre` 1080×1080 et `story` 1080×1920 pour Instagram ; `?dl=1` = téléchargement.
+      Couverture = 1ʳᵉ image du livre en data URI ; mockups carrés (marges) → zoom ×1,5 auto (ratio 0,85–1,3) ;
+      modèle de référence = photos recadrées serré (ex. « Un judaïsme engagé dans le monde »). En dev, médias
+      absents du disque → repli sur koren-web.vercel.app. Vérifié en local sur les 3 formats (rendu contrôlé).
+   2. **Kit réseaux dans l'admin** (à faire) : encadré « Réseaux sociaux » sur la fiche livre (sidebar,
+      comme `FicheChecklist`) — lien de la fiche à copier, gabarits de posts Instagram/Facebook remplis
+      depuis la fiche (titre, accroche, auteur, prix, hashtags), boutons de téléchargement des visuels
+      carré/story, prompts image et vidéo (Reel 15 s) prêts à copier pour la personne qui publie.
+      Gabarits automatiques d'abord (sans API) ; bouton « Rédiger avec Claude » (API Anthropic) possible plus tard.
+   3. **Base de connaissance interne** (à faire) : Payload = mémoire de la maison. Onglet interne sur
+      **Livres** (argumentaire, contexte éditorial, anecdotes/citations, ressources presse, notes libres)
+      + champs enrichis sur **Auteurs** (parcours, thèmes, interviews). **Invisible du public**
+      (field-level access `read: authentifié` + jamais rendu sur le front) mais **pleinement accessible
+      via MCP** : Claude lit/enrichit ces champs pour concevoir fiches, posts, vidéos ; les gabarits de
+      la brique 2 y puisent quand ils sont remplis. Colonnes nullable = migration non destructive.
 
 **Ajouts recommandés (vus en plus de ta liste)** :
 - ⚖️ **Légal — OBLIGATOIRE avant d'encaisser** : **CGV**, **mentions légales**, **politique de confidentialité (RGPD)**,

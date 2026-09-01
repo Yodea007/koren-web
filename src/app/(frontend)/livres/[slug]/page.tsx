@@ -328,9 +328,10 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
     livre.accroche ||
     `${livre.titre} — éditions Koren · Maggid · The Toby Press.`
 
-  const metaImg = typeof livre.meta?.image === 'object' ? (livre.meta?.image as MediaType) : null
-  const cover = (livre.images ?? []).find((i): i is MediaType => typeof i === 'object') ?? null
-  const ogImage = imageAbsolue(metaImg ?? cover)
+  // Image de partage : carte 1200×630 générée à la volée (couverture + titre + charte),
+  // identique pour toutes les fiches — cf. visuel/[format]/route.tsx. La couverture brute
+  // (meta.image) serait mal recadrée par les réseaux, on ne l'utilise plus ici.
+  const ogImage = `${url}/visuel/og`
 
   const auteurNoms = (livre.auteurs ?? [])
     .filter((a): a is Auteur => typeof a === 'object')
@@ -346,9 +347,15 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
       description,
       url,
       siteName: 'Koren France',
-      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {}),
+      images: [{ url: ogImage, width: 1200, height: 630 }],
       ...(auteurNoms.length > 0 ? { authors: auteurNoms } : {}),
       ...(livre.isbn ? { isbn: livre.isbn } : {}),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImage],
     },
   }
 }

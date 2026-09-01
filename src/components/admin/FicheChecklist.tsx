@@ -50,7 +50,7 @@ export const FicheChecklist: React.FC = () => {
   if (!d) seo.push({ msg: 'Description SEO manquante', severity: 'warn' })
   else if (d > 150) seo.push({ msg: `Description SEO trop longue (${d}/150)`, severity: 'warn' })
   else if (d < 100) seo.push({ msg: `Description SEO trop courte (${d}/100)`, severity: 'warn' })
-  if (!val('meta.image')) seo.push({ msg: 'Image de partage manquante', severity: 'warn' })
+  // Image de partage : plus rien à vérifier — carte générée automatiquement (visuel/[format])
 
   const total = donnees.length + seo.length
   const headColor = donnees.length ? COLORS.error : seo.length ? COLORS.warn : COLORS.ok
