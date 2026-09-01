@@ -12,6 +12,7 @@ import { Media } from '@/components/Media'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import RichText from '@/components/RichText'
 import { BookCard } from '@/components/koren/BookCard'
+import { PartageBoutons } from '@/components/koren/PartageBoutons'
 import { formatPrix, languePills, RITE_LABELS } from '@/utilities/koren'
 import { getServerSideURL } from '@/utilities/getURL'
 import { Galerie } from './Galerie'
@@ -222,6 +223,9 @@ export default async function FicheLivre({ params }: Args) {
               Feuilleter un extrait
             </a>
           )}
+
+          {/* Partage : WhatsApp / Facebook / X / e-mail / copier — le lien affiche la carte visuel/og */}
+          <PartageBoutons url={pageUrl} titre={livre.titre} />
 
           {/* Caractéristiques : ISBN (par édition s'il y a des déclinaisons), pages, poids */}
           {(livre.isbn ||
